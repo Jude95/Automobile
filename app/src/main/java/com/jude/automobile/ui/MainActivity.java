@@ -19,6 +19,7 @@ import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.swipbackhelper.SwipeBackHelper;
+import com.jude.utils.JUtils;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -60,7 +61,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         toggle.syncState();
 
         navView.setNavigationItemSelectedListener(this);
-
+        recycler.setRecyclerPadding(0,0,0,JUtils.getNavigationBarHeight());
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter = new MainAdapter(this));
 
@@ -69,6 +70,11 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         });
 
     }
+
+    private void createLineSearchDialog(){
+
+    }
+
 
     @Override
     public void onBackPressed() {
