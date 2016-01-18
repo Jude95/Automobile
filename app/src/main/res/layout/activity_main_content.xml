@@ -11,7 +11,8 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
         app:theme="@style/AppTheme.Dark"/>
 
@@ -25,6 +26,8 @@
     <com.jude.fitsystemwindowlayout.FitSystemWindowsFrameLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        app:padding_status="false"
         app:padding_navigation="true"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
@@ -33,7 +36,6 @@
             android:id="@+id/fab_menu"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_margin="16dp"
             android:src="@drawable/fab_add"
             app:menu_colorNormal="?colorAccent"
             app:menu_colorPressed="?colorAccent"
