@@ -15,8 +15,8 @@ public class DataModel extends AbsModel {
         return getInstance(DataModel.class);
     }
 
-    public Observable<Line> searchLine(String name){
-        return Observable.from(createVirtualLines());
+    public Observable<ArrayList<Line>> searchLine(String name){
+        return Observable.just(createVirtualLines());
     }
 
 

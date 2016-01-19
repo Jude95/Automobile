@@ -10,18 +10,23 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.jude.automobile.R;
 import com.jude.automobile.data.DataModel;
+import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.presenter.MainPresenter;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.swipbackhelper.SwipeBackHelper;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.functions.Action1;
 
 @RequiresPresenter(MainPresenter.class)
 public class MainActivity extends BeamBaseActivity<MainPresenter>
@@ -53,7 +58,6 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
-
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
@@ -65,10 +69,35 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         recycler.setAdapter(adapter = new MainAdapter(this));
 
         line.setOnClickListener(v->{
-            adapter.addAll(DataModel.getInstance().createVirtualLines());
+            fabMenu.close(true);
+            createLineSearchDialog();
         });
-
     }
+
+    public void addData(ArrayList arrayList){
+        adapter.clear();
+        adapter.addAll(arrayList);
+    }
+
+    private void createLineSearchDialog(){
+        new MaterialDialog.Builder(this)
+                .title("搜索车系")
+                .input("车系名字", "", (dialog, input) -> {
+                    DataModel.getInstance().searchLine(input.toString()).subscribe(new Action1<ArrayList<Line>>() {
+                        @Override
+                        public void call(ArrayList<Line> lines) {
+                            addData(lines);
+                        }
+                    });
+                })
+                .positiveText("搜索")
+                .negativeText("取消")
+                .show();
+    }
+
+
+
+
 
     @Override
     public void onBackPressed() {

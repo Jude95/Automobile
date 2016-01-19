@@ -23,8 +23,6 @@ public class MainAdapter extends RecyclerArrayAdapter<Object> {
         if (getItem(position) instanceof Line){
             return TYPE_LINE;
         }
-        JUtils.Log("FUCKING"+getItem(position).getClass().getName());
-
         return super.getViewType(position);
     }
 
@@ -33,7 +31,6 @@ public class MainAdapter extends RecyclerArrayAdapter<Object> {
         switch (viewType){
             case TYPE_LINE:return new LineViewHolder(parent);
         }
-        JUtils.Log("FUCK");
         return null;
     }
 }
