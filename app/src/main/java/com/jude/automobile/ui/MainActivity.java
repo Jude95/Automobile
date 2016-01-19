@@ -70,6 +70,9 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this);
+
+        recycler.setEmptyView(R.layout.view_empty_main);
+
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawerLayout, getToolbar(), R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawerLayout.setDrawerListener(toggle);
