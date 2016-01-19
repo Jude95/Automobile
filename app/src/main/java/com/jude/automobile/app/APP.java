@@ -5,6 +5,7 @@ import android.app.Application;
 import com.jude.automobile.domain.Dir;
 import com.jude.beam.Beam;
 import com.jude.beam.expansion.BeamBaseActivity;
+import com.jude.beam.expansion.list.ListConfig;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegate;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegateProvider;
 import com.jude.utils.JFileManager;
@@ -29,6 +30,6 @@ public class APP extends Application {
             }
         });
         Beam.setActivityLifeCycleDelegateProvider(ActivityDelegate::new);
-
+        ListConfig.setDefaultListConfig(new ListConfig().setPaddingNavigationBarAble(true));
     }
 }

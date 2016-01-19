@@ -9,6 +9,13 @@ public class Type {
     String lineName;
     String name;
 
+    public Type(int id, int lineId, String lineName, String name) {
+        this.id = id;
+        this.lineId = lineId;
+        this.lineName = lineName;
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

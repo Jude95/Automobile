@@ -7,25 +7,37 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.RadioGroup;
 
+import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
+import com.afollestad.materialdialogs.internal.MDButton;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.jude.automobile.R;
 import com.jude.automobile.data.DataModel;
+import com.jude.automobile.data.SearchHistoryModel;
 import com.jude.automobile.domain.entities.Line;
+import com.jude.automobile.domain.entities.Model;
+import com.jude.automobile.domain.entities.Type;
 import com.jude.automobile.presenter.MainPresenter;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.easyrecyclerview.EasyRecyclerView;
+import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.jude.swipbackhelper.SwipeBackHelper;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import rx.Observable;
 import rx.functions.Action1;
 
 @RequiresPresenter(MainPresenter.class)
@@ -72,10 +84,46 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
             fabMenu.close(true);
             createLineSearchDialog();
         });
+        type.setOnClickListener(v->{
+            fabMenu.close(true);
+            createTypeSearchDialog();
+        });
+        model.setOnClickListener(v->{
+            fabMenu.close(true);
+            createModelSearchDialog();
+        });
+
+        initHistory();
+    }
+
+    private RecyclerArrayAdapter.ItemView mSearchHeader;
+    private void initHistory(){
+        mSearchHeader = new RecyclerArrayAdapter.ItemView() {
+            @Override
+            public View onCreateView(ViewGroup parent) {
+                View header = LayoutInflater.from(MainActivity.this).inflate(R.layout.head_search,parent,false);
+                header.findViewById(R.id.clear).setOnClickListener(v->{
+                    SearchHistoryModel.getInstance().clear();
+                    adapter.clear();
+                });
+                return header;
+            }
+
+            @Override
+            public void onBindView(View headerView) {
+
+            }
+        };
+        adapter.addHeader(mSearchHeader);
+        adapter.addAll(SearchHistoryModel.getInstance().getSearchHistory());
     }
 
     public void addData(ArrayList arrayList){
         adapter.clear();
+        if (mSearchHeader!=null){
+            adapter.removeHeader(mSearchHeader);
+            mSearchHeader=null;
+        }
         adapter.addAll(arrayList);
     }
 
@@ -83,7 +131,10 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         new MaterialDialog.Builder(this)
                 .title("搜索车系")
                 .input("车系名字", "", (dialog, input) -> {
-                    DataModel.getInstance().searchLine(input.toString()).subscribe(new Action1<ArrayList<Line>>() {
+                    getExpansion().showProgressDialog("搜索中");
+                    DataModel.getInstance().searchLine(input.toString())
+                            .finallyDo(() -> getExpansion().dismissProgressDialog())
+                            .subscribe(new Action1<ArrayList<Line>>() {
                         @Override
                         public void call(ArrayList<Line> lines) {
                             addData(lines);
@@ -95,6 +146,53 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                 .show();
     }
 
+    private void createTypeSearchDialog(){
+        new MaterialDialog.Builder(this)
+                .title("搜索车型")
+                .input("车型名字", "", (dialog, input) -> {
+                    getExpansion().showProgressDialog("搜索中");
+                    DataModel.getInstance().searchType(input.toString())
+                            .finallyDo(() -> getExpansion().dismissProgressDialog())
+                            .subscribe(new Action1<ArrayList<Type>>() {
+                        @Override
+                        public void call(ArrayList<Type> types) {
+                            addData(types);
+                        }
+                    });
+                })
+                .positiveText("搜索")
+                .negativeText("取消")
+                .show();
+    }
+
+    private void createModelSearchDialog(){
+        MaterialDialog dialog = new MaterialDialog.Builder(this)
+                .title("搜索车款")
+                .customView(R.layout.dialog_model_search,false)
+                .negativeText("取消")
+                .positiveText("搜索")
+                .show();
+        View view = dialog.getCustomView();
+        MDButton positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+        EditText input = (EditText) view.findViewById(R.id.input);
+        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.search_type);
+        positiveAction.setOnClickListener(v->{
+            getExpansion().showProgressDialog("搜索中");
+            Observable<ArrayList<Model>> observable = null;
+            switch (radioGroup.getCheckedRadioButtonId()){
+                case R.id.search_name:
+                    observable = DataModel.getInstance().searchModelByName(input.getText().toString());
+                    break;
+                case R.id.search_engine:
+                    observable = DataModel.getInstance().searchModelByEngine(input.getText().toString());
+                    break;
+            }
+            if (observable!=null) observable
+                    .finallyDo(() -> getExpansion().dismissProgressDialog())
+                    .subscribe(this::addData);
+            dialog.dismiss();
+        });
+    }
 
 
 

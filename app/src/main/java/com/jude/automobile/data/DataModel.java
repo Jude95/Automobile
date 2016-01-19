@@ -1,11 +1,18 @@
 package com.jude.automobile.data;
 
 import com.jude.automobile.domain.entities.Line;
+import com.jude.automobile.domain.entities.Model;
+import com.jude.automobile.domain.entities.Part;
+import com.jude.automobile.domain.entities.Search;
+import com.jude.automobile.domain.entities.Type;
 import com.jude.beam.model.AbsModel;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import rx.Observable;
+import rx.android.schedulers.AndroidSchedulers;
 
 /**
  * Created by zhuchenxi on 16/1/18.
@@ -16,7 +23,39 @@ public class DataModel extends AbsModel {
     }
 
     public Observable<ArrayList<Line>> searchLine(String name){
-        return Observable.just(createVirtualLines());
+        SearchHistoryModel.getInstance().addSearch(new Search(Search.TYPE_LINE,name));
+        return Observable.just(createVirtualLines()).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ArrayList<Type>> searchType(String name){
+        SearchHistoryModel.getInstance().addSearch(new Search(Search.TYPE_TYPE,name));
+        return Observable.just(createVirtualType()).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ArrayList<Model>> searchModelByName(String name){
+        SearchHistoryModel.getInstance().addSearch(new Search(Search.TYPE_Model,name,"name"));
+        return Observable.just(createVirtualModel()).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ArrayList<Model>> searchModelByEngine(String engine){
+        SearchHistoryModel.getInstance().addSearch(new Search(Search.TYPE_Model,engine,"engine"));
+        return Observable.just(createVirtualModel()).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ArrayList<Type>> getTypeByLine(int lineId){
+        return Observable.just(createVirtualType()).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ArrayList<Model>> getModelByType(int typeId){
+        return Observable.just(createVirtualModel()).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ArrayList<Part>> getPartByModel(int modelId){
+        return Observable.just(createVirtualPart()).delay(1,TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<Model> getModelById(int modelId){
+        return Observable.just(createVirtualSingleModel()).delay(1,TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
     }
 
 
@@ -36,5 +75,57 @@ public class DataModel extends AbsModel {
         arrayList.add(new Line(1,"http://i2.hdslb.com/user/3716/371679/myface.jpg","世爵"));
         arrayList.add(new Line(1,"http://i1.hdslb.com/account/face/9045165/4b11d894/myface.png","迈凯轮"));
         return  arrayList;
+    }
+
+    public ArrayList<Type> createVirtualType(){
+        ArrayList<Type> arrayList = new ArrayList<>();
+        arrayList.add(new Type(1,2,"长安","悦翔V3"));
+        arrayList.add(new Type(1,2,"长安","悦翔V5"));
+        arrayList.add(new Type(1,2,"长安","悦翔V8"));
+        arrayList.add(new Type(1,2,"奥迪","奥迪X5"));
+        arrayList.add(new Type(1,2,"奥迪","奥迪X6"));
+        arrayList.add(new Type(1,2,"奥迪","奥迪X7"));
+        return arrayList;
+    }
+
+    public ArrayList<Model> createVirtualModel(){
+        ArrayList<Model> arrayList = new ArrayList<>();
+        arrayList.add(new Model("4","1206 毫升 / 1.2 升 ","1.2","后驱动","点燃式发动机","HH412Q/P-B","汽油","进气管内喷射/汽化器",1,"成功汽车 K1 1,2","63 千瓦 / 86 马力","载货平台/底盘","2333","2013.8 - 今",2,"长安","4"));
+        arrayList.add(new Model("4","1206 毫升 / 1.2 升 ","1.2","后驱动","点燃式发动机","HH412Q/P-B","汽油","进气管内喷射/汽化器",1,"成功汽车 K1 1,2","63 千瓦 / 86 马力","载货平台/底盘","2333","2013.8 - 今",2,"长安","4"));
+        arrayList.add(new Model("4","1206 毫升 / 1.2 升 ","1.2","后驱动","点燃式发动机","HH412Q/P-B","汽油","进气管内喷射/汽化器",1,"成功汽车 K1 1,2","63 千瓦 / 86 马力","载货平台/底盘","2333","2013.8 - 今",2,"长安","4"));
+        arrayList.add(new Model("4","1206 毫升 / 1.2 升 ","1.2","后驱动","点燃式发动机","HH412Q/P-B","汽油","进气管内喷射/汽化器",1,"成功汽车 K1 1,2","63 千瓦 / 86 马力","载货平台/底盘","2333","2013.8 - 今",2,"长安","4"));
+        arrayList.add(new Model("4","1206 毫升 / 1.2 升 ","1.2","后驱动","点燃式发动机","HH412Q/P-B","汽油","进气管内喷射/汽化器",1,"成功汽车 K1 1,2","63 千瓦 / 86 马力","载货平台/底盘","2333","2013.8 - 今",2,"长安","4"));
+        arrayList.add(new Model("4","1206 毫升 / 1.2 升 ","1.2","后驱动","点燃式发动机","HH412Q/P-B","汽油","进气管内喷射/汽化器",1,"成功汽车 K1 1,2","63 千瓦 / 86 马力","载货平台/底盘","2333","2013.8 - 今",2,"长安","4"));
+        arrayList.add(new Model("4","1206 毫升 / 1.2 升 ","1.2","后驱动","点燃式发动机","HH412Q/P-B","汽油","进气管内喷射/汽化器",1,"成功汽车 K1 1,2","63 千瓦 / 86 马力","载货平台/底盘","2333","2013.8 - 今",2,"长安","4"));
+        return arrayList;
+    }
+
+    public Model createVirtualSingleModel(){
+        return new Model("4","1206 毫升 / 1.2 升 ","1.2","后驱动","点燃式发动机","HH412Q/P-B","汽油","进气管内喷射/汽化器",1,"成功汽车 K1 1,2","63 千瓦 / 86 马力","载货平台/底盘","2333","2013.8 - 今",2,"长安","4");
+    }
+
+    public ArrayList<Part> createVirtualPart(){
+        ArrayList<Part> arrayList = new ArrayList<>();
+        arrayList.add(new Part("http://i2.hdslb.com/user/35900/3590066/myface.gif","铁牛","2333333333",1, Arrays.asList(new String[]{
+                "http://i0.hdslb.com/u_user/7eeba663e9ca1823492d29cc25bef3f4.jpg",
+                "http://i1.hdslb.com/u_user/59accbdc10483e33af559f7c3cea3e6d.jpg"
+        }),"发动鸡","6s真男人"));
+        arrayList.add(new Part("http://i2.hdslb.com/user/35900/3590066/myface.gif","铁牛","2333333333",1, Arrays.asList(new String[]{
+                "http://i0.hdslb.com/u_user/7eeba663e9ca1823492d29cc25bef3f4.jpg",
+                "http://i1.hdslb.com/u_user/59accbdc10483e33af559f7c3cea3e6d.jpg"
+        }),"起动鸡","大码力"));
+        arrayList.add(new Part("http://i2.hdslb.com/user/35900/3590066/myface.gif","铁牛","2333333333",1, Arrays.asList(new String[]{
+                "http://i0.hdslb.com/u_user/7eeba663e9ca1823492d29cc25bef3f4.jpg",
+                "http://i1.hdslb.com/u_user/59accbdc10483e33af559f7c3cea3e6d.jpg"
+        }),"涡轮增压鸡","10G加速度"));
+        arrayList.add(new Part("http://i2.hdslb.com/user/35900/3590066/myface.gif","铁牛","2333333333",1, Arrays.asList(new String[]{
+                "http://i0.hdslb.com/u_user/7eeba663e9ca1823492d29cc25bef3f4.jpg",
+                "http://i1.hdslb.com/u_user/59accbdc10483e33af559f7c3cea3e6d.jpg"
+        }),"减震鸡","哦～"));
+        arrayList.add(new Part("http://i2.hdslb.com/user/35900/3590066/myface.gif","铁牛","2333333333",1, Arrays.asList(new String[]{
+                "http://i0.hdslb.com/u_user/7eeba663e9ca1823492d29cc25bef3f4.jpg",
+                "http://i1.hdslb.com/u_user/59accbdc10483e33af559f7c3cea3e6d.jpg"
+        }),"肯打鸡","纯洁的鸡"));
+        return arrayList;
     }
 }

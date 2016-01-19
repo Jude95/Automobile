@@ -1,5 +1,6 @@
 package com.jude.automobile.ui;
 
+import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -22,13 +23,22 @@ public class LineViewHolder extends BaseViewHolder<Line> {
     @InjectView(R.id.name)
     TextView name;
 
+    private Line data;
+
     public LineViewHolder(ViewGroup parent) {
         super(parent, R.layout.item_line);
         ButterKnife.inject(this,itemView);
+        itemView.setOnClickListener(v->{
+            Intent i = new Intent(getContext(),LineActivity.class);
+            i.putExtra("id",data.getId());
+            i.putExtra("name",data.getName());
+            getContext().startActivity(i);
+        });
     }
 
     @Override
     public void setData(Line data) {
+        this.data = data;
         name.setText(data.getName());
         Glide.with(getContext()).load(data.getAvatar()).bitmapTransform(new CropCircleTransformation(getContext())).into(avatar);
     }

@@ -6,6 +6,8 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
 
     <application
         android:name=".app.APP"
@@ -23,6 +25,7 @@
         <meta-data
             android:name="MODEL"
             android:value="
+            com.jude.automobile.data.SearchHistoryModel,
             com.jude.automobile.data.DataModel"/>
 
         <activity
@@ -35,6 +38,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.LineActivity"
+            android:label="车系详情"/>
+        <activity android:name=".ui.TypeActivity"
+            android:label="车型详情"/>
+        <activity android:name=".ui.ModelActivity"
+            android:label="车款详情"/>
     </application>
 
 </manifest>
