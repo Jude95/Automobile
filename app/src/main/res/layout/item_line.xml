@@ -3,9 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-
+    android:foreground="?android:attr/selectableItemBackground"
     android:layout_width="match_parent"
-    android:layout_height="48dp"
+    android:layout_height="64dp"
+    android:clickable="true"
     >
     <LinearLayout
         android:orientation="horizontal"
@@ -17,7 +18,7 @@
             android:id="@+id/avatar"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:layout_marginLeft="8dp"
+            android:layout_marginLeft="24dp"
             android:scaleType="centerCrop"/>
 
         <TextView
@@ -31,8 +32,8 @@
     <View
         android:layout_width="match_parent"
         android:layout_height="0.5dp"
-        android:layout_marginLeft="56dp"
+        android:layout_marginLeft="80dp"
         android:layout_alignParentBottom="true"
-        android:background="@color/gray100"/>
+        android:background="@color/gray600"/>
 
 </RelativeLayout>
