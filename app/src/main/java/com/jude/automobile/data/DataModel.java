@@ -1,5 +1,9 @@
 package com.jude.automobile.data;
 
+import android.content.Context;
+
+import com.jude.automobile.data.di.DaggerDataModelComponet;
+import com.jude.automobile.data.server.ServiceAPI;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Part;
@@ -7,19 +11,50 @@ import com.jude.automobile.domain.entities.Search;
 import com.jude.automobile.domain.entities.Type;
 import com.jude.beam.model.AbsModel;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
 
+import javax.inject.Inject;
+
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func1;
 
 /**
  * Created by zhuchenxi on 16/1/18.
  */
 public class DataModel extends AbsModel {
+    @Inject
+    ServiceAPI mServiceAPI;
+
+    @Override
+    protected void onAppCreate(Context ctx) {
+        super.onAppCreate(ctx);
+        DaggerDataModelComponet.builder().build().inject(this);
+    }
+
     public static DataModel getInstance() {
         return getInstance(DataModel.class);
+    }
+
+    public Observable<ArrayList> dispatchSearch(Search search){
+        switch (search.getType()){
+            case Search.TYPE_LINE:
+                return searchLine(search.getWord()).flatMap((Func1<ArrayList<Line>, Observable<ArrayList>>) Observable::just);
+            case Search.TYPE_TYPE:
+                return searchType(search.getWord()).flatMap((Func1<ArrayList<Type>, Observable<ArrayList>>) Observable::just);
+            case Search.TYPE_Model:
+                switch (search.getInfo()){
+                    case "name":
+                        return searchModelByName(search.getWord()).flatMap((Func1<ArrayList<Model>, Observable<ArrayList>>) Observable::just);
+                    case "engine":
+                        return searchModelByEngine(search.getWord()).flatMap((Func1<ArrayList<Model>, Observable<ArrayList>>) Observable::just);
+                }
+                default:
+                    throw new InvalidParameterException();
+        }
     }
 
     public Observable<ArrayList<Line>> searchLine(String name){
@@ -40,6 +75,10 @@ public class DataModel extends AbsModel {
     public Observable<ArrayList<Model>> searchModelByEngine(String engine){
         SearchHistoryModel.getInstance().addSearch(new Search(Search.TYPE_Model,engine,"engine"));
         return Observable.just(createVirtualModel()).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<ArrayList<Line>> getAllLine(){
+        return Observable.just(createVirtualLines()).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<ArrayList<Type>> getTypeByLine(int lineId){

@@ -9,26 +9,26 @@ import com.jude.automobile.domain.entities.Model;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * Created by zhuchenxi on 16/1/19.
  */
 public class ModelViewHolder extends BaseViewHolder<Model> {
-    @InjectView(R.id.name)
+    @Bind(R.id.name)
     TextView name;
-    @InjectView(R.id.displacement)
+    @Bind(R.id.displacement)
     TextView displacement;
-    @InjectView(R.id.date)
+    @Bind(R.id.date)
     TextView date;
-    @InjectView(R.id.engine)
+    @Bind(R.id.engine)
     TextView engine;
 
     private Model data;
 
     public ModelViewHolder(ViewGroup parent) {
         super(parent, R.layout.item_model);
-        ButterKnife.inject(this,itemView);
+        ButterKnife.bind(this,itemView);
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(),ModelActivity.class);
             i.putExtra("id",data.getId());

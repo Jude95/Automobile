@@ -49,4 +49,12 @@ public class Search implements Serializable{
     public void setWord(String word) {
         this.word = word;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o instanceof Search){
+            return ((Search) o).type == type&&word.equals(word);
+        }
+        return false;
+    }
 }

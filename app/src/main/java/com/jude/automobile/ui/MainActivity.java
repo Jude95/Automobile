@@ -1,5 +1,6 @@
 package com.jude.automobile.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -25,6 +26,7 @@ import com.jude.automobile.data.DataModel;
 import com.jude.automobile.data.SearchHistoryModel;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.domain.entities.Model;
+import com.jude.automobile.domain.entities.Search;
 import com.jude.automobile.domain.entities.Type;
 import com.jude.automobile.presenter.MainPresenter;
 import com.jude.beam.bijection.RequiresPresenter;
@@ -36,7 +38,7 @@ import com.jude.swipbackhelper.SwipeBackHelper;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -45,22 +47,24 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-    @InjectView(R.id.recycler)
+    @Bind(R.id.recycler)
     EasyRecyclerView recycler;
-    @InjectView(R.id.fab_menu)
+    @Bind(R.id.fab_menu)
     FloatingActionMenu fabMenu;
-    @InjectView(R.id.nav_view)
+    @Bind(R.id.nav_view)
     NavigationView navView;
-    @InjectView(R.id.drawer_layout)
+    @Bind(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @InjectView(R.id.toolbar)
+    @Bind(R.id.toolbar)
     Toolbar toolbar;
-    @InjectView(R.id.line)
+    @Bind(R.id.line)
     FloatingActionButton line;
-    @InjectView(R.id.type)
+    @Bind(R.id.type)
     FloatingActionButton type;
-    @InjectView(R.id.model)
+    @Bind(R.id.model)
     FloatingActionButton model;
+    @Bind(R.id.all)
+    FloatingActionButton all;
 
     private MainAdapter adapter;
 
@@ -69,7 +73,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         super.onCreate(savedInstanceState);
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
         setContentView(R.layout.activity_main);
-        ButterKnife.inject(this);
+        ButterKnife.bind(this);
 
         recycler.setEmptyView(R.layout.view_empty_main);
 
@@ -83,29 +87,33 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter = new MainAdapter(this));
 
-        line.setOnClickListener(v->{
+        line.setOnClickListener(v -> {
             fabMenu.close(true);
             createLineSearchDialog();
         });
-        type.setOnClickListener(v->{
+        type.setOnClickListener(v -> {
             fabMenu.close(true);
             createTypeSearchDialog();
         });
-        model.setOnClickListener(v->{
+        model.setOnClickListener(v -> {
             fabMenu.close(true);
             createModelSearchDialog();
         });
-
+        all.setOnClickListener(v->{
+            fabMenu.close(true);
+            startActivity(new Intent(this,LineAllActivity.class));
+        });
         initHistory();
     }
 
     private RecyclerArrayAdapter.ItemView mSearchHeader;
-    private void initHistory(){
+
+    private void initHistory() {
         mSearchHeader = new RecyclerArrayAdapter.ItemView() {
             @Override
             public View onCreateView(ViewGroup parent) {
-                View header = LayoutInflater.from(MainActivity.this).inflate(R.layout.head_search,parent,false);
-                header.findViewById(R.id.clear).setOnClickListener(v->{
+                View header = LayoutInflater.from(MainActivity.this).inflate(R.layout.head_search, parent, false);
+                header.findViewById(R.id.clear).setOnClickListener(v -> {
                     SearchHistoryModel.getInstance().clear();
                     adapter.clear();
                 });
@@ -121,16 +129,23 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         adapter.addAll(SearchHistoryModel.getInstance().getSearchHistory());
     }
 
-    public void addData(ArrayList arrayList){
+    public void addData(ArrayList arrayList) {
         adapter.clear();
-        if (mSearchHeader!=null){
+        if (mSearchHeader != null) {
             adapter.removeHeader(mSearchHeader);
-            mSearchHeader=null;
+            mSearchHeader = null;
         }
         adapter.addAll(arrayList);
     }
 
-    private void createLineSearchDialog(){
+    public void startSearch(Search search) {
+        getExpansion().showProgressDialog("搜索中");
+        DataModel.getInstance().dispatchSearch(search)
+                .finallyDo(() -> getExpansion().dismissProgressDialog())
+                .subscribe(this::addData);
+    }
+
+    private void createLineSearchDialog() {
         new MaterialDialog.Builder(this)
                 .title("搜索车系")
                 .input("车系名字", "", (dialog, input) -> {
@@ -138,18 +153,18 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                     DataModel.getInstance().searchLine(input.toString())
                             .finallyDo(() -> getExpansion().dismissProgressDialog())
                             .subscribe(new Action1<ArrayList<Line>>() {
-                        @Override
-                        public void call(ArrayList<Line> lines) {
-                            addData(lines);
-                        }
-                    });
+                                @Override
+                                public void call(ArrayList<Line> lines) {
+                                    addData(lines);
+                                }
+                            });
                 })
                 .positiveText("搜索")
                 .negativeText("取消")
                 .show();
     }
 
-    private void createTypeSearchDialog(){
+    private void createTypeSearchDialog() {
         new MaterialDialog.Builder(this)
                 .title("搜索车型")
                 .input("车型名字", "", (dialog, input) -> {
@@ -157,21 +172,21 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                     DataModel.getInstance().searchType(input.toString())
                             .finallyDo(() -> getExpansion().dismissProgressDialog())
                             .subscribe(new Action1<ArrayList<Type>>() {
-                        @Override
-                        public void call(ArrayList<Type> types) {
-                            addData(types);
-                        }
-                    });
+                                @Override
+                                public void call(ArrayList<Type> types) {
+                                    addData(types);
+                                }
+                            });
                 })
                 .positiveText("搜索")
                 .negativeText("取消")
                 .show();
     }
 
-    private void createModelSearchDialog(){
+    private void createModelSearchDialog() {
         MaterialDialog dialog = new MaterialDialog.Builder(this)
                 .title("搜索车款")
-                .customView(R.layout.dialog_model_search,false)
+                .customView(R.layout.dialog_model_search, false)
                 .negativeText("取消")
                 .positiveText("搜索")
                 .show();
@@ -179,10 +194,10 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         MDButton positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
         EditText input = (EditText) view.findViewById(R.id.input);
         RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.search_type);
-        positiveAction.setOnClickListener(v->{
+        positiveAction.setOnClickListener(v -> {
             getExpansion().showProgressDialog("搜索中");
             Observable<ArrayList<Model>> observable = null;
-            switch (radioGroup.getCheckedRadioButtonId()){
+            switch (radioGroup.getCheckedRadioButtonId()) {
                 case R.id.search_name:
                     observable = DataModel.getInstance().searchModelByName(input.getText().toString());
                     break;
@@ -190,14 +205,12 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                     observable = DataModel.getInstance().searchModelByEngine(input.getText().toString());
                     break;
             }
-            if (observable!=null) observable
+            if (observable != null) observable
                     .finallyDo(() -> getExpansion().dismissProgressDialog())
                     .subscribe(this::addData);
             dialog.dismiss();
         });
     }
-
-
 
 
     @Override

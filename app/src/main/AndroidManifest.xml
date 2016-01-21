@@ -26,6 +26,7 @@
             android:name="MODEL"
             android:value="
             com.jude.automobile.data.SearchHistoryModel,
+            com.jude.automobile.data.AccountModel,
             com.jude.automobile.data.DataModel"/>
 
         <activity
@@ -44,6 +45,14 @@
             android:label="车型详情"/>
         <activity android:name=".ui.ModelActivity"
             android:label="车款详情"/>
+        <activity android:name=".ui.LineAllActivity"
+            android:label="所有车系"/>
+        <activity android:name=".ui.LoginActivity"
+            android:label="登陆"/>
+        <activity android:name=".ui.RegisterActivity"
+            android:label="注册"/>
+        <activity android:name=".ui.FindPasswordActivity"
+            android:label="找回密码"/>
     </application>
 
 </manifest>

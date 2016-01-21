@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'com.neenbedankt.android-apt'
 
 Properties props = new Properties()
 props.load(new FileInputStream(file("../config/signing.properties")))
@@ -92,11 +93,11 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:design:23.1.1'
     compile 'com.android.support:cardview-v7:23.1.1'
-    compile 'com.jakewharton:butterknife:6.1.0'
+    compile 'com.jakewharton:butterknife:7.0.1'
     compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.google.code.gson:gson:2.4'
-    compile 'com.squareup.retrofit:retrofit:1.9.0'
-    compile 'com.squareup.okhttp:okhttp:2.4.0'
+    compile 'com.squareup.retrofit2:retrofit:2.0.0-beta3'
+    compile 'com.squareup.retrofit2:converter-gson:2.0.0-beta3'
     compile 'com.qiniu:qiniu-android-sdk:7.0.7'
     compile 'com.jude:beam:2.5.8'
     compile 'com.jude:swipebackhelper:2.1.3'
@@ -113,4 +114,8 @@ dependencies {
     }
     compile 'jp.wasabeef:glide-transformations:1.3.1'
     compile 'com.umeng.analytics:analytics:latest.integration'
+    compile 'com.github.stuxuhai:jpinyin:1.1.1'
+    compile 'com.jude:exgridview:1.1.5'
+    compile 'com.google.dagger:dagger:2.0.2'
+    apt 'com.google.dagger:dagger-compiler:2.0.2'
 }

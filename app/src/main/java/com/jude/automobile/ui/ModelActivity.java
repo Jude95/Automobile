@@ -15,7 +15,7 @@ import com.jude.beam.expansion.list.BeamListActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * Created by zhuchenxi on 16/1/19.
@@ -23,30 +23,30 @@ import butterknife.InjectView;
 @RequiresPresenter(ModelPresenter.class)
 public class ModelActivity extends BeamListActivity<ModelPresenter, Part> {
 
-    @InjectView(R.id.power)
+    @Bind(R.id.power)
     TextView power;
-    @InjectView(R.id.displacement)
+    @Bind(R.id.displacement)
     TextView displacement;
-    @InjectView(R.id.cylinders)
+    @Bind(R.id.cylinders)
     TextView cylinders;
-    @InjectView(R.id.valve)
+    @Bind(R.id.valve)
     TextView valve;
-    @InjectView(R.id.structure)
+    @Bind(R.id.structure)
     TextView structure;
-    @InjectView(R.id.drive)
+    @Bind(R.id.drive)
     TextView drive;
-    @InjectView(R.id.engine)
+    @Bind(R.id.engine)
     TextView engine;
-    @InjectView(R.id.fuel)
+    @Bind(R.id.fuel)
     TextView fuel;
-    @InjectView(R.id.fuel_feed)
+    @Bind(R.id.fuel_feed)
     TextView fuelFeed;
-    @InjectView(R.id.engine_code)
+    @Bind(R.id.engine_code)
     TextView engineCode;
 
     public View createHeadView(ViewGroup parent, Model data) {
         View view = LayoutInflater.from(this).inflate(R.layout.head_model, parent, false);
-        ButterKnife.inject(this,view);
+        ButterKnife.bind(this,view);
         power.setText(data.getPower());
         displacement.setText(data.getDisplacement());
         cylinders.setText(data.getCylinders());

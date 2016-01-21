@@ -11,25 +11,25 @@ import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.tagview.TAGView;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 import jp.wasabeef.glide.transformations.CropCircleTransformation;
 
 /**
  * Created by zhuchenxi on 16/1/19.
  */
 public class PartViewHolder extends BaseViewHolder<Part> {
-    @InjectView(R.id.type)
+    @Bind(R.id.type)
     TAGView type;
-    @InjectView(R.id.note)
+    @Bind(R.id.note)
     TextView note;
-    @InjectView(R.id.avatar)
+    @Bind(R.id.avatar)
     ImageView avatar;
 
     private Part data;
 
     public PartViewHolder(ViewGroup parent) {
         super(parent, R.layout.item_part);
-        ButterKnife.inject(this, itemView);
+        ButterKnife.bind(this, itemView);
 
     }
 

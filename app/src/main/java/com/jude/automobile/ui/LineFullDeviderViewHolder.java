@@ -17,7 +17,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 /**
  * Created by zhuchenxi on 16/1/18.
  */
-public class LineViewHolder extends BaseViewHolder<Line> {
+public class LineFullDeviderViewHolder extends BaseViewHolder<Line> {
     @Bind(R.id.avatar)
     ImageView avatar;
     @Bind(R.id.name)
@@ -25,8 +25,8 @@ public class LineViewHolder extends BaseViewHolder<Line> {
 
     private Line data;
 
-    public LineViewHolder(ViewGroup parent) {
-        super(parent, R.layout.item_line);
+    public LineFullDeviderViewHolder(ViewGroup parent) {
+        super(parent, R.layout.item_line_full_devider);
         ButterKnife.bind(this,itemView);
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(),LineActivity.class);

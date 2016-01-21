@@ -41,6 +41,16 @@
             app:menu_colorPressed="?colorAccent"
             app:menu_fab_size="normal" >
             <com.github.clans.fab.FloatingActionButton
+                android:id="@+id/all"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/search_all"
+                app:fab_label="所有车系"
+                android:padding="8dp"
+                app:fab_colorNormal="?colorAccent"
+                app:fab_colorPressed="?colorAccent"
+                />
+            <com.github.clans.fab.FloatingActionButton
                 android:id="@+id/line"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

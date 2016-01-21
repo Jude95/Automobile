@@ -8,24 +8,32 @@ import com.jude.automobile.domain.entities.Search;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
+import butterknife.Bind;
 
 /**
  * Created by zhuchenxi on 16/1/19.
  */
 public class SearchViewHolder extends BaseViewHolder<Search> {
-    @InjectView(R.id.word)
+    @Bind(R.id.word)
     TextView word;
-    @InjectView(R.id.type)
+    @Bind(R.id.type)
     TextView type;
+
+    private Search data;
 
     public SearchViewHolder(ViewGroup parent) {
         super(parent, R.layout.item_search);
-        ButterKnife.inject(this,itemView);
+        ButterKnife.bind(this,itemView);
+        itemView.setOnClickListener(v->{
+            if (getContext() instanceof MainActivity){
+                ((MainActivity)getContext()).startSearch(data);
+            }
+        });
     }
 
     @Override
     public void setData(Search data) {
+        this.data = data;
         word.setText(data.getWord());
         switch (data.getType()){
             case Search.TYPE_LINE:type.setText("车系搜索");break;

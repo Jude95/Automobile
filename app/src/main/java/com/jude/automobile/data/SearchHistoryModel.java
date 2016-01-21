@@ -32,8 +32,14 @@ public class SearchHistoryModel extends AbsModel {
     }
 
     public void addSearch(Search search){
+        for (Search mSearch : new ArrayList<>(mSearches)) {
+            if (mSearch.equals(search)){
+                mSearches.remove(mSearch);
+            }
+        }
         mSearches.add(0,search);
         JFileManager.getInstance().getFolder(Dir.Object).writeObjectToFile(mSearches,FILE_SEARCH);
+
     }
 
     public ArrayList<Search> getSearchHistory(){
