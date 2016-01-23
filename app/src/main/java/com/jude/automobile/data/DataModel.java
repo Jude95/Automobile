@@ -2,7 +2,7 @@ package com.jude.automobile.data;
 
 import android.content.Context;
 
-import com.jude.automobile.data.di.DaggerDataModelComponet;
+import com.jude.automobile.data.di.DaggerDataModelComponent;
 import com.jude.automobile.data.server.ServiceAPI;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.domain.entities.Model;
@@ -32,7 +32,7 @@ public class DataModel extends AbsModel {
     @Override
     protected void onAppCreate(Context ctx) {
         super.onAppCreate(ctx);
-        DaggerDataModelComponet.builder().build().inject(this);
+        DaggerDataModelComponent.builder().build().inject(this);
     }
 
     public static DataModel getInstance() {

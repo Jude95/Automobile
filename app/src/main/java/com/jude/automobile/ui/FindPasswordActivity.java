@@ -19,6 +19,7 @@ import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.smssdk_mob.Callback;
 import com.jude.smssdk_mob.SMSManager;
 import com.jude.smssdk_mob.TimeListener;
+import com.jude.swipbackhelper.SwipeBackHelper;
 import com.jude.utils.JUtils;
 
 import butterknife.Bind;
@@ -47,6 +48,7 @@ public class FindPasswordActivity extends BeamBaseActivity implements TimeListen
         setContentView(R.layout.activity_find);
         ButterKnife.bind(this);
         SMSManager.getInstance().registerTimeListener(this);
+        SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
         btnCode.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -31,8 +31,8 @@
         android:layout_marginTop="16dp"
         android:gravity="center"
         android:textStyle="bold"
-        android:text="GC"
-        style="@style/Base.TextAppearance.AppCompat.Display4"/>
+        android:text="上云配"
+        style="@style/Base.TextAppearance.AppCompat.Display3"/>
 
     <android.support.design.widget.TextInputLayout
         android:id="@+id/tilNumber"
@@ -71,7 +71,9 @@
         android:layout_height="56dp"
         android:layout_margin="16dp"
         android:text="登录"
+        android:textColor="@android:color/white"
         android:foreground="?android:attr/selectableItemBackground"
+        android:backgroundTint="@color/blue"
         style="@style/Base.Widget.AppCompat.Button.Colored"/>
 
 

@@ -18,6 +18,7 @@ import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.smssdk_mob.Callback;
 import com.jude.smssdk_mob.SMSManager;
 import com.jude.smssdk_mob.TimeListener;
+import com.jude.swipbackhelper.SwipeBackHelper;
 import com.jude.utils.JUtils;
 
 import butterknife.Bind;
@@ -47,10 +48,9 @@ public class RegisterActivity extends BeamBaseActivity implements TimeListener {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ButterKnife.bind(this);
         SMSManager.getInstance().registerTimeListener(this);
-
+        SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
         btnCode.setOnClickListener(v -> sendCode());
         btnRegister.setOnClickListener(v -> register());
     }

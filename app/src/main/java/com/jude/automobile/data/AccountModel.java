@@ -26,24 +26,37 @@ public class AccountModel extends AbsModel{
     }
 
     private BehaviorSubject<Account> mAccountSubject = BehaviorSubject.create();
-    private Func1<Account,Boolean> mAccountFilter = account -> account!=null&&account.equals(mAccountSubject.getValue());
+    private Func1<Account,Boolean> mAccountFilter = account -> {
+        return !(account!=null&&account.equals(mAccountSubject.getValue()));
+    };
 
     @Override
     protected void onAppCreate(Context ctx) {
         super.onAppCreate(ctx);
-        Observable.just((Account) JFileManager.getInstance().getFolder(Dir.Object).readObjectFromFile(FILE_ACCOUNT))
-                .filter(mAccountFilter)
-                .subscribe(mAccountSubject);
+
         //账号持久化
         mAccountSubject.subscribe(account -> {
             if (account==null) JFileManager.getInstance().getFolder(Dir.Object).deleteChild(FILE_ACCOUNT);
             else JFileManager.getInstance().getFolder(Dir.Object).writeObjectToFile(account,FILE_ACCOUNT);
         });
         //token设置
-        mAccountSubject.filter(account->account==null).subscribe(account1 -> {
-            HeaderInterceptors.TOKEN = account1.getToken();
-            HeaderInterceptors.UID = account1.getId()+"";
+        mAccountSubject.subscribe(account1 -> {
+            if (account1!=null) {
+                HeaderInterceptors.TOKEN = account1.getToken();
+                HeaderInterceptors.UID = account1.getId() + "";
+            }else {
+                HeaderInterceptors.TOKEN = "";
+                HeaderInterceptors.UID = "";
+            }
         });
+        //初始化账户
+        Observable.just((Account) JFileManager.getInstance().getFolder(Dir.Object).readObjectFromFile(FILE_ACCOUNT))
+                .doOnNext(account -> mAccountSubject.onNext(account))
+                .subscribe();
+    }
+
+    public BehaviorSubject<Account> getAccountSubject(){
+        return mAccountSubject;
     }
 
     public boolean hasLogin(){
@@ -55,7 +68,10 @@ public class AccountModel extends AbsModel{
     }
 
     public Observable<Object> login(String name, String password){
-        return Observable.just(null).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+        return Observable.just(createVirtualAccount())
+                .doOnNext(account -> mAccountSubject.onNext(account))
+                .flatMap(account -> Observable.just(null))
+                .delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<Object> register(String number,String password,String name,String code){
@@ -68,5 +84,13 @@ public class AccountModel extends AbsModel{
 
     public Observable<Object> checkAccount(String number){
         return Observable.just(null).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public void logout(){
+        mAccountSubject.onNext(null);
+    }
+
+    public Account createVirtualAccount(){
+        return new Account(true,(int)Math.random(),"Jude","17006695458","fsdafasdgradsgdfasdga");
     }
 }

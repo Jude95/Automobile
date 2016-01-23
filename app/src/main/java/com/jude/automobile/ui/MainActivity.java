@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TextView;
 
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
@@ -22,9 +23,9 @@ import com.afollestad.materialdialogs.internal.MDButton;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.jude.automobile.R;
+import com.jude.automobile.data.AccountModel;
 import com.jude.automobile.data.DataModel;
 import com.jude.automobile.data.SearchHistoryModel;
-import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Search;
 import com.jude.automobile.domain.entities.Type;
@@ -37,8 +38,8 @@ import com.jude.swipbackhelper.SwipeBackHelper;
 
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 import rx.Observable;
 import rx.functions.Action1;
 
@@ -65,6 +66,8 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
     FloatingActionButton model;
     @Bind(R.id.all)
     FloatingActionButton all;
+    TextView name;
+    TextView number;
 
     private MainAdapter adapter;
 
@@ -83,7 +86,8 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         toggle.syncState();
 
         navView.setNavigationItemSelectedListener(this);
-
+        name = (TextView) navView.getHeaderView(0).findViewById(R.id.name);
+        number = (TextView) navView.getHeaderView(0).findViewById(R.id.number);
         recycler.setLayoutManager(new LinearLayoutManager(this));
         recycler.setAdapter(adapter = new MainAdapter(this));
 
@@ -104,6 +108,15 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
             startActivity(new Intent(this,LineAllActivity.class));
         });
         initHistory();
+        AccountModel.getInstance().getAccountSubject().subscribe(account -> {
+            if (account!=null){
+                name.setText(account.getName());
+                number.setText(account.getNumber());
+            }else {
+                name.setText("");
+                number.setText("");
+            }
+        });
     }
 
     private RecyclerArrayAdapter.ItemView mSearchHeader;
@@ -152,12 +165,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                     getExpansion().showProgressDialog("搜索中");
                     DataModel.getInstance().searchLine(input.toString())
                             .finallyDo(() -> getExpansion().dismissProgressDialog())
-                            .subscribe(new Action1<ArrayList<Line>>() {
-                                @Override
-                                public void call(ArrayList<Line> lines) {
-                                    addData(lines);
-                                }
-                            });
+                            .subscribe(this::addData);
                 })
                 .positiveText("搜索")
                 .negativeText("取消")
@@ -251,18 +259,16 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.information) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.manager) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        } else if (id == R.id.about){
+            startActivity(new Intent(this, AboutActivity.class));
+        } else if (id == R.id.logout){
+            AccountModel.getInstance().logout();
+            finish();
+            startActivity(new Intent(this,LoginActivity.class));
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.jude.automobile.R;
 import com.jude.automobile.data.AccountModel;
 import com.jude.beam.expansion.BeamBaseActivity;
+import com.jude.swipbackhelper.SwipeBackHelper;
 import com.jude.utils.JUtils;
 
 import butterknife.Bind;
@@ -37,8 +38,11 @@ public class LoginActivity extends BeamBaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
         login.setOnClickListener(v -> {
+            getExpansion().showProgressDialog("登录中");
             AccountModel.getInstance().login(tilNumber.getEditText().getText().toString(), tilPassword.getEditText().getText().toString())
+                    .finallyDo(()->getExpansion().dismissProgressDialog())
                     .doOnError(e -> JUtils.Toast("账号或密码错误"))
                     .subscribe(a ->{
                         Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();

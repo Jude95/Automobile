@@ -10,6 +10,14 @@ public class Account {
     boolean activity;
     String token;
 
+    public Account(boolean activity, int id, String name, String number, String token) {
+        this.activity = activity;
+        this.id = id;
+        this.name = name;
+        this.number = number;
+        this.token = token;
+    }
+
     public String getToken() {
         return token;
     }
@@ -53,7 +61,7 @@ public class Account {
     @Override
     public boolean equals(Object o) {
         if (o instanceof Account){
-            return number.equals(((Account) o).number)&&name.equals(((Account) o).name)&&activity==((Account) o).activity;
+            return id == ((Account) o).id&&number.equals(((Account) o).number)&&name.equals(((Account) o).name)&&activity==((Account) o).activity;
         }
         return false;
     }
