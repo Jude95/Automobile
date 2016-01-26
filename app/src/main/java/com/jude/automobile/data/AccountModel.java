@@ -2,16 +2,20 @@ package com.jude.automobile.data;
 
 import android.content.Context;
 
+import com.jude.automobile.data.di.DaggerAccountModelComponent;
 import com.jude.automobile.data.server.HeaderInterceptors;
+import com.jude.automobile.data.server.SchedulerTransform;
+import com.jude.automobile.data.server.ServiceAPI;
 import com.jude.automobile.domain.Dir;
+import com.jude.automobile.domain.body.Exist;
+import com.jude.automobile.domain.body.Info;
 import com.jude.automobile.domain.entities.Account;
 import com.jude.beam.model.AbsModel;
 import com.jude.utils.JFileManager;
 
-import java.util.concurrent.TimeUnit;
+import javax.inject.Inject;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
 
@@ -20,10 +24,13 @@ import rx.subjects.BehaviorSubject;
  */
 public class AccountModel extends AbsModel{
     private static final String FILE_ACCOUNT = "account";
+    @Inject
+    ServiceAPI mServiceAPI;
 
     public static AccountModel getInstance() {
         return getInstance(AccountModel.class);
     }
+
 
     private BehaviorSubject<Account> mAccountSubject = BehaviorSubject.create();
     private Func1<Account,Boolean> mAccountFilter = account -> {
@@ -33,7 +40,7 @@ public class AccountModel extends AbsModel{
     @Override
     protected void onAppCreate(Context ctx) {
         super.onAppCreate(ctx);
-
+        DaggerAccountModelComponent.builder().build().inject(this);
         //账号持久化
         mAccountSubject.subscribe(account -> {
             if (account==null) JFileManager.getInstance().getFolder(Dir.Object).deleteChild(FILE_ACCOUNT);
@@ -63,27 +70,22 @@ public class AccountModel extends AbsModel{
         return mAccountSubject.getValue()!=null;
     }
 
-    public boolean isActivity(){
-        return hasLogin()&&mAccountSubject.getValue().isActivity();
+    public Observable<Account> login(String account, String password){
+        return mServiceAPI.login(account,password)
+                .compose(new SchedulerTransform<>())
+                .doOnNext(account1 -> mAccountSubject.onNext(account1));
     }
 
-    public Observable<Object> login(String name, String password){
-        return Observable.just(createVirtualAccount())
-                .doOnNext(account -> mAccountSubject.onNext(account))
-                .flatMap(account -> Observable.just(null))
-                .delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
-    }
-
-    public Observable<Object> register(String number,String password,String name,String code){
-        return Observable.just(null).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    public Observable<Info> register(String number, String password, String name, String code){
+        return mServiceAPI.register(number, name,password, code).compose(new SchedulerTransform<>());
     }
 
     public Observable<Object> modifyPassword(String number,String password,String code){
-        return Observable.just(null).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+        return mServiceAPI.modifyPassword(number, password, code).compose(new SchedulerTransform<>());
     }
 
-    public Observable<Object> checkAccount(String number){
-        return Observable.just(null).delay(1, TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+    public Observable<Boolean> checkAccount(String number){
+        return mServiceAPI.checkAccountExist(number).compose(new SchedulerTransform<>()).map(Exist::isExist);
     }
 
     public void logout(){
@@ -91,6 +93,6 @@ public class AccountModel extends AbsModel{
     }
 
     public Account createVirtualAccount(){
-        return new Account(true,(int)Math.random(),"Jude","17006695458","fsdafasdgradsgdfasdga");
+        return new Account((int)Math.random(),"Jude","17006695458","fsdafasdgradsgdfasdga");
     }
 }

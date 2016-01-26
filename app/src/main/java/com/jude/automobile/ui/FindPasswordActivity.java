@@ -15,8 +15,9 @@ import android.widget.Toast;
 
 import com.jude.automobile.R;
 import com.jude.automobile.data.AccountModel;
+import com.jude.automobile.data.server.ErrorTransform;
+import com.jude.automobile.utils.ProgressDialogTransform;
 import com.jude.beam.expansion.BeamBaseActivity;
-import com.jude.smssdk_mob.Callback;
 import com.jude.smssdk_mob.SMSManager;
 import com.jude.smssdk_mob.TimeListener;
 import com.jude.swipbackhelper.SwipeBackHelper;
@@ -71,11 +72,13 @@ public class FindPasswordActivity extends BeamBaseActivity implements TimeListen
             Toast.makeText(this, "请输入正确手机号", Toast.LENGTH_SHORT).show();
             return;
         }
-        getExpansion().showProgressDialog("发送中");
         AccountModel.getInstance().checkAccount(tilNumber.getEditText().getText().toString())
-                .finallyDo(()->getExpansion().dismissProgressDialog())
-                .doOnError(e-> JUtils.Toast("手机号已经注册"))
-                .subscribe(a-> SMSManager.getInstance().sendMessage(this, "86",tilNumber.getEditText().getText().toString()));
+                .compose(new ProgressDialogTransform<>(this,"发送中"))
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.NONE))
+                .subscribe(a-> {
+                    if (!a) JUtils.Toast("手机号还没注册");
+                    else SMSManager.getInstance().sendMessage(this, "86",tilNumber.getEditText().getText().toString());
+                });
 
     }
 
@@ -95,31 +98,20 @@ public class FindPasswordActivity extends BeamBaseActivity implements TimeListen
             return;
         }
 
-        getExpansion().showProgressDialog("注册中");
-        SMSManager.getInstance().verifyCode(this, "86", tilNumber.getEditText().getText().toString(), tilCode.getEditText().getText().toString(), new Callback() {
-            @Override
-            public void success() {
-                AccountModel.getInstance().modifyPassword(
-                        tilNumber.getEditText().getText().toString(),
-                        tilPassword.getEditText().getText().toString(),
-                        tilCode.getEditText().getText().toString())
-                        .finallyDo(() -> getExpansion().dismissProgressDialog())
-                        .doOnError(e -> JUtils.Log("注册失败"))
-                        .subscribe(a -> {
-                            Intent i = new Intent();
-                            i.putExtra("number", tilNumber.getEditText().getText().toString());
-                            i.putExtra("password", tilPassword.getEditText().getText().toString());
-                            setResult(RESULT_OK, i);
-                            Toast.makeText(FindPasswordActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
-                            finish();
-                        });
-            }
-
-            @Override
-            public void error(Throwable error) {
-                Toast.makeText(FindPasswordActivity.this, "验证码错误", Toast.LENGTH_SHORT).show();
-            }
-        });
+        AccountModel.getInstance().modifyPassword(
+                tilNumber.getEditText().getText().toString(),
+                tilPassword.getEditText().getText().toString(),
+                tilCode.getEditText().getText().toString())
+                .compose(new ProgressDialogTransform<>(this,"修改中"))
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
+                .subscribe(a -> {
+                    Intent i = new Intent();
+                    i.putExtra("number", tilNumber.getEditText().getText().toString());
+                    i.putExtra("password", tilPassword.getEditText().getText().toString());
+                    setResult(RESULT_OK, i);
+                    Toast.makeText(FindPasswordActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                });
     }
 
     @Override

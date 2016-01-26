@@ -111,7 +111,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         AccountModel.getInstance().getAccountSubject().subscribe(account -> {
             if (account!=null){
                 name.setText(account.getName());
-                number.setText(account.getNumber());
+                number.setText(account.getAccount());
             }else {
                 name.setText("");
                 number.setText("");

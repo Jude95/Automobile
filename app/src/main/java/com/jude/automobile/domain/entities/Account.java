@@ -1,20 +1,25 @@
 package com.jude.automobile.domain.entities;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by zhuchenxi on 16/1/21.
  */
-public class Account {
+public class Account implements Serializable{
     int id;
-    String number;
+    String account;
     String name;
-    boolean activity;
+    @SerializedName("service_begin")
+    long serviceBegin;
     String token;
+    boolean manager;
 
-    public Account(boolean activity, int id, String name, String number, String token) {
-        this.activity = activity;
+    public Account(int id, String name, String account, String token) {
         this.id = id;
         this.name = name;
-        this.number = number;
+        this.account = account;
         this.token = token;
     }
 
@@ -24,14 +29,6 @@ public class Account {
 
     public void setToken(String token) {
         this.token = token;
-    }
-
-    public boolean isActivity() {
-        return activity;
-    }
-
-    public void setActivity(boolean activity) {
-        this.activity = activity;
     }
 
     public int getId() {
@@ -50,18 +47,25 @@ public class Account {
         this.name = name;
     }
 
-    public String getNumber() {
-        return number;
+    public String getAccount() {
+        return account;
     }
 
-    public void setNumber(String number) {
-        this.number = number;
+    public void setAccount(String account) {
+        this.account = account;
+    }
+    public boolean isManager() {
+        return manager;
+    }
+
+    public void setManager(boolean manager) {
+        this.manager = manager;
     }
 
     @Override
     public boolean equals(Object o) {
         if (o instanceof Account){
-            return id == ((Account) o).id&&number.equals(((Account) o).number)&&name.equals(((Account) o).name)&&activity==((Account) o).activity;
+            return id == ((Account) o).id&& account.equals(((Account) o).account)&&name.equals(((Account) o).name)&&serviceBegin==((Account) o).serviceBegin&&manager == ((Account) o).isManager();
         }
         return false;
     }

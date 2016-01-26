@@ -9,9 +9,10 @@ import android.widget.Toast;
 
 import com.jude.automobile.R;
 import com.jude.automobile.data.AccountModel;
+import com.jude.automobile.data.server.ErrorTransform;
+import com.jude.automobile.utils.ProgressDialogTransform;
 import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.swipbackhelper.SwipeBackHelper;
-import com.jude.utils.JUtils;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -39,17 +40,14 @@ public class LoginActivity extends BeamBaseActivity {
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
-        login.setOnClickListener(v -> {
-            getExpansion().showProgressDialog("登录中");
-            AccountModel.getInstance().login(tilNumber.getEditText().getText().toString(), tilPassword.getEditText().getText().toString())
-                    .finallyDo(()->getExpansion().dismissProgressDialog())
-                    .doOnError(e -> JUtils.Toast("账号或密码错误"))
-                    .subscribe(a ->{
-                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
-                        startActivity(new Intent(this,MainActivity.class));
-                        finish();
-                    });
-        });
+        login.setOnClickListener(v -> AccountModel.getInstance().login(tilNumber.getEditText().getText().toString(), tilPassword.getEditText().getText().toString())
+                .compose(new ProgressDialogTransform<>(this,"登录中"))
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
+                .subscribe(a ->{
+                    Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                    startActivity(new Intent(this,MainActivity.class));
+                    finish();
+                }));
         register.setOnClickListener(v -> startActivityForResult(new Intent(LoginActivity.this, RegisterActivity.class),REQUEST_LOGIN));
         find.setOnClickListener(v -> startActivityForResult(new Intent(LoginActivity.this, FindPasswordActivity.class),REQUEST_LOGIN));
     }

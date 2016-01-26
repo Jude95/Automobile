@@ -17,6 +17,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <meta-data
+            android:name="SMS_MOB_APPKEY"
+            android:value="${SMS_MOB_APPKEY}"
+            />
+
+        <meta-data
+            android:name="SMS_MOB_APPSECRET"
+            android:value="${SMS_MOB_APPSECRET}"
+            />
+
         <!-- 友盟 -->
         <meta-data
             android:name="UMENG_APPKEY"
