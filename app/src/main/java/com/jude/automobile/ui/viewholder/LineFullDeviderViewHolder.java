@@ -1,4 +1,4 @@
-package com.jude.automobile.ui;
+package com.jude.automobile.ui.viewholder;
 
 import android.content.Intent;
 import android.view.ViewGroup;
@@ -8,6 +8,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.jude.automobile.R;
 import com.jude.automobile.domain.entities.Line;
+import com.jude.automobile.ui.LineActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.ButterKnife;

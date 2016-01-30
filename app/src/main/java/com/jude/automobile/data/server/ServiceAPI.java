@@ -5,8 +5,11 @@ import com.jude.automobile.domain.body.Exist;
 import com.jude.automobile.domain.body.Info;
 import com.jude.automobile.domain.entities.Account;
 
+import java.util.List;
+
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
+import retrofit2.http.GET;
 import retrofit2.http.POST;
 import rx.Observable;
 
@@ -40,4 +43,15 @@ public interface ServiceAPI {
             @Field("account") String account,
             @Field("password") String password,
             @Field("code") String code);
+
+    @GET("admin_user_list.php")
+    Observable<List<Account>> getUserList();
+
+    @POST("admin_authorization.php")
+    @FormUrlEncoded
+    Observable<Info> authorization(
+            @Field("userId") int userId);
+
+    @GET("refresh_account.php")
+    Observable<Account> refreshAccount();
 }

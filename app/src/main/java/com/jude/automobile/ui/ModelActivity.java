@@ -10,6 +10,7 @@ import com.jude.automobile.R;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Part;
 import com.jude.automobile.presenter.ModelPresenter;
+import com.jude.automobile.ui.viewholder.PartViewHolder;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.list.BeamListActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;

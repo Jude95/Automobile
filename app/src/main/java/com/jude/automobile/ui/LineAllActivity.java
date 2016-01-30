@@ -13,6 +13,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.jude.automobile.R;
 import com.jude.automobile.presenter.LineAllPresenter;
+import com.jude.automobile.ui.viewholder.LineFullDeviderViewHolder;
 import com.jude.automobile.utils.LinearLayoutManagerWithSmoothScroller;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.list.BeamListActivity;

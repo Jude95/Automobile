@@ -3,6 +3,7 @@ package com.jude.automobile.data;
 import android.content.Context;
 
 import com.jude.automobile.data.di.DaggerAccountModelComponent;
+import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.data.server.HeaderInterceptors;
 import com.jude.automobile.data.server.SchedulerTransform;
 import com.jude.automobile.data.server.ServiceAPI;
@@ -12,9 +13,11 @@ import com.jude.automobile.domain.body.Info;
 import com.jude.automobile.domain.entities.Account;
 import com.jude.beam.model.AbsModel;
 import com.jude.utils.JFileManager;
+import com.jude.utils.JUtils;
 
 import javax.inject.Inject;
 
+import cn.com.caoyue.util.time.Time;
 import rx.Observable;
 import rx.functions.Func1;
 import rx.subjects.BehaviorSubject;
@@ -55,6 +58,7 @@ public class AccountModel extends AbsModel{
                 HeaderInterceptors.TOKEN = "";
                 HeaderInterceptors.UID = "";
             }
+            JUtils.Log("Set Token:"+HeaderInterceptors.TOKEN);
         });
         //初始化账户
         Observable.just((Account) JFileManager.getInstance().getFolder(Dir.Object).readObjectFromFile(FILE_ACCOUNT))
@@ -68,6 +72,18 @@ public class AccountModel extends AbsModel{
 
     public boolean hasLogin(){
         return mAccountSubject.getValue()!=null;
+    }
+
+    public boolean isActivity(){
+        if (hasLogin()&&getAccountSubject().getValue().getServiceBegin()>0){
+            return new Time(getAccountSubject().getValue().getServiceBegin()).add(Time.Field.year,1).getTimeStamp()>System.currentTimeMillis()/1000;
+        }else {
+            return false;
+        }
+    }
+
+    public boolean isManager(){
+        return hasLogin()&&getAccountSubject().getValue().isManager();
     }
 
     public Observable<Account> login(String account, String password){
@@ -88,11 +104,16 @@ public class AccountModel extends AbsModel{
         return mServiceAPI.checkAccountExist(number).compose(new SchedulerTransform<>()).map(Exist::isExist);
     }
 
+    public void refreshAccount(){
+        mServiceAPI.refreshAccount()
+                .compose(new SchedulerTransform<>())
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.NONE))
+                .filter(mAccountFilter)
+                .subscribe(account -> mAccountSubject.onNext(account));
+    }
+
     public void logout(){
         mAccountSubject.onNext(null);
     }
 
-    public Account createVirtualAccount(){
-        return new Account((int)Math.random(),"Jude","17006695458","fsdafasdgradsgdfasdga");
-    }
 }

@@ -37,6 +37,7 @@
             android:value="
             com.jude.automobile.data.SearchHistoryModel,
             com.jude.automobile.data.AccountModel,
+            com.jude.automobile.data.ManagerModel,
             com.jude.automobile.data.DataModel"/>
 
         <activity
@@ -70,6 +71,12 @@
             android:label="找回密码"/>
         <activity android:name=".ui.AboutActivity"
             android:label="关于"/>
+        <activity android:name=".ui.TimeActivity"
+            android:label="授权信息"/>
+        <activity android:name=".ui.ManagerActivity"
+            android:label="管理后台"/>
+        <activity android:name=".ui.UserListActivity"
+            android:label="用户列表"/>
     </application>
 
 </manifest>

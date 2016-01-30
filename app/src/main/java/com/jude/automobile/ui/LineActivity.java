@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import com.jude.automobile.R;
 import com.jude.automobile.domain.entities.Type;
 import com.jude.automobile.presenter.LinePresenter;
+import com.jude.automobile.ui.viewholder.TypeViewHolder;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.list.BeamListActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;

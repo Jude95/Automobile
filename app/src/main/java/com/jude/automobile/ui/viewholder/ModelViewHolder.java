@@ -1,4 +1,4 @@
-package com.jude.automobile.ui;
+package com.jude.automobile.ui.viewholder;
 
 import android.content.Intent;
 import android.view.ViewGroup;
@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.jude.automobile.R;
 import com.jude.automobile.domain.entities.Model;
+import com.jude.automobile.ui.ModelActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.ButterKnife;

@@ -1,4 +1,4 @@
-package com.jude.automobile.ui;
+package com.jude.automobile.ui.viewholder;
 
 import android.view.ViewGroup;
 import android.widget.ImageView;

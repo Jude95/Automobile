@@ -9,7 +9,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -50,18 +49,8 @@ public class FindPasswordActivity extends BeamBaseActivity implements TimeListen
         ButterKnife.bind(this);
         SMSManager.getInstance().registerTimeListener(this);
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
-        btnCode.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                sendCode();
-            }
-        });
-        btnModify.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                modify();
-            }
-        });
+        btnCode.setOnClickListener(v -> sendCode());
+        btnModify.setOnClickListener(v -> modify());
     }
 
     public void sendCode() {

@@ -1,10 +1,11 @@
-package com.jude.automobile.ui;
+package com.jude.automobile.ui.viewholder;
 
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jude.automobile.R;
 import com.jude.automobile.domain.entities.Search;
+import com.jude.automobile.ui.MainActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.ButterKnife;

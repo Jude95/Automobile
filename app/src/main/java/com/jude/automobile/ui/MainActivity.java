@@ -35,6 +35,7 @@ import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.easyrecyclerview.EasyRecyclerView;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.jude.swipbackhelper.SwipeBackHelper;
+import com.jude.utils.JUtils;
 
 import java.util.ArrayList;
 
@@ -78,6 +79,10 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
+        if (!AccountModel.getInstance().isActivity()){
+            startActivity(new Intent(this, TimeActivity.class));
+        }
+
         recycler.setEmptyView(R.layout.view_empty_main);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -117,6 +122,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                 number.setText("");
             }
         });
+        AccountModel.getInstance().refreshAccount();
     }
 
     private RecyclerArrayAdapter.ItemView mSearchHeader;
@@ -220,7 +226,6 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         });
     }
 
-
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -260,9 +265,12 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         int id = item.getItemId();
 
         if (id == R.id.information) {
-            // Handle the camera action
+            startActivity(new Intent(this, TimeActivity.class));
         } else if (id == R.id.manager) {
-
+            if (AccountModel.getInstance().isManager())
+                startActivity(new Intent(this, ManagerActivity.class));
+            else
+                JUtils.Toast("您不是管理猿哟");
         } else if (id == R.id.about){
             startActivity(new Intent(this, AboutActivity.class));
         } else if (id == R.id.logout){

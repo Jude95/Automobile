@@ -7,6 +7,10 @@ import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Search;
 import com.jude.automobile.domain.entities.Type;
+import com.jude.automobile.ui.viewholder.LineViewHolder;
+import com.jude.automobile.ui.viewholder.ModelViewHolder;
+import com.jude.automobile.ui.viewholder.SearchViewHolder;
+import com.jude.automobile.ui.viewholder.TypeViewHolder;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 

@@ -62,6 +62,14 @@ public class Account implements Serializable{
         this.manager = manager;
     }
 
+    public long getServiceBegin() {
+        return serviceBegin;
+    }
+
+    public void setServiceBegin(long serviceBegin) {
+        this.serviceBegin = serviceBegin;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (o instanceof Account){
