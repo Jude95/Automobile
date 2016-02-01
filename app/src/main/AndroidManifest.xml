@@ -38,6 +38,7 @@
             com.jude.automobile.data.SearchHistoryModel,
             com.jude.automobile.data.AccountModel,
             com.jude.automobile.data.ManagerModel,
+            com.jude.automobile.data.ImageModel,
             com.jude.automobile.data.DataModel"/>
 
         <activity
@@ -77,6 +78,11 @@
             android:label="管理后台"/>
         <activity android:name=".ui.UserListActivity"
             android:label="用户列表"/>
+        <activity android:name=".ui.LineAddActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
+            android:label="添加车系"/>
+        <activity android:name=".ui.TypeAddActivity"
+            android:label="添加车型"/>
     </application>
 
 </manifest>

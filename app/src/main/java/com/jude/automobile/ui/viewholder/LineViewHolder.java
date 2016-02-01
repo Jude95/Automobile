@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jude.automobile.R;
+import com.jude.automobile.data.ImageModel;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.ui.LineActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
@@ -31,8 +32,7 @@ public class LineViewHolder extends BaseViewHolder<Line> {
         ButterKnife.bind(this,itemView);
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(),LineActivity.class);
-            i.putExtra("id",data.getId());
-            i.putExtra("name",data.getName());
+            i.putExtra("data",data);
             getContext().startActivity(i);
         });
     }
@@ -41,6 +41,6 @@ public class LineViewHolder extends BaseViewHolder<Line> {
     public void setData(Line data) {
         this.data = data;
         name.setText(data.getName());
-        Glide.with(getContext()).load(data.getAvatar()).bitmapTransform(new CropCircleTransformation(getContext())).into(avatar);
+        Glide.with(getContext()).load(ImageModel.getSmallImage(data.getAvatar())).bitmapTransform(new CropCircleTransformation(getContext())).into(avatar);
     }
 }

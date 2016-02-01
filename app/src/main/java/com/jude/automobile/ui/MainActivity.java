@@ -13,22 +13,16 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
-import com.afollestad.materialdialogs.internal.MDButton;
 import com.github.clans.fab.FloatingActionButton;
 import com.github.clans.fab.FloatingActionMenu;
 import com.jude.automobile.R;
 import com.jude.automobile.data.AccountModel;
 import com.jude.automobile.data.DataModel;
 import com.jude.automobile.data.SearchHistoryModel;
-import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Search;
-import com.jude.automobile.domain.entities.Type;
 import com.jude.automobile.presenter.MainPresenter;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.BeamBaseActivity;
@@ -37,17 +31,16 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.jude.utils.JUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
-import rx.Observable;
-import rx.functions.Action1;
 
 @RequiresPresenter(MainPresenter.class)
 public class MainActivity extends BeamBaseActivity<MainPresenter>
         implements NavigationView.OnNavigationItemSelectedListener {
 
+    private boolean isHistoryModel = false;
 
     @Bind(R.id.recycler)
     EasyRecyclerView recycler;
@@ -128,6 +121,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
     private RecyclerArrayAdapter.ItemView mSearchHeader;
 
     private void initHistory() {
+        isHistoryModel = true;
         mSearchHeader = new RecyclerArrayAdapter.ItemView() {
             @Override
             public View onCreateView(ViewGroup parent) {
@@ -144,11 +138,27 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
 
             }
         };
+        adapter.clear();
         adapter.addHeader(mSearchHeader);
         adapter.addAll(SearchHistoryModel.getInstance().getSearchHistory());
     }
 
-    public void addData(ArrayList arrayList) {
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
+        } else {
+            if (!isHistoryModel) initHistory();
+            else super.onBackPressed();
+        }
+    }
+
+    public void addData(List arrayList) {
+        isHistoryModel = false;
+        if (arrayList == null || arrayList.size()==0){
+            JUtils.Toast("没有找到数据哟");
+        }
         adapter.clear();
         if (mSearchHeader != null) {
             adapter.removeHeader(mSearchHeader);
@@ -185,12 +195,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                     getExpansion().showProgressDialog("搜索中");
                     DataModel.getInstance().searchType(input.toString())
                             .finallyDo(() -> getExpansion().dismissProgressDialog())
-                            .subscribe(new Action1<ArrayList<Type>>() {
-                                @Override
-                                public void call(ArrayList<Type> types) {
-                                    addData(types);
-                                }
-                            });
+                            .subscribe(this::addData);
                 })
                 .positiveText("搜索")
                 .negativeText("取消")
@@ -198,43 +203,49 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
     }
 
     private void createModelSearchDialog() {
-        MaterialDialog dialog = new MaterialDialog.Builder(this)
+        new MaterialDialog.Builder(this)
                 .title("搜索车款")
-                .customView(R.layout.dialog_model_search, false)
-                .negativeText("取消")
+                .input("车款名字／发动机型号", "", (dialog, input) -> {
+                    getExpansion().showProgressDialog("搜索中");
+                    DataModel.getInstance().searchModel(input.toString())
+                            .finallyDo(() -> getExpansion().dismissProgressDialog())
+                            .subscribe(this::addData);
+                })
                 .positiveText("搜索")
+                .negativeText("取消")
                 .show();
-        View view = dialog.getCustomView();
-        MDButton positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
-        EditText input = (EditText) view.findViewById(R.id.input);
-        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.search_type);
-        positiveAction.setOnClickListener(v -> {
-            getExpansion().showProgressDialog("搜索中");
-            Observable<ArrayList<Model>> observable = null;
-            switch (radioGroup.getCheckedRadioButtonId()) {
-                case R.id.search_name:
-                    observable = DataModel.getInstance().searchModelByName(input.getText().toString());
-                    break;
-                case R.id.search_engine:
-                    observable = DataModel.getInstance().searchModelByEngine(input.getText().toString());
-                    break;
-            }
-            if (observable != null) observable
-                    .finallyDo(() -> getExpansion().dismissProgressDialog())
-                    .subscribe(this::addData);
-            dialog.dismiss();
-        });
     }
 
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
+//    private void createCustomModelSearchDialog() {
+//        MaterialDialog dialog = new MaterialDialog.Builder(this)
+//                .title("搜索车款")
+//                .customView(R.layout.dialog_model_search, false)
+//                .negativeText("取消")
+//                .positiveText("搜索")
+//                .show();
+//        View view = dialog.getCustomView();
+//        MDButton positiveAction = dialog.getActionButton(DialogAction.POSITIVE);
+//        EditText input = (EditText) view.findViewById(R.id.input);
+//        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.search_type);
+//        positiveAction.setOnClickListener(v -> {
+//            getExpansion().showProgressDialog("搜索中");
+//            Observable<ArrayList<Model>> observable = null;
+//            switch (radioGroup.getCheckedRadioButtonId()) {
+//                case R.id.search_name:
+//                    observable = DataModel.getInstance().searchModelByName(input.getText().toString());
+//                    break;
+//                case R.id.search_engine:
+//                    observable = DataModel.getInstance().searchModelByEngine(input.getText().toString());
+//                    break;
+//            }
+//            if (observable != null) observable
+//                    .finallyDo(() -> getExpansion().dismissProgressDialog())
+//                    .subscribe(this::addData);
+//            dialog.dismiss();
+//        });
+//    }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

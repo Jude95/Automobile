@@ -1,6 +1,9 @@
 package com.jude.automobile.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.jude.automobile.R;
@@ -9,6 +12,7 @@ import com.jude.automobile.presenter.TypePresenter;
 import com.jude.automobile.ui.viewholder.ModelViewHolder;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.list.BeamListActivity;
+import com.jude.beam.expansion.list.ListConfig;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 /**
@@ -20,7 +24,12 @@ public class TypeActivity extends BeamListActivity<TypePresenter,Model> {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setTitle(getIntent().getStringExtra("name")+"车型");
+        setTitle(getPresenter().data.getName()+"车型");
+    }
+
+    @Override
+    protected ListConfig getConfig() {
+        return super.getConfig();
     }
 
     @Override
@@ -32,4 +41,31 @@ public class TypeActivity extends BeamListActivity<TypePresenter,Model> {
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new ModelViewHolder(parent);
     }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_add,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.edit){
+            Intent i = new Intent(this,TypeAddActivity.class);
+            i.putExtra("data",getPresenter().data);
+            startActivityForResult(i,0);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK){
+            getListView().setRefreshing(true,true);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 }

@@ -30,6 +30,8 @@ public class APP extends Application {
             }
         });
         Beam.setActivityLifeCycleDelegateProvider(ActivityDelegate::new);
-        ListConfig.setDefaultListConfig(new ListConfig().setPaddingNavigationBarAble(true));
+        ListConfig.setDefaultListConfig(new ListConfig()
+                .setStartWithProgress(false)
+                .setPaddingNavigationBarAble(true));
     }
 }

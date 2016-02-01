@@ -1,6 +1,7 @@
 package com.jude.automobile.presenter;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.jude.automobile.data.DataModel;
@@ -31,24 +32,25 @@ public class LineAllPresenter extends BeamListActivityPresenter<LineAllActivity,
     public void onRefresh() {
         DataModel.getInstance().getAllLine().flatMap(lines -> {
             ArrayList<Object> arrayList = new ArrayList<>();
-            Collections.sort(lines, (lhs, rhs) -> PinyinHelper.getShortPinyin(lhs.getName()).compareTo(PinyinHelper.getShortPinyin(rhs.getName())));
+            Collections.sort(lines, (lhs, rhs) -> PinyinHelper.getShortPinyin(lhs.getName()).toLowerCase().compareTo(PinyinHelper.getShortPinyin(rhs.getName()).toLowerCase()));
             char temp = ' ';
             for (Line line : lines) {
-                char cur = PinyinHelper.getShortPinyin(line.getName()).charAt(0);
-                if (cur != temp){
-                    temp = cur;
-                    positionMap.put(Character.toUpperCase(temp),arrayList.size());
-                    arrayList.add(Character.toUpperCase(temp));
+                if (!TextUtils.isEmpty(line.getName())){
+                    char cur = PinyinHelper.getShortPinyin(line.getName()).charAt(0);
+                    if (cur != temp){
+                        temp = cur;
+                        positionMap.put(Character.toUpperCase(temp),arrayList.size());
+                        arrayList.add(Character.toUpperCase(temp));
+                    }
+                    arrayList.add(line);
                 }
-                arrayList.add(line);
             }
             return Observable.just(arrayList);
         })
-        .subscribe(getRefreshSubscriber());
+        .unsafeSubscribe(getRefreshSubscriber());
     }
 
     public int getPositionByChar(char number){
-        JUtils.Log(positionMap+"");
         if (positionMap.size()>0){
             char cur = number;
             while (cur<='Z'){

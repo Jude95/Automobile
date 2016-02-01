@@ -6,6 +6,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jude.automobile.R;
+import com.jude.automobile.data.ImageModel;
 import com.jude.automobile.domain.entities.Part;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.tagview.TAGView;
@@ -39,7 +40,7 @@ public class PartViewHolder extends BaseViewHolder<Part> {
         type.setText(data.getType());
         note.setText(data.getNote());
         Glide.with(getContext())
-                .load(data.getAvatar())
+                .load(ImageModel.getSmallImage(data.getAvatar()))
                 .bitmapTransform(new CropCircleTransformation(getContext()))
                 .into(avatar);
     }

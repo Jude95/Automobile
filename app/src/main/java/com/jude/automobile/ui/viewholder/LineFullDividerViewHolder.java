@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.jude.automobile.R;
+import com.jude.automobile.data.ImageModel;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.ui.LineActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
@@ -18,7 +19,7 @@ import jp.wasabeef.glide.transformations.CropCircleTransformation;
 /**
  * Created by zhuchenxi on 16/1/18.
  */
-public class LineFullDeviderViewHolder extends BaseViewHolder<Line> {
+public class LineFullDividerViewHolder extends BaseViewHolder<Line> {
     @Bind(R.id.avatar)
     ImageView avatar;
     @Bind(R.id.name)
@@ -26,13 +27,12 @@ public class LineFullDeviderViewHolder extends BaseViewHolder<Line> {
 
     private Line data;
 
-    public LineFullDeviderViewHolder(ViewGroup parent) {
+    public LineFullDividerViewHolder(ViewGroup parent) {
         super(parent, R.layout.item_line_full_devider);
         ButterKnife.bind(this,itemView);
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(),LineActivity.class);
-            i.putExtra("id",data.getId());
-            i.putExtra("name",data.getName());
+            i.putExtra("data",data);
             getContext().startActivity(i);
         });
     }
@@ -41,6 +41,6 @@ public class LineFullDeviderViewHolder extends BaseViewHolder<Line> {
     public void setData(Line data) {
         this.data = data;
         name.setText(data.getName());
-        Glide.with(getContext()).load(data.getAvatar()).bitmapTransform(new CropCircleTransformation(getContext())).into(avatar);
+        Glide.with(getContext()).load(ImageModel.getSmallImage(data.getAvatar())).bitmapTransform(new CropCircleTransformation(getContext())).into(avatar);
     }
 }

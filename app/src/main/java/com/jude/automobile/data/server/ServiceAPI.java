@@ -3,7 +3,11 @@ package com.jude.automobile.data.server;
 
 import com.jude.automobile.domain.body.Exist;
 import com.jude.automobile.domain.body.Info;
+import com.jude.automobile.domain.body.Token;
 import com.jude.automobile.domain.entities.Account;
+import com.jude.automobile.domain.entities.Line;
+import com.jude.automobile.domain.entities.Model;
+import com.jude.automobile.domain.entities.Type;
 
 import java.util.List;
 
@@ -54,4 +58,78 @@ public interface ServiceAPI {
 
     @GET("refresh_account.php")
     Observable<Account> refreshAccount();
+
+    @GET("line_list.php")
+    Observable<List<Line>> getLineList();
+
+    @POST("type_list.php")
+    @FormUrlEncoded
+    Observable<List<Type>> getTypeList(
+            @Field("id")int id
+    );
+
+    @POST("model_list.php")
+    @FormUrlEncoded
+    Observable<List<Model>> getModelList(
+            @Field("id")int id
+    );
+
+    @POST("search_line.php")
+    @FormUrlEncoded
+    Observable<List<Line>> searchLine(
+            @Field("word")String word
+    );
+
+    @POST("search_type.php")
+    @FormUrlEncoded
+    Observable<List<Type>> searchType(
+            @Field("word")String word
+    );
+
+    @POST("search_model.php")
+    @FormUrlEncoded
+    Observable<List<Model>> searchModel(
+            @Field("word")String word
+    );
+
+    @GET("qiniu.php")
+    Observable<Token> getQiniuToken();
+
+    @POST("line_add.php")
+    @FormUrlEncoded
+    Observable<Info> addLine(
+            @Field("id")int id,
+            @Field("avatar")String avatar,
+            @Field("name")String name,
+            @Field("word")String word
+    );
+
+    @POST("type_add.php")
+    @FormUrlEncoded
+    Observable<Info> addType(
+            @Field("id")int id,
+            @Field("line_id")int line_id,
+            @Field("name")String name,
+            @Field("word")String word
+    );
+
+    @POST("model_add.php")
+    @FormUrlEncoded
+    Observable<Info> addModel(
+            @Field("id")int id,
+            @Field("type_id")int line_id,
+            @Field("name")String name,
+            @Field("word")String word,
+            @Field("power")String power,
+            @Field("displacement")String displacement,
+            @Field("cylinders")String cylinders,
+            @Field("structure")String structure,
+            @Field("drive")String drive,
+            @Field("fuel")String fuel,
+            @Field("fuel_feed")String fuel_feed,
+            @Field("tecdoc")String tecdoc,
+            @Field("engine_code")String engine_code,
+            @Field("engine")String engine,
+            @Field("time")String time,
+            @Field("displacement_tech")String displacement_tech);
 }

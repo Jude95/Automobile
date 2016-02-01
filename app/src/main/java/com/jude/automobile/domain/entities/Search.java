@@ -53,7 +53,7 @@ public class Search implements Serializable{
     @Override
     public boolean equals(Object o) {
         if (o instanceof Search){
-            return ((Search) o).type == type&&word.equals(word);
+            return ((Search) o).type == type&&((Search) o).word.equals(word);
         }
         return false;
     }

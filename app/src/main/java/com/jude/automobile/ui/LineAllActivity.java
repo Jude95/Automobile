@@ -1,9 +1,12 @@
 package com.jude.automobile.ui;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -13,10 +16,11 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.jude.automobile.R;
 import com.jude.automobile.presenter.LineAllPresenter;
-import com.jude.automobile.ui.viewholder.LineFullDeviderViewHolder;
+import com.jude.automobile.ui.viewholder.LineFullDividerViewHolder;
 import com.jude.automobile.utils.LinearLayoutManagerWithSmoothScroller;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.list.BeamListActivity;
+import com.jude.beam.expansion.list.ListConfig;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.exgridview.ExGridView;
 
@@ -29,7 +33,6 @@ import butterknife.Bind;
 @RequiresPresenter(LineAllPresenter.class)
 public class LineAllActivity extends BeamListActivity<LineAllPresenter, Object> {
 
-
     @Bind(R.id.navigation)
     FloatingActionButton navigation;
 
@@ -41,6 +44,11 @@ public class LineAllActivity extends BeamListActivity<LineAllPresenter, Object> 
         ButterKnife.bind(this);
         getListView().setLayoutManager(new LinearLayoutManagerWithSmoothScroller(this));
         navigation.setOnClickListener(v->createNavigationDialog());
+    }
+
+    @Override
+    protected ListConfig getConfig() {
+        return super.getConfig().setRefreshAble(true);
     }
 
     @Override
@@ -117,7 +125,7 @@ public class LineAllActivity extends BeamListActivity<LineAllPresenter, Object> 
             case 0:
                 return new CharViewHolder(parent);
             case 1:
-                return new LineFullDeviderViewHolder(parent);
+                return new LineFullDividerViewHolder(parent);
         }
         return null;
     }
@@ -137,5 +145,26 @@ public class LineAllActivity extends BeamListActivity<LineAllPresenter, Object> 
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.add,menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.add){
+            startActivityForResult(new Intent(this,LineAddActivity.class),0);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK){
+            getListView().setRefreshing(true,true);
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
 }

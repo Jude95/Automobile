@@ -1,11 +1,16 @@
 package com.jude.automobile.domain.entities;
 
+import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
+
 /**
  * Created by zhuchenxi on 16/1/19.
  */
-public class Model {
+public class Model implements Serializable {
     int id;
-    int type_id;
+    @SerializedName("type_id")
+    int typeId;
     String name;
     String typeName;
     String power;
@@ -21,6 +26,7 @@ public class Model {
     String engineCode;
     String time;
     String displacementTech;
+    String word;
 
     public Model(String cylinders, String displacement, String displacement_tech, String drive, String engine, String engine_code, String fuel, String fuel_feed, int id, String name, String power, String structure, String tecdoc, String time, int type_id, String typeName, String valve) {
         this.cylinders = cylinders;
@@ -37,7 +43,7 @@ public class Model {
         this.structure = structure;
         this.tecdoc = tecdoc;
         this.time = time;
-        this.type_id = type_id;
+        this.typeId = type_id;
         this.typeName = typeName;
         this.valve = valve;
     }
@@ -154,12 +160,12 @@ public class Model {
         this.time = time;
     }
 
-    public int getType_id() {
-        return type_id;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setType_id(int type_id) {
-        this.type_id = type_id;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
     }
 
     public String getTypeName() {
@@ -176,5 +182,13 @@ public class Model {
 
     public void setValve(String valve) {
         this.valve = valve;
+    }
+
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
     }
 }

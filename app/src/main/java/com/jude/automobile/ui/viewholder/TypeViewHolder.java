@@ -29,8 +29,7 @@ public class TypeViewHolder extends BaseViewHolder<Type> {
         ButterKnife.bind(this,itemView);
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(),TypeActivity.class);
-            i.putExtra("id",data.getId());
-            i.putExtra("name",data.getName());
+            i.putExtra("data",data);
             getContext().startActivity(i);
         });
     }

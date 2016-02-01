@@ -1,11 +1,12 @@
 package com.jude.automobile.domain.entities;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by zhuchenxi on 16/1/19.
  */
-public class Part {
+public class Part implements Serializable {
     int id;
     String type;
     String brand;

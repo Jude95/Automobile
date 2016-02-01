@@ -1,17 +1,22 @@
 package com.jude.automobile.domain.entities;
 
+import java.io.Serializable;
+
 /**
  * Created by zhuchenxi on 16/1/18.
  */
-public class Line {
+public class Line implements Serializable{
     int id;
     String name;
     String avatar;
+    String word;
 
-    public Line(int id,String avatar, String name) {
-        this.avatar = avatar;
-        this.id = id;
-        this.name = name;
+    public String getWord() {
+        return word;
+    }
+
+    public void setWord(String word) {
+        this.word = word;
     }
 
     public String getAvatar() {
