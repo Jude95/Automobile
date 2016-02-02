@@ -44,5 +44,6 @@ public class ModelViewHolder extends BaseViewHolder<Model> {
         name.setText(data.getName());
         displacement.setText(data.getDisplacementTech());
         date.setText(data.getTime());
+        engine.setText(data.getEngineCode());
     }
 }

@@ -1,7 +1,10 @@
 package com.jude.automobile.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,6 +16,7 @@ import com.jude.automobile.presenter.ModelPresenter;
 import com.jude.automobile.ui.viewholder.PartViewHolder;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.list.BeamListActivity;
+import com.jude.beam.expansion.list.ListConfig;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
 import butterknife.ButterKnife;
@@ -63,6 +67,11 @@ public class ModelActivity extends BeamListActivity<ModelPresenter, Part> {
 
 
     @Override
+    protected ListConfig getConfig() {
+        return super.getConfig().setRefreshAble(true);
+    }
+
+    @Override
     public int getLayout() {
         return R.layout.activity_recyclerview;
     }
@@ -77,5 +86,26 @@ public class ModelActivity extends BeamListActivity<ModelPresenter, Part> {
     @Override
     protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new PartViewHolder(parent);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.edit_add,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.edit){
+            Intent i = new Intent(this,ModelAddActivity.class);
+            i.putExtra("data",getPresenter().data);
+            startActivityForResult(i,0);
+            return true;
+        }else if (item.getItemId() == R.id.add){
+//            Intent i = new Intent(this,ModelAddActivity.class);
+//            i.putExtra("model",getPresenter().data);
+//            startActivityForResult(i,0);
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -83,6 +83,8 @@
             android:label="添加车系"/>
         <activity android:name=".ui.TypeAddActivity"
             android:label="添加车型"/>
+        <activity android:name=".ui.ModelAddActivity"
+            android:label="添加车款"/>
     </application>
 
 </manifest>

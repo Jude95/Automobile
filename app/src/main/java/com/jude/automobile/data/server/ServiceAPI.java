@@ -5,6 +5,7 @@ import com.jude.automobile.domain.body.Exist;
 import com.jude.automobile.domain.body.Info;
 import com.jude.automobile.domain.body.Token;
 import com.jude.automobile.domain.entities.Account;
+import com.jude.automobile.domain.entities.ConstantParams;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Type;
@@ -123,6 +124,7 @@ public interface ServiceAPI {
             @Field("power")String power,
             @Field("displacement")String displacement,
             @Field("cylinders")String cylinders,
+            @Field("valve")String valve,
             @Field("structure")String structure,
             @Field("drive")String drive,
             @Field("fuel")String fuel,
@@ -132,4 +134,13 @@ public interface ServiceAPI {
             @Field("engine")String engine,
             @Field("time")String time,
             @Field("displacement_tech")String displacement_tech);
+
+    @GET("params.php")
+    Observable<ConstantParams> refreshParams();
+
+    @POST("model_detail.php")
+    @FormUrlEncoded
+    Observable<Model> getModelDetail(
+            @Field("id")int id
+    );
 }

@@ -50,6 +50,7 @@ public class ErrorTransform<T> implements Observable.Transformer<T, T> {
 
         @Override
         public void call(Throwable throwable) {
+            JUtils.Log("Error:"+throwable.getClass().getName()+":"+throwable.getMessage());
             String errorString;
             if (throwable instanceof HttpException) {
                 HttpException err = (HttpException) throwable;

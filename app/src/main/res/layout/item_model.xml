@@ -52,7 +52,7 @@
                     style="@style/Base.TextAppearance.AppCompat.Caption"
                     android:textColor="?colorPrimary"
                     android:layout_marginLeft="8dp"
-                    android:text="12"/>
+                    tools:text="12"/>
             </LinearLayout>
 
             <LinearLayout
@@ -79,7 +79,7 @@
                     style="@style/Base.TextAppearance.AppCompat.Caption"
                     android:textColor="?colorPrimary"
                     android:layout_marginLeft="8dp"
-                    android:text="2008.8 -"/>
+                    tools:text="2008.8 -"/>
             </LinearLayout>
 
         </LinearLayout>
@@ -109,7 +109,7 @@
                 style="@style/Base.TextAppearance.AppCompat.Caption"
                 android:textColor="?colorPrimary"
                 android:layout_marginLeft="8dp"
-                android:text="M 96.79"/>
+                tools:text="M 96.79"/>
         </LinearLayout>
 
 

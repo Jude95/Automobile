@@ -12,6 +12,7 @@ public class Model implements Serializable {
     @SerializedName("type_id")
     int typeId;
     String name;
+    @SerializedName("type_name")
     String typeName;
     String power;
     String displacement;
@@ -21,12 +22,19 @@ public class Model implements Serializable {
     String drive;//驱动方式
     String engine;
     String fuel;
+    @SerializedName("fuel_feed")
     String fuelFeed;
     String tecdoc;
+    @SerializedName("engine_code")
     String engineCode;
     String time;
+    @SerializedName("displacement_tech")
     String displacementTech;
     String word;
+
+
+    public Model() {
+    }
 
     public Model(String cylinders, String displacement, String displacement_tech, String drive, String engine, String engine_code, String fuel, String fuel_feed, int id, String name, String power, String structure, String tecdoc, String time, int type_id, String typeName, String valve) {
         this.cylinders = cylinders;

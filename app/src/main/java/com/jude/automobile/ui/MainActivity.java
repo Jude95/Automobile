@@ -76,6 +76,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
             startActivity(new Intent(this, TimeActivity.class));
         }
 
+        recycler.setRecyclerPadding(0,0,0,JUtils.dip2px(48));
         recycler.setEmptyView(R.layout.view_empty_main);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -116,6 +117,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
             }
         });
         AccountModel.getInstance().refreshAccount();
+        DataModel.getInstance().refreshParams();
     }
 
     private RecyclerArrayAdapter.ItemView mSearchHeader;

@@ -61,8 +61,10 @@ public class LineAddActivity extends BeamDataActivity<LineAddPresenter, Line> {
                         finish();
                     }
                 });
-        if (getPresenter().data.getId() != 0){
-            setTitle("编辑车系");
+        if(getPresenter().data.getId() == 0){
+            setTitle("添加车系");
+        }else{
+            setTitle("修改车系");
         }
     }
 

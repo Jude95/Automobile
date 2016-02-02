@@ -3,15 +3,19 @@ package com.jude.automobile.data;
 import android.content.Context;
 
 import com.jude.automobile.data.di.DaggerDataModelComponent;
+import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.data.server.SchedulerTransform;
 import com.jude.automobile.data.server.ServiceAPI;
+import com.jude.automobile.domain.Dir;
 import com.jude.automobile.domain.body.Info;
+import com.jude.automobile.domain.entities.ConstantParams;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Part;
 import com.jude.automobile.domain.entities.Search;
 import com.jude.automobile.domain.entities.Type;
 import com.jude.beam.model.AbsModel;
+import com.jude.utils.JFileManager;
 
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
@@ -24,6 +28,7 @@ import javax.inject.Inject;
 import rx.Observable;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
+import rx.schedulers.Schedulers;
 
 /**
  * Created by zhuchenxi on 16/1/18.
@@ -32,10 +37,15 @@ public class DataModel extends AbsModel {
     @Inject
     ServiceAPI mServiceAPI;
 
+    private final static String FILE_PARAMS = "params";
+
+    private ConstantParams mParams;
+
     @Override
     protected void onAppCreate(Context ctx) {
         super.onAppCreate(ctx);
         DaggerDataModelComponent.builder().build().inject(this);
+        mParams = (ConstantParams) JFileManager.getInstance().getFolder(Dir.Object).readObjectFromFile(FILE_PARAMS);
     }
 
     public static DataModel getInstance() {
@@ -53,6 +63,20 @@ public class DataModel extends AbsModel {
                 default:
                     throw new InvalidParameterException();
         }
+    }
+
+    public void refreshParams(){
+        mServiceAPI.refreshParams()
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.NONE))
+                .subscribeOn(Schedulers.io())
+                .subscribe(params -> {
+                    mParams = params;
+                    JFileManager.getInstance().getFolder(Dir.Object).writeObjectToFile(params,FILE_PARAMS);
+                });
+    }
+
+    public ConstantParams getConstantParams(){
+        return mParams.clone();
     }
 
     public Observable<List<Line>> searchLine(String name){
@@ -87,7 +111,7 @@ public class DataModel extends AbsModel {
     }
 
     public Observable<Model> getModelById(int modelId){
-        return Observable.just(createVirtualSingleModel()).delay(1,TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
+        return mServiceAPI.getModelDetail(modelId).compose(new SchedulerTransform<>());
     }
 
     public Observable<Info> addLine(int id,String name,String avatar,String word){
@@ -107,17 +131,21 @@ public class DataModel extends AbsModel {
                 model.getPower(),
                 model.getDisplacement(),
                 model.getCylinders(),
+                model.getValve(),
                 model.getStructure(),
                 model.getDrive(),
                 model.getFuel(),
                 model.getFuelFeed(),
                 model.getTecdoc(),
                 model.getEngineCode(),
+                model.getEngine(),
                 model.getTime(),
-                model.getDisplacement(),
                 model.getDisplacementTech()
-                );
+                )
+                .compose(new SchedulerTransform<>());
     }
+
+
 //    public ArrayList<Line> createVirtualLines(){
 //        ArrayList<Line> arrayList = new ArrayList();
 //        arrayList.add(new Line(1,"http://i2.hdslb.com/52_52/user/61175/6117592/myface.jpg","奥迪"));

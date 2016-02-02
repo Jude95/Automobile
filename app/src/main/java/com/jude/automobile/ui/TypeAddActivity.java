@@ -46,6 +46,11 @@ public class TypeAddActivity extends BeamDataActivity<TypeAddPresenter, Type> {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_type_add);
         ButterKnife.bind(this);
+        if(getPresenter().type.getId() == 0){
+            setTitle("添加车型");
+        }else{
+            setTitle("修改车型");
+        }
     }
 
     @Override

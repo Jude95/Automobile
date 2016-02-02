@@ -29,7 +29,7 @@ public class TypeActivity extends BeamListActivity<TypePresenter,Model> {
 
     @Override
     protected ListConfig getConfig() {
-        return super.getConfig();
+        return super.getConfig().setRefreshAble(true);
     }
 
     @Override
@@ -56,6 +56,10 @@ public class TypeActivity extends BeamListActivity<TypePresenter,Model> {
             i.putExtra("data",getPresenter().data);
             startActivityForResult(i,0);
             return true;
+        }else if (item.getItemId() == R.id.add){
+            Intent i = new Intent(this,ModelAddActivity.class);
+            i.putExtra("type",getPresenter().data);
+            startActivityForResult(i,0);
         }
         return super.onOptionsItemSelected(item);
     }
