@@ -2,7 +2,7 @@ package com.jude.automobile.data;
 
 import android.content.Context;
 
-import com.jude.automobile.data.di.DaggerManagerModelComponent;
+import com.jude.automobile.data.server.DaggerServiceModelComponent;
 import com.jude.automobile.data.server.SchedulerTransform;
 import com.jude.automobile.data.server.ServiceAPI;
 import com.jude.automobile.domain.body.Info;
@@ -29,7 +29,7 @@ public class ManagerModel extends AbsModel {
     @Override
     protected void onAppCreate(Context ctx) {
         super.onAppCreate(ctx);
-        DaggerManagerModelComponent.builder().build().inject(this);
+        DaggerServiceModelComponent.builder().build().inject(this);
     }
 
     public Observable<List<Account>> getUserList(){

@@ -85,6 +85,14 @@
             android:label="添加车型"/>
         <activity android:name=".ui.ModelAddActivity"
             android:label="添加车款"/>
+        <activity android:name=".ui.PartAddActivity"
+            android:label="添加配件"/>
+        <activity android:name=".ui.AssembleActivity"
+            android:label="配件绑定"/>
+        <activity android:name=".ui.PartActivity"
+            android:label="配件列表"/>
+        <activity android:name=".ui.PartDetailActivity"
+            android:label="配件详情"/>
     </application>
 
 </manifest>

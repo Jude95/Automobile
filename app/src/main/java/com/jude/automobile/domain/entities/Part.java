@@ -1,5 +1,7 @@
 package com.jude.automobile.domain.entities;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -10,12 +12,19 @@ public class Part implements Serializable {
     int id;
     String type;
     String brand;
+    @SerializedName("drawing_number")
     String drawingNumber;
     String avatar;
     List<String> picture;
+    @SerializedName("picture_full")
+    List<ImageInfo> pictureFull;
+
     String note;
 
-    public Part(String avatar, String brand, String drawingNumber, int id, List<String> picture, String type,String note) {
+    public Part() {
+    }
+
+    public Part(String avatar, String brand, String drawingNumber, int id, List<String> picture, String type, String note) {
         this.avatar = avatar;
         this.brand = brand;
         this.drawingNumber = drawingNumber;
@@ -80,4 +89,14 @@ public class Part implements Serializable {
     public void setNote(String note) {
         this.note = note;
     }
+
+
+    public List<ImageInfo> getPictureFull() {
+        return pictureFull;
+    }
+
+    public void setPictureFull(List<ImageInfo> pictureFull) {
+        this.pictureFull = pictureFull;
+    }
+
 }

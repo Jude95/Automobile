@@ -2,7 +2,7 @@ package com.jude.automobile.data;
 
 import android.content.Context;
 
-import com.jude.automobile.data.di.DaggerDataModelComponent;
+import com.jude.automobile.data.server.DaggerServiceModelComponent;
 import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.data.server.SchedulerTransform;
 import com.jude.automobile.data.server.ServiceAPI;
@@ -21,12 +21,10 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import rx.Observable;
-import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -44,7 +42,7 @@ public class DataModel extends AbsModel {
     @Override
     protected void onAppCreate(Context ctx) {
         super.onAppCreate(ctx);
-        DaggerDataModelComponent.builder().build().inject(this);
+        DaggerServiceModelComponent.builder().build().inject(this);
         mParams = (ConstantParams) JFileManager.getInstance().getFolder(Dir.Object).readObjectFromFile(FILE_PARAMS);
     }
 
@@ -106,10 +104,6 @@ public class DataModel extends AbsModel {
         return mServiceAPI.getModelList(typeId).compose(new SchedulerTransform<>());
     }
 
-    public Observable<ArrayList<Part>> getPartByModel(int modelId){
-        return Observable.just(createVirtualPart()).delay(1,TimeUnit.SECONDS).observeOn(AndroidSchedulers.mainThread());
-    }
-
     public Observable<Model> getModelById(int modelId){
         return mServiceAPI.getModelDetail(modelId).compose(new SchedulerTransform<>());
     }
@@ -145,6 +139,31 @@ public class DataModel extends AbsModel {
                 .compose(new SchedulerTransform<>());
     }
 
+    public Observable<Info> addPart(Part part){
+        String image = "";
+        for (String s : part.getPicture()) {
+            image+=s+",";
+        }
+        image = image.substring(0,image.length()-1);
+        return mServiceAPI.addPart(part.getId(),part.getType(),part.getBrand(),part.getDrawingNumber(),part.getAvatar(),image).compose(new SchedulerTransform<>());
+    }
+
+
+    public Observable<Info> assemble(int part,int model,String note){
+        return mServiceAPI.assemble(part,model,note).compose(new SchedulerTransform<>());
+    }
+
+    public Observable<List<Part>> getPartByType(String type){
+        return mServiceAPI.getPartListByType(type).compose(new SchedulerTransform<>());
+    }
+
+    public Observable<List<Part>> getPartByModel(int model){
+        return mServiceAPI.getPartListByModel(model).compose(new SchedulerTransform<>());
+    }
+
+    public Observable<Part> getPartDetail(int id){
+        return mServiceAPI.getPartDetail(id).compose(new SchedulerTransform<>());
+    }
 
 //    public ArrayList<Line> createVirtualLines(){
 //        ArrayList<Line> arrayList = new ArrayList();

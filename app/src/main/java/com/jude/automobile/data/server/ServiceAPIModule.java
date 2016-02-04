@@ -18,20 +18,25 @@ import retrofit2.RxJavaCallAdapterFactory;
 public class ServiceAPIModule {
     @Singleton
     @Provides
-    ServiceAPI provideServiceAPI() {
+    ServiceAPI provideServiceAPI(OkHttpClient okHttpClient) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(ServiceAPI.SERVER_ADDRESS)
+                .addConverterFactory(GsonConverterFactory.create())
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .client(okHttpClient)
+                .build();
+        return retrofit.create(ServiceAPI.class);
+    }
+
+    @Singleton
+    @Provides
+    OkHttpClient provideOkHttpClient(){
         HttpLoggingInterceptor interceptor = new HttpLoggingInterceptor();
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
                 .addInterceptor(new HeaderInterceptors())
                 .build();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(ServiceAPI.SERVER_ADDRESS)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .client(client)
-                .build();
-
-        return retrofit.create(ServiceAPI.class);
+        return client;
     }
 }

@@ -16,6 +16,7 @@ public class ConstantParams implements Serializable,Cloneable{
     @SerializedName("fuel_feed")
     List<String> fuelFeed;
     List<String> engine;
+    List<String> part;
 
     public List<String> getDrive() {
         return drive;
@@ -57,6 +58,14 @@ public class ConstantParams implements Serializable,Cloneable{
         this.fuel = fuel;
     }
 
+    public List<String> getPart() {
+        return part;
+    }
+
+    public void setPart(List<String> part) {
+        this.part = part;
+    }
+
     @Override
     public ConstantParams clone() {
         ConstantParams params = new ConstantParams();
@@ -65,6 +74,7 @@ public class ConstantParams implements Serializable,Cloneable{
         params.setEngine((List<String>) new ArrayList<>(getEngine()).clone());
         params.setFuelFeed((List<String>) new ArrayList<>(getFuelFeed()).clone());
         params.setFuel((List<String>) new ArrayList<>(getFuel()).clone());
+        params.setPart((List<String>) new ArrayList<>(getPart()).clone());
         return params;
     }
 }

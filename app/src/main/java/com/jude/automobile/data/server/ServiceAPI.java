@@ -8,6 +8,7 @@ import com.jude.automobile.domain.entities.Account;
 import com.jude.automobile.domain.entities.ConstantParams;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.domain.entities.Model;
+import com.jude.automobile.domain.entities.Part;
 import com.jude.automobile.domain.entities.Type;
 
 import java.util.List;
@@ -141,6 +142,42 @@ public interface ServiceAPI {
     @POST("model_detail.php")
     @FormUrlEncoded
     Observable<Model> getModelDetail(
+            @Field("id")int id
+    );
+
+    @POST("part_add.php")
+    @FormUrlEncoded
+    Observable<Info> addPart(
+            @Field("id")int id,
+            @Field("type")String type,
+            @Field("brand")String brand,
+            @Field("drawing_number")String drawing_number,
+            @Field("avatar")String avatar,
+            @Field("picture")String picture);
+
+    @POST("assemble.php")
+    @FormUrlEncoded
+    Observable<Info> assemble(
+            @Field("part_id")int part_id,
+            @Field("model_id")int model_id,
+            @Field("note")String note
+    );
+
+    @POST("part_list_type.php")
+    @FormUrlEncoded
+    Observable<List<Part>> getPartListByType(
+            @Field("type")String type
+    );
+
+    @POST("part_list_model.php")
+    @FormUrlEncoded
+    Observable<List<Part>> getPartListByModel(
+            @Field("id")int model_id
+    );
+
+    @POST("part_detail.php")
+    @FormUrlEncoded
+    Observable<Part> getPartDetail(
             @Field("id")int id
     );
 }

@@ -19,8 +19,8 @@ import com.jude.beam.expansion.list.BeamListActivity;
 import com.jude.beam.expansion.list.ListConfig;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 /**
  * Created by zhuchenxi on 16/1/19.
@@ -102,10 +102,19 @@ public class ModelActivity extends BeamListActivity<ModelPresenter, Part> {
             startActivityForResult(i,0);
             return true;
         }else if (item.getItemId() == R.id.add){
-//            Intent i = new Intent(this,ModelAddActivity.class);
-//            i.putExtra("model",getPresenter().data);
-//            startActivityForResult(i,0);
+            Intent i = new Intent(this,AssembleActivity.class);
+            i.putExtra("id",getPresenter().data.getId());
+            i.putExtra("name",getPresenter().data.getName());
+            startActivityForResult(i,0);
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK){
+            getListView().setRefreshing(true,true);
+        }
     }
 }

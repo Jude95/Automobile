@@ -5,10 +5,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
 
-import com.jude.automobile.data.di.DaggerImageModelComponent;
+import com.google.gson.Gson;
+import com.jude.automobile.data.server.DaggerServiceModelComponent;
 import com.jude.automobile.data.server.SchedulerTransform;
 import com.jude.automobile.data.server.ServiceAPI;
 import com.jude.automobile.domain.Dir;
+import com.jude.automobile.domain.entities.ImageInfo;
 import com.jude.beam.model.AbsModel;
 import com.jude.utils.JFileManager;
 import com.jude.utils.JUtils;
@@ -20,6 +22,9 @@ import java.io.IOException;
 
 import javax.inject.Inject;
 
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import rx.Observable;
 import rx.Subscriber;
 
@@ -37,6 +42,8 @@ public class ImageModel extends AbsModel {
 
     @Inject
     ServiceAPI mServiceAPI;
+    @Inject
+    OkHttpClient mOkHttpClient;
 
     public static ImageModel getInstance() {
         return getInstance(ImageModel.class);
@@ -53,7 +60,7 @@ public class ImageModel extends AbsModel {
     @Override
     protected void onAppCreate(Context ctx) {
         super.onAppCreate(ctx);
-        DaggerImageModelComponent.builder().build().inject(this);
+        DaggerServiceModelComponent.builder().build().inject(this);
         mUploadManager = new UploadManager();
     }
 
@@ -131,7 +138,6 @@ public class ImageModel extends AbsModel {
                                 if (count[0] == file.length)subscriber.onCompleted();
                             }, null);
                         }
-
                     }
                 }))
                 .doOnNext(s -> JUtils.Log("已上传：" + s))
@@ -156,7 +162,6 @@ public class ImageModel extends AbsModel {
         options.inSampleSize = inSampleSize;
         options.inJustDecodeBounds = false;
         Bitmap bitmap= BitmapFactory.decodeFile(file.getPath(), options);
-
         File tempfile =  createTempImage();
         FileOutputStream baos;
         try {
@@ -182,6 +187,26 @@ public class ImageModel extends AbsModel {
             File tmpFile = new File(cacheDir, name);
             return tmpFile;
         }
+    }
+
+    public Observable<ImageInfo> getImageInfo(String url){
+        return Observable.create(new Observable.OnSubscribe<ImageInfo>() {
+            @Override
+            public void call(Subscriber<? super ImageInfo> subscriber) {
+                Request request = new Request.Builder()
+                        .url(url+"?imageInfo")
+                        .build();
+                Response response = null;
+                try {
+                    response = mOkHttpClient.newCall(request).execute();
+                    ImageInfo info = new Gson().fromJson(response.body().string(),ImageInfo.class);
+                    subscriber.onNext(info);
+                    subscriber.onCompleted();
+                } catch (IOException e) {
+                    subscriber.onError(e);
+                }
+            }
+        }).compose(new SchedulerTransform<>());
     }
 
 }

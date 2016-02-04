@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="80dp">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="64dp"
+        android:layout_height="64dp"
+        android:layout_marginLeft="24dp"
+        android:layout_centerVertical="true"/>
+
+    <com.jude.tagview.TAGView
+        android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        app:tag_color="?colorAccent"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        app:tag_text="发动机"/>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_toLeftOf="@+id/type">
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:textColor="?colorPrimary"
+                android:text="品牌"/>
+
+            <TextView
+                android:id="@+id/brand"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_marginLeft="16dp"
+                tools:text="动力持久"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:textColor="?colorPrimary"
+                android:text="图号"/>
+
+            <TextView
+                android:id="@+id/drawing_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                android:layout_marginLeft="16dp"
+                tools:text="动力持久"/>
+        </LinearLayout>
+
+
+    </LinearLayout>
+
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray100"/>
+</RelativeLayout>

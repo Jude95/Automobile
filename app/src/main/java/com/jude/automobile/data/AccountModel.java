@@ -2,7 +2,7 @@ package com.jude.automobile.data;
 
 import android.content.Context;
 
-import com.jude.automobile.data.di.DaggerAccountModelComponent;
+import com.jude.automobile.data.server.DaggerServiceModelComponent;
 import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.data.server.HeaderInterceptors;
 import com.jude.automobile.data.server.SchedulerTransform;
@@ -43,7 +43,7 @@ public class AccountModel extends AbsModel{
     @Override
     protected void onAppCreate(Context ctx) {
         super.onAppCreate(ctx);
-        DaggerAccountModelComponent.builder().build().inject(this);
+        DaggerServiceModelComponent.builder().build().inject(this);
         //账号持久化
         mAccountSubject.subscribe(account -> {
             if (account==null) JFileManager.getInstance().getFolder(Dir.Object).deleteChild(FILE_ACCOUNT);

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.jude.fitsystemwindowlayout.FitSystemWindowsLinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:fitsSystemWindows="true"
+    android:layout_height="match_parent">
+    <include layout="@layout/include_toolbar"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="车款"
+        android:textColor="?colorAccent"/>
+
+    <TextView
+        android:id="@+id/tv_model_name"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
+        android:gravity="center_vertical"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
+        tools:text="宝马A7"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:text="配件"
+        android:textColor="?colorAccent"/>
+
+
+    <RelativeLayout
+        android:id="@+id/container_part"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="56dp">
+
+        <ImageView
+            android:id="@+id/img_part_avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="16dp"
+            android:src="@drawable/wheel"
+            android:layout_centerVertical="true"/>
+
+        <com.jude.tagview.TAGView
+            android:id="@+id/tag_part_type"
+            android:visibility="invisible"
+            android:layout_width="wrap_content"
+            android:layout_height="24dp"
+            app:tag_color="?colorAccent"
+            android:layout_marginRight="16dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:id="@+id/tv_part_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@+id/img_part_avatar"
+            android:layout_centerVertical="true"
+            style="@style/Base.TextAppearance.AppCompat.Subhead"
+            android:layout_marginLeft="16dp"
+            android:text="点击选择配件"/>
+    </RelativeLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        >
+
+        <android.support.v7.widget.AppCompatEditText
+            android:id="@+id/et_note"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="备注"/>
+
+    </android.support.design.widget.TextInputLayout>
+
+</com.jude.fitsystemwindowlayout.FitSystemWindowsLinearLayout>

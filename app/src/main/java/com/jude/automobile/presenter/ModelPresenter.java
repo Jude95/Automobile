@@ -22,12 +22,11 @@ public class ModelPresenter extends BeamListActivityPresenter<ModelActivity,Part
         super.onCreate(view, savedState);
         id = getView().getIntent().getIntExtra("id",0);
         onRefresh();
-
     }
 
     @Override
     public void onRefresh() {
-        DataModel.getInstance().getModelById(id).subscribe(model -> {
+        DataModel.getInstance().getModelById(id).doOnNext(model -> {
             data = model;
             getAdapter().removeAllHeader();
             getAdapter().addHeader(new RecyclerArrayAdapter.ItemView() {
@@ -41,7 +40,9 @@ public class ModelPresenter extends BeamListActivityPresenter<ModelActivity,Part
                 }
             });
             getAdapter().notifyDataSetChanged();
-        });
-        DataModel.getInstance().getPartByModel(id).unsafeSubscribe(getRefreshSubscriber());
+        })
+                .flatMap(model -> DataModel.getInstance().getPartByModel(id))
+                .finallyDo(() -> getView().getListView().showRecycler())
+                .unsafeSubscribe(getRefreshSubscriber());
     }
 }
