@@ -86,7 +86,7 @@ public class AssembleActivity extends BeamBaseActivity<AssemblePresenter> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.ok, menu);
+        getMenuInflater().inflate(R.menu.delete_ok, menu);
         return true;
     }
 

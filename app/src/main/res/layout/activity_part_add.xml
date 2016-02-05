@@ -14,6 +14,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:text="类型"
+        android:textSize="12sp"
         android:textColor="?colorAccent"/>
     <TextView
         android:id="@+id/tv_type"
@@ -33,6 +34,7 @@
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:text="略缩图"
+        android:textSize="12sp"
         android:textColor="?colorAccent"/>
     <ImageView
         android:id="@+id/avatar"

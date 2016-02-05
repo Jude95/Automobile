@@ -116,6 +116,13 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                 number.setText("");
             }
         });
+        fabMenu.setOnTouchListener((v, event) -> {
+            if (fabMenu.isOpened()){
+                fabMenu.close(true);
+                return true;
+            }
+            return false;
+        });
         AccountModel.getInstance().refreshAccount();
         DataModel.getInstance().refreshParams();
     }

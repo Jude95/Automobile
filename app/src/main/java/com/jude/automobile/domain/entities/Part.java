@@ -19,19 +19,27 @@ public class Part implements Serializable {
     @SerializedName("picture_full")
     List<ImageInfo> pictureFull;
 
-    String note;
+    //绑定信息
+    @SerializedName("model_id")
+    int modelId;
+    @SerializedName("model_name")
+    String modelName;
+    @SerializedName("assemble_id")
+    int assembleId;
+    @SerializedName("assemble_note")
+    String assembleNote;
 
     public Part() {
     }
 
-    public Part(String avatar, String brand, String drawingNumber, int id, List<String> picture, String type, String note) {
+    public Part(String avatar, String brand, String drawingNumber, int id, List<String> picture, String type, String assembleNote) {
         this.avatar = avatar;
         this.brand = brand;
         this.drawingNumber = drawingNumber;
         this.id = id;
         this.picture = picture;
         this.type = type;
-        this.note = note;
+        this.assembleNote = assembleNote;
     }
 
     public String getAvatar() {
@@ -82,14 +90,37 @@ public class Part implements Serializable {
         this.type = type;
     }
 
-    public String getNote() {
-        return note;
+    public String getAssembleNote() {
+        return assembleNote;
     }
 
-    public void setNote(String note) {
-        this.note = note;
+    public void setAssembleNote(String assembleNote) {
+        this.assembleNote = assembleNote;
     }
 
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
+
+    public int getModelId() {
+        return modelId;
+    }
+
+    public void setModelId(int modelId) {
+        this.modelId = modelId;
+    }
+
+    public int getAssembleId() {
+        return assembleId;
+    }
+
+    public void setAssembleId(int assembleId) {
+        this.assembleId = assembleId;
+    }
 
     public List<ImageInfo> getPictureFull() {
         return pictureFull;

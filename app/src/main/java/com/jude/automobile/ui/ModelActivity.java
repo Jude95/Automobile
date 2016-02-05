@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.jude.automobile.R;
+import com.jude.automobile.app.APP;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Part;
 import com.jude.automobile.presenter.ModelPresenter;
@@ -115,6 +116,9 @@ public class ModelActivity extends BeamListActivity<ModelPresenter, Part> {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK){
             getListView().setRefreshing(true,true);
+        }else if (resultCode == APP.RESULT_DELETE){
+            setResult(RESULT_OK);
+            finish();
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.jude.automobile.ui.viewholder;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -35,8 +36,8 @@ public class PartViewHolder extends BaseViewHolder<Part> {
         ButterKnife.bind(this, itemView);
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(), PartDetailActivity.class);
-            i.putExtra("id",data.getId());
-            getContext().startActivity(i);
+            i.putExtra("data",data);
+            ((Activity)getContext()).startActivityForResult(i,0);
         });
     }
 
@@ -44,7 +45,7 @@ public class PartViewHolder extends BaseViewHolder<Part> {
     public void setData(Part data) {
         this.data = data;
         type.setText(data.getType());
-        note.setText(data.getNote());
+        note.setText(data.getAssembleNote());
         Glide.with(getContext())
                 .load(ImageModel.getSmallImage(data.getAvatar()))
                 .bitmapTransform(new CropCircleTransformation(getContext()))

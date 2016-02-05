@@ -83,7 +83,7 @@ public class LineAddActivity extends BeamDataActivity<LineAddPresenter, Line> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.ok,menu);
+        getMenuInflater().inflate(R.menu.delete_ok,menu);
         return true;
     }
 
@@ -94,6 +94,14 @@ public class LineAddActivity extends BeamDataActivity<LineAddPresenter, Line> {
             getPresenter().data.setWord(word.getEditText().getText().toString());
             getPresenter().publishEdit();
             return true;
+        }else if (item.getItemId() == R.id.delete){
+            new MaterialDialog.Builder(this)
+                    .title("删除")
+                    .content("你确定要删除本车系吗?")
+                    .positiveText("确定")
+                    .negativeText("取消")
+                    .onPositive((dialog, which) -> getPresenter().delete())
+                    .show();
         }
         return super.onOptionsItemSelected(item);
     }

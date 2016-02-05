@@ -4,7 +4,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 
+import com.jude.automobile.app.APP;
 import com.jude.automobile.data.DataModel;
 import com.jude.automobile.data.ImageModel;
 import com.jude.automobile.data.server.ErrorTransform;
@@ -19,7 +21,6 @@ import com.jude.utils.JUtils;
 import java.io.File;
 
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
  * Created by zhuchenxi on 16/1/31.
@@ -47,7 +48,7 @@ public class LineAddPresenter extends BeamDataActivityPresenter<LineAddActivity,
 
                 @Override
                 public void onImageLoaded(Uri uri) {
-                    data.setAvatar(uri.getPath());
+                    data.setAvatar(uri.toString());
                     publishObject(data);
                 }
 
@@ -91,12 +92,22 @@ public class LineAddPresenter extends BeamDataActivityPresenter<LineAddActivity,
     }
 
     public void publishEdit(){
+        if(TextUtils.isEmpty(data.getAvatar())){
+            JUtils.Toast("请选择车系标志");
+            return;
+        }
+        if(TextUtils.isEmpty(data.getName())){
+            JUtils.Toast("请填写车系名字");
+            return;
+        }
+        if(TextUtils.isEmpty(data.getWord())){
+            JUtils.Toast("请填写车系搜索关键字");
+            return;
+        }
         Observable.just(data)
                 .flatMap(line -> {
-
                     if (!Uri.parse(line.getAvatar()).getScheme().equals("http")){
-                        JUtils.Log("开始上传:"+Uri.parse(line.getAvatar()).getScheme());
-                        return ImageModel.getInstance().putImageSync(new File(line.getAvatar()))
+                        return ImageModel.getInstance().putImageSync(new File(Uri.parse(line.getAvatar()).getPath()))
                                 .map(s -> {
                                     data.setAvatar(s);
                                     return data;
@@ -104,14 +115,27 @@ public class LineAddPresenter extends BeamDataActivityPresenter<LineAddActivity,
                     }
                     return Observable.just(line);
                 })
-                .doOnNext(line -> JUtils.Log("Get"))
-                .doOnError(throwable -> JUtils.Log("Error"+throwable.getMessage()))
-                .flatMap((Func1<Line, Observable<?>>) line -> DataModel.getInstance().addLine(line.getId(),line.getName(),line.getAvatar(),line.getWord()))
+                .flatMap(line -> DataModel.getInstance().addLine(line.getId(),line.getName(),line.getAvatar(),line.getWord()))
                 .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
                 .compose(new ProgressDialogTransform(getView(),"上传中"))
                 .subscribe(v -> {
                     JUtils.Toast("上传成功");
                     getView().setResult(Activity.RESULT_OK);
+                    getView().finish();
+                });
+    }
+
+    public void delete(){
+        if (data.getId()==0){
+            getView().finish();
+            return;
+        }
+        DataModel.getInstance().deleteLine(data.getId())
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
+                .compose(new ProgressDialogTransform<>(getView(),"提交中"))
+                .subscribe(info -> {
+                    JUtils.Toast("删除成功");
+                    getView().setResult(APP.RESULT_DELETE);
                     getView().finish();
                 });
     }

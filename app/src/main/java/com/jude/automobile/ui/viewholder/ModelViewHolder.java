@@ -1,5 +1,6 @@
 package com.jude.automobile.ui.viewholder;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -34,7 +35,7 @@ public class ModelViewHolder extends BaseViewHolder<Model> {
             Intent i = new Intent(getContext(),ModelActivity.class);
             i.putExtra("id",data.getId());
             i.putExtra("name",data.getName());
-            getContext().startActivity(i);
+            ((Activity)getContext()).startActivityForResult(i,0);
         });
     }
 

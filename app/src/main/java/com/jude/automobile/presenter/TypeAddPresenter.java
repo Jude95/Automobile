@@ -2,7 +2,9 @@ package com.jude.automobile.presenter;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.text.TextUtils;
 
+import com.jude.automobile.app.APP;
 import com.jude.automobile.data.DataModel;
 import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.domain.entities.Line;
@@ -33,6 +35,15 @@ public class  TypeAddPresenter extends BeamDataActivityPresenter<TypeAddActivity
     }
 
     public void publishEdit(){
+        if(TextUtils.isEmpty(type.getName())){
+            JUtils.Toast("请填写车型名字");
+            return;
+        }
+        if(TextUtils.isEmpty(type.getName())){
+            JUtils.Toast("请填写车型搜索关键字");
+            return;
+        }
+
         DataModel.getInstance().addType(type.getId(),type.getLineId(),type.getName(),type.getWord())
                 .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
                 .compose(new ProgressDialogTransform<>(getView(),"提交中"))
@@ -43,5 +54,18 @@ public class  TypeAddPresenter extends BeamDataActivityPresenter<TypeAddActivity
                 });
     }
 
-
+    public void delete(){
+        if (type.getId()==0){
+            getView().finish();
+            return;
+        }
+        DataModel.getInstance().deleteType(type.getId())
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
+                .compose(new ProgressDialogTransform<>(getView(),"提交中"))
+                .subscribe(info -> {
+                    JUtils.Toast("删除成功");
+                    getView().setResult(APP.RESULT_DELETE);
+                    getView().finish();
+                });
+    }
 }

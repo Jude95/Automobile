@@ -15,7 +15,7 @@ import com.jude.utils.JUtils;
  * Created by zhuchenxi on 16/1/18.
  */
 public class APP extends Application {
-
+    public static final int RESULT_DELETE = 12;
     @Override
     public void onCreate() {
         super.onCreate();

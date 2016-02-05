@@ -1,5 +1,6 @@
 package com.jude.automobile.ui.viewholder;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -33,7 +34,7 @@ public class LineFullDividerViewHolder extends BaseViewHolder<Line> {
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(),LineActivity.class);
             i.putExtra("data",data);
-            getContext().startActivity(i);
+            ((Activity)getContext()).startActivityForResult(i,0);
         });
     }
 

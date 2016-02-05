@@ -119,6 +119,12 @@ public class ImageModel extends AbsModel {
 
     public Observable<String> putImageSync(final File[] file){
         final int[] count = {0};
+        if (file.length==0)return Observable.create(new Observable.OnSubscribe<String>() {
+            @Override
+            public void call(Subscriber<? super String> subscriber) {
+                subscriber.onCompleted();
+            }
+        });
         return mServiceAPI.getQiniuToken()
                 .flatMap(token -> Observable.create(new Observable.OnSubscribe<String>() {
                     @Override

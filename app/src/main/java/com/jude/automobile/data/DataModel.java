@@ -141,16 +141,22 @@ public class DataModel extends AbsModel {
 
     public Observable<Info> addPart(Part part){
         String image = "";
-        for (String s : part.getPicture()) {
-            image+=s+",";
+        if (part.getPicture().size()>0){
+            for (String s : part.getPicture()) {
+                image+=s+",";
+            }
+            image = image.substring(0,image.length()-1);
         }
-        image = image.substring(0,image.length()-1);
         return mServiceAPI.addPart(part.getId(),part.getType(),part.getBrand(),part.getDrawingNumber(),part.getAvatar(),image).compose(new SchedulerTransform<>());
     }
 
 
     public Observable<Info> assemble(int part,int model,String note){
         return mServiceAPI.assemble(part,model,note).compose(new SchedulerTransform<>());
+    }
+
+    public Observable<Info> unAssemble(int assembleId){
+        return mServiceAPI.unAssemble(assembleId).compose(new SchedulerTransform<>());
     }
 
     public Observable<List<Part>> getPartByType(String type){
@@ -165,6 +171,16 @@ public class DataModel extends AbsModel {
         return mServiceAPI.getPartDetail(id).compose(new SchedulerTransform<>());
     }
 
+    public Observable<Info> deleteModel(int modelId){
+        return mServiceAPI.deleteModel(modelId).compose(new SchedulerTransform<>());
+    }
+
+    public Observable<Info> deleteType(int typeId){
+        return mServiceAPI.deleteType(typeId).compose(new SchedulerTransform<>());
+    }
+    public Observable<Info> deleteLine(int lineId){
+        return mServiceAPI.deleteLine(lineId).compose(new SchedulerTransform<>());
+    }
 //    public ArrayList<Line> createVirtualLines(){
 //        ArrayList<Line> arrayList = new ArrayList();
 //        arrayList.add(new Line(1,"http://i2.hdslb.com/52_52/user/61175/6117592/myface.jpg","奥迪"));

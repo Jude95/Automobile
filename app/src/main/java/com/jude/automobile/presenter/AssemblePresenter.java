@@ -3,6 +3,7 @@ package com.jude.automobile.presenter;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.jude.automobile.data.DataModel;
 import com.jude.automobile.data.server.ErrorTransform;
@@ -26,6 +27,10 @@ public class AssemblePresenter extends Presenter<AssembleActivity> {
     }
 
     public void publishEdit(String note){
+        if(TextUtils.isEmpty(note)){
+            JUtils.Toast("请填写备注别名");
+            return;
+        }
         DataModel.getInstance().assemble(part,model,note)
                 .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
                 .compose(new ProgressDialogTransform<>(getView(),"提交中"))

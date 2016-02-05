@@ -269,7 +269,7 @@ public class ModelAddActivity extends BeamDataActivity<ModelAddPresenter, Model>
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.ok, menu);
+        getMenuInflater().inflate(R.menu.delete_ok, menu);
         return true;
     }
 
@@ -278,6 +278,14 @@ public class ModelAddActivity extends BeamDataActivity<ModelAddPresenter, Model>
         if (item.getItemId() == R.id.ok) {
             getPresenter().publishEdit();
             return true;
+        }else if (item.getItemId() == R.id.delete){
+            new MaterialDialog.Builder(this)
+                    .title("删除")
+                    .content("你确定要删除本车款吗?")
+                    .positiveText("确定")
+                    .negativeText("取消")
+                    .onPositive((dialog, which) -> getPresenter().delete())
+                    .show();
         }
         return super.onOptionsItemSelected(item);
     }

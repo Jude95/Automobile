@@ -8,8 +8,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.jude.automobile.R;
 import com.jude.automobile.data.ImageModel;
@@ -39,6 +41,12 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
     TextView tvBrand;
     @Bind(R.id.drawing_number)
     TextView drawingNumber;
+    @Bind(R.id.tv_model)
+    TextView tvModel;
+    @Bind(R.id.tv_note)
+    TextView tvNote;
+    @Bind(R.id.content)
+    LinearLayout content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +55,13 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
 
     public View getHeader(ViewGroup parent, Part part) {
         View view = LayoutInflater.from(this).inflate(R.layout.head_part, parent, false);
-        ButterKnife.bind(this,view);
+        ButterKnife.bind(this, view);
         Glide.with(this).load(ImageModel.getSmallImage(part.getAvatar())).into(imageAvatar);
         tvType.setText(part.getType());
         tvBrand.setText(part.getBrand());
         drawingNumber.setText(part.getDrawingNumber());
+        tvModel.setText(part.getModelName());
+        tvNote.setText(part.getAssembleNote());
         return view;
     }
 
@@ -72,17 +82,25 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.edit,menu);
+        getMenuInflater().inflate(R.menu.delete_edit, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.edit){
-            Intent i = new Intent(this,PartAddActivity.class);
-            i.putExtra("data",getPresenter().data);
+        if (item.getItemId() == R.id.edit) {
+            Intent i = new Intent(this, PartAddActivity.class);
+            i.putExtra("data", getPresenter().data);
             startActivity(i);
             return true;
+        }else if (item.getItemId() == R.id.delete){
+            new MaterialDialog.Builder(this)
+                    .title("删除")
+                    .content("你确定要解除本条绑定吗?")
+                    .positiveText("确定")
+                    .negativeText("取消")
+                    .onPositive((dialog, which) -> getPresenter().delete())
+                    .show();
         }
         return super.onOptionsItemSelected(item);
     }
@@ -90,7 +108,7 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK)getListView().setRefreshing(true,true);
+        if (resultCode == RESULT_OK) getListView().setRefreshing(true, true);
     }
 
 }

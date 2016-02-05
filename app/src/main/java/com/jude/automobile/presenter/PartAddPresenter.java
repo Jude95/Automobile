@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.jude.automobile.data.DataModel;
 import com.jude.automobile.data.ImageModel;
@@ -132,6 +133,17 @@ public class PartAddPresenter extends BeamDataActivityPresenter<PartAddActivity,
     }
 
     public void publishEdit(){
+        if(TextUtils.isEmpty(data.getType())){
+            JUtils.Toast("请选择配件类型");
+            return;
+        }
+        if(TextUtils.isEmpty(data.getAvatar())){
+            JUtils.Toast("请选择配件略缩图");
+            return;
+        }
+        if (data.getPicture() == null){
+            data.setPicture(new ArrayList<>());
+        }
         Observable.just(data)
                 .flatMap(part -> {
                     if (!Uri.parse(part.getAvatar()).getScheme().equals("http")){
@@ -144,12 +156,14 @@ public class PartAddPresenter extends BeamDataActivityPresenter<PartAddActivity,
                     return Observable.just(part);
                 })
                 .flatMapIterable(Part::getPicture)
+                .doOnCompleted(() -> JUtils.Log("Completed"))
                 .filter(s -> !Uri.parse(s).getScheme().equals("http"))
                 .map(s2 -> {
                     File file = new File(Uri.parse(s2).getPath());
                     return file;
                 })
                 .toList()
+                .doOnCompleted(() -> JUtils.Log("Completed2"))
                 .flatMap(strings -> ImageModel.getInstance().putImageSync(strings.toArray(new File[strings.size()])))
                 .doOnNext(s -> data.getPicture().add(s))
                 .toList()
@@ -168,6 +182,7 @@ public class PartAddPresenter extends BeamDataActivityPresenter<PartAddActivity,
                     getView().finish();
                 });
     }
+
 
     @Override
     protected void onResult(int requestCode, int resultCode, Intent data) {

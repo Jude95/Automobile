@@ -130,7 +130,7 @@ public class PartAddActivity extends BeamDataActivity<PartAddPresenter, Part> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.ok,menu);
+        getMenuInflater().inflate(R.menu.delete_ok,menu);
         return true;
     }
 
@@ -142,6 +142,8 @@ public class PartAddActivity extends BeamDataActivity<PartAddPresenter, Part> {
             getPresenter().data.setDrawingNumber(drawingNumber.getEditText().getText().toString());
             getPresenter().publishEdit();
             return true;
+        }else if (item.getItemId() == R.id.delete){
+
         }
         return super.onOptionsItemSelected(item);
     }

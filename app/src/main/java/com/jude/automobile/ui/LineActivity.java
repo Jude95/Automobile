@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.jude.automobile.R;
+import com.jude.automobile.app.APP;
 import com.jude.automobile.domain.entities.Type;
 import com.jude.automobile.presenter.LinePresenter;
 import com.jude.automobile.ui.viewholder.TypeViewHolder;
@@ -67,6 +68,9 @@ public class LineActivity extends BeamListActivity<LinePresenter,Type> {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK){
             getListView().setRefreshing(true,true);
+        }else if (resultCode == APP.RESULT_DELETE){
+            setResult(RESULT_OK);
+            finish();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

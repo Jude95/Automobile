@@ -7,6 +7,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.jude.automobile.R;
+import com.jude.automobile.app.APP;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.presenter.TypePresenter;
 import com.jude.automobile.ui.viewholder.ModelViewHolder;
@@ -68,6 +69,9 @@ public class TypeActivity extends BeamListActivity<TypePresenter,Model> {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK){
             getListView().setRefreshing(true,true);
+        }else if (resultCode == APP.RESULT_DELETE){
+            setResult(RESULT_OK);
+            finish();
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

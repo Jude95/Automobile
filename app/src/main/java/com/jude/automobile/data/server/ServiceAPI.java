@@ -180,4 +180,28 @@ public interface ServiceAPI {
     Observable<Part> getPartDetail(
             @Field("id")int id
     );
+
+    @POST("unassemble.php")
+    @FormUrlEncoded
+    Observable<Info> unAssemble(
+            @Field("id")int id
+    );
+
+    @POST("model_delete.php")
+    @FormUrlEncoded
+    Observable<Info> deleteModel(
+            @Field("id")int id
+    );
+
+    @POST("type_delete.php")
+    @FormUrlEncoded
+    Observable<Info> deleteType(
+            @Field("id")int id
+    );
+
+    @POST("line_delete.php")
+    @FormUrlEncoded
+    Observable<Info> deleteLine(
+            @Field("id")int id
+    );
 }

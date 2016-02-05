@@ -45,4 +45,6 @@ public class ModelPresenter extends BeamListActivityPresenter<ModelActivity,Part
                 .finallyDo(() -> getView().getListView().showRecycler())
                 .unsafeSubscribe(getRefreshSubscriber());
     }
+
+
 }
