@@ -1,5 +1,11 @@
 package com.jude.automobile.data.server;
 
+import android.app.Activity;
+import android.content.Intent;
+
+import com.jude.automobile.ui.LauncherActivity;
+import com.jude.automobile.ui.LoginActivity;
+import com.jude.utils.JActivityManager;
 import com.jude.utils.JUtils;
 
 import org.json.JSONException;
@@ -76,7 +82,13 @@ public class ErrorTransform<T> implements Observable.Transformer<T, T> {
         }
 
         private void authFailure(){
-            JUtils.Log("认证失败");
+            Activity activity = JActivityManager.getInstance().currentActivity();
+            if (activity!=null&&
+                    !(activity instanceof LauncherActivity)&&
+                    !(activity instanceof LoginActivity)){
+                Intent i = new Intent(activity,LoginActivity.class);
+                activity.startActivity(i);
+            }
         }
     }
 

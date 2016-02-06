@@ -3,6 +3,7 @@ package com.jude.automobile.presenter;
 import android.os.Bundle;
 
 import com.jude.automobile.data.DataModel;
+import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Type;
 import com.jude.automobile.ui.TypeActivity;
@@ -22,6 +23,8 @@ public class TypePresenter extends BeamListActivityPresenter<TypeActivity,Model>
 
     @Override
     public void onRefresh() {
-        DataModel.getInstance().getModelByType(data.getId()).unsafeSubscribe(getRefreshSubscriber());
+        DataModel.getInstance().getModelByType(data.getId())
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
+                .unsafeSubscribe(getRefreshSubscriber());
     }
 }

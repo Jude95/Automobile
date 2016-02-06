@@ -5,6 +5,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jude.automobile.data.DataModel;
+import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Part;
 import com.jude.automobile.ui.ModelActivity;
@@ -41,6 +42,7 @@ public class ModelPresenter extends BeamListActivityPresenter<ModelActivity,Part
             });
             getAdapter().notifyDataSetChanged();
         })
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
                 .flatMap(model -> DataModel.getInstance().getPartByModel(id))
                 .finallyDo(() -> getView().getListView().showRecycler())
                 .unsafeSubscribe(getRefreshSubscriber());

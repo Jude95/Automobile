@@ -3,6 +3,7 @@ package com.jude.automobile.presenter;
 import android.os.Bundle;
 
 import com.jude.automobile.data.ManagerModel;
+import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.domain.entities.Account;
 import com.jude.automobile.ui.UserListActivity;
 import com.jude.beam.expansion.list.BeamListActivityPresenter;
@@ -20,6 +21,8 @@ public class UserListPresenter extends BeamListActivityPresenter<UserListActivit
 
     @Override
     public void onRefresh() {
-        ManagerModel.getInstance().getUserList().unsafeSubscribe(getRefreshSubscriber());
+        ManagerModel.getInstance().getUserList()
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
+                .unsafeSubscribe(getRefreshSubscriber());
     }
 }

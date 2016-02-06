@@ -5,10 +5,10 @@ import android.text.TextUtils;
 
 import com.github.stuxuhai.jpinyin.PinyinHelper;
 import com.jude.automobile.data.DataModel;
+import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.ui.LineAllActivity;
 import com.jude.beam.expansion.list.BeamListActivityPresenter;
-import com.jude.utils.JUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -47,6 +47,7 @@ public class LineAllPresenter extends BeamListActivityPresenter<LineAllActivity,
             }
             return Observable.just(arrayList);
         })
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
         .unsafeSubscribe(getRefreshSubscriber());
     }
 
