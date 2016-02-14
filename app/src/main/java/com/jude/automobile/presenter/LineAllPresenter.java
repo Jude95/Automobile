@@ -36,11 +36,11 @@ public class LineAllPresenter extends BeamListActivityPresenter<LineAllActivity,
             char temp = ' ';
             for (Line line : lines) {
                 if (!TextUtils.isEmpty(line.getName())){
-                    char cur = PinyinHelper.getShortPinyin(line.getName()).charAt(0);
+                    char cur = Character.toUpperCase(PinyinHelper.getShortPinyin(line.getName()).charAt(0));
                     if (cur != temp){
                         temp = cur;
-                        positionMap.put(Character.toUpperCase(temp),arrayList.size());
-                        arrayList.add(Character.toUpperCase(temp));
+                        positionMap.put(temp,arrayList.size());
+                        arrayList.add(temp);
                     }
                     arrayList.add(line);
                 }

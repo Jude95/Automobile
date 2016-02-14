@@ -40,5 +40,10 @@ public class LinearLayoutManagerWithSmoothScroller extends LinearLayoutManager {
         protected int getVerticalSnapPreference() {
             return SNAP_TO_START;
         }
+
+        @Override
+        protected int calculateTimeForScrolling(int dx) {
+            return Math.min(super.calculateTimeForScrolling(dx),300);
+        }
     }
 }
