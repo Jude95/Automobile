@@ -93,6 +93,8 @@
             android:label="配件列表"/>
         <activity android:name=".ui.PartDetailActivity"
             android:label="配件详情"/>
+        <activity android:name=".ui.ImageViewActivity"
+            android:label="图片查看"/>
     </application>
 
 </manifest>

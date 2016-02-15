@@ -1,6 +1,7 @@
 package com.jude.automobile.ui;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -57,6 +58,11 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
         View view = LayoutInflater.from(this).inflate(R.layout.head_part, parent, false);
         ButterKnife.bind(this, view);
         Glide.with(this).load(ImageModel.getSmallImage(part.getAvatar())).into(imageAvatar);
+        imageAvatar.setOnClickListener(v->{
+            Intent i = new Intent(this,ImageViewActivity.class);
+            i.putExtra(ImageViewActivity.KEY_URI, Uri.parse(part.getAvatar()));
+            startActivity(i);
+        });
         tvType.setText(part.getType());
         tvBrand.setText(part.getBrand());
         drawingNumber.setText(part.getDrawingNumber());

@@ -1,6 +1,7 @@
 package com.jude.automobile.ui;
 
 import android.Manifest;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.TextInputLayout;
@@ -120,11 +121,21 @@ public class PartAddActivity extends BeamDataActivity<PartAddPresenter, Part> {
 
     public void setAvatar(Uri uri){
         Glide.with(this).load(uri).into(avatar);
+        avatar.setOnClickListener(v->{
+            Intent i = new Intent(this,ImageViewActivity.class);
+            i.putExtra(ImageViewActivity.KEY_URI, uri);
+            startActivity(i);
+        });
     }
 
     public void addPicture(Uri uri){
         NetImagePieceView pieceView = new NetImagePieceView(this);
         pieceView.setImage(uri);
+        pieceView.setOnClickListener(v->{
+            Intent i = new Intent(this,ImageViewActivity.class);
+            i.putExtra(ImageViewActivity.KEY_URI, uri);
+            startActivity(i);
+        });
         gridPictures.addView(pieceView);
     }
 

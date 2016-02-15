@@ -14,8 +14,8 @@ android {
         applicationId "com.jude.automobile"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 2
-        versionName "1.0.1"
+        versionCode 3
+        versionName "1.0.2"
         manifestPlaceholders = [
                 UMENG_APPKEY    : props['UMENG_APPKEY'],
                 SMS_MOB_APPKEY : props['SMS_MOB_APPKEY'],
@@ -124,4 +124,5 @@ dependencies {
     compile 'com.google.dagger:dagger:2.0.2'
     apt 'com.google.dagger:dagger-compiler:2.0.2'
     compile 'cn.com.caoyue.util:time:1.2.1'
+    compile 'com.commit451:PhotoView:1.2.4'
 }
