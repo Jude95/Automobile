@@ -82,8 +82,11 @@ public class AccountModel extends AbsModel{
         }
     }
 
+    public boolean isEditor(){
+        return hasLogin()&&getAccountSubject().getValue().getManager()>=2;
+    }
     public boolean isManager(){
-        return hasLogin()&&getAccountSubject().getValue().isManager();
+        return hasLogin()&&getAccountSubject().getValue().getManager()>=3;
     }
 
     public Observable<Account> login(String account, String password){

@@ -15,7 +15,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 3
-        versionName "1.0.2"
+        versionName "1.1.0"
         manifestPlaceholders = [
                 UMENG_APPKEY    : props['UMENG_APPKEY'],
                 SMS_MOB_APPKEY : props['SMS_MOB_APPKEY'],
@@ -103,7 +103,7 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
     compile 'com.qiniu:qiniu-android-sdk:7.0.7'
-    compile 'com.jude:beam:2.6.7'
+    compile 'com.jude:beam:2.7.0'
     compile 'com.jude:swipebackhelper:2.1.3'
     compile 'com.jude:utils:1.1.0'
     compile 'com.jude:smssdk_mob:1.1.0'

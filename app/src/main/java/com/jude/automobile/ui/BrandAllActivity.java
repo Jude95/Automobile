@@ -15,8 +15,8 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.github.clans.fab.FloatingActionButton;
 import com.jude.automobile.R;
-import com.jude.automobile.presenter.LineAllPresenter;
-import com.jude.automobile.ui.viewholder.LineFullDividerViewHolder;
+import com.jude.automobile.presenter.BrandAllPresenter;
+import com.jude.automobile.ui.viewholder.BrandFullDividerViewHolder;
 import com.jude.automobile.utils.LinearLayoutManagerWithSmoothScroller;
 import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.list.BeamListActivity;
@@ -30,8 +30,8 @@ import butterknife.Bind;
 /**
  * Created by zhuchenxi on 16/1/20.
  */
-@RequiresPresenter(LineAllPresenter.class)
-public class LineAllActivity extends BeamListActivity<LineAllPresenter, Object> {
+@RequiresPresenter(BrandAllPresenter.class)
+public class BrandAllActivity extends BeamListActivity<BrandAllPresenter, Object> {
 
     @Bind(R.id.navigation)
     FloatingActionButton navigation;
@@ -95,7 +95,7 @@ public class LineAllActivity extends BeamListActivity<LineAllPresenter, Object> 
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            TextView textView = new TextView(LineAllActivity.this);
+            TextView textView = new TextView(BrandAllActivity.this);
             textView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
             textView.setText(chars[position]+"");
             textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,40);
@@ -125,7 +125,7 @@ public class LineAllActivity extends BeamListActivity<LineAllPresenter, Object> 
             case 0:
                 return new CharViewHolder(parent);
             case 1:
-                return new LineFullDividerViewHolder(parent);
+                return new BrandFullDividerViewHolder(parent);
         }
         return null;
     }
@@ -154,7 +154,7 @@ public class LineAllActivity extends BeamListActivity<LineAllPresenter, Object> 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.add){
-            startActivityForResult(new Intent(this,LineAddActivity.class),0);
+            startActivityForResult(new Intent(this,BrandAddActivity.class),0);
             return true;
         }
         return super.onOptionsItemSelected(item);

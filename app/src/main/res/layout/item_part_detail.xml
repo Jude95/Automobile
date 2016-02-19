@@ -4,24 +4,25 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="80dp">
+    android:layout_height="64dp">
+
+    <RadioButton
+        android:id="@+id/radio"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"/>
 
     <ImageView
         android:id="@+id/avatar"
-        android:layout_width="64dp"
-        android:layout_height="64dp"
-        android:layout_marginLeft="24dp"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginLeft="16dp"
         android:layout_centerVertical="true"/>
 
-    <com.jude.tagview.TAGView
-        android:id="@+id/type"
-        android:layout_width="wrap_content"
-        android:layout_height="24dp"
-        app:tag_color="?colorAccent"
-        android:layout_marginRight="16dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        app:tag_text="发动机"/>
+
 
     <LinearLayout
         android:orientation="vertical"
@@ -30,7 +31,7 @@
         android:gravity="center"
         android:layout_marginLeft="16dp"
         android:layout_toRightOf="@+id/avatar"
-        android:layout_toLeftOf="@+id/type">
+        android:layout_toLeftOf="@+id/radio">
 
         <LinearLayout
             android:orientation="horizontal"
@@ -40,7 +41,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:textColor="?colorPrimary"
                 android:text="品牌"/>
 
@@ -48,21 +49,31 @@
                 android:id="@+id/brand"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_marginLeft="16dp"
                 tools:text="动力持久"/>
+
+            <com.jude.tagview.TAGView
+                android:id="@+id/type"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                app:tag_color="?colorAccent"
+                android:layout_marginRight="16dp"
+                android:layout_marginLeft="16dp"
+                app:tag_text="发动机"/>
+
         </LinearLayout>
 
         <LinearLayout
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp">
+            android:layout_marginTop="4dp">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:textColor="?colorPrimary"
                 android:text="图号"/>
 
@@ -70,7 +81,7 @@
                 android:id="@+id/drawing_number"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/Base.TextAppearance.AppCompat.Subhead"
+                style="@style/Base.TextAppearance.AppCompat.Body1"
                 android:layout_marginLeft="16dp"
                 tools:text="动力持久"/>
         </LinearLayout>

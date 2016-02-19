@@ -3,16 +3,15 @@ package com.jude.automobile.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.MaterialDialog;
 import com.bumptech.glide.Glide;
 import com.jude.automobile.R;
 import com.jude.automobile.data.ImageModel;
@@ -24,6 +23,8 @@ import com.jude.beam.bijection.RequiresPresenter;
 import com.jude.beam.expansion.list.BeamListActivity;
 import com.jude.beam.expansion.list.ListConfig;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
+
+import java.util.ArrayList;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -42,16 +43,20 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
     TextView tvBrand;
     @Bind(R.id.drawing_number)
     TextView drawingNumber;
-    @Bind(R.id.tv_model)
-    TextView tvModel;
-    @Bind(R.id.tv_note)
-    TextView tvNote;
-    @Bind(R.id.content)
-    LinearLayout content;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getPresenter().getAdapter().setOnItemClickListener(position -> {
+            Intent i = new Intent(PartDetailActivity.this, ImageViewActivity.class);
+            ArrayList<Uri> uris = new ArrayList<Uri>();
+            for (int i1 = 0; i1 < getPresenter().getAdapter().getCount(); i1++) {
+                uris.add(Uri.parse(getPresenter().getAdapter().getItem(i1).getUrl()));
+            }
+            i.putParcelableArrayListExtra(ImageViewActivity.KEY_URIS, uris);
+            i.putExtra(ImageViewActivity.KEY_INDEX,position);
+            startActivity(i);
+        });
     }
 
     public View getHeader(ViewGroup parent, Part part) {
@@ -66,8 +71,6 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
         tvType.setText(part.getType());
         tvBrand.setText(part.getBrand());
         drawingNumber.setText(part.getDrawingNumber());
-        tvModel.setText(part.getModelName());
-        tvNote.setText(part.getAssembleNote());
         return view;
     }
 
@@ -88,28 +91,18 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.delete_edit, menu);
+        MenuItem item = menu.add("编辑");
+        item.setIcon(R.drawable.edit);
+        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        item.setOnMenuItemClickListener(item1 -> {
+            Intent i = new Intent(this, PartAddActivity.class);
+            i.putExtra("data", (Parcelable) getPresenter().data);
+            startActivity(i);
+            return true;
+        });
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.edit) {
-            Intent i = new Intent(this, PartAddActivity.class);
-            i.putExtra("data", getPresenter().data);
-            startActivity(i);
-            return true;
-        }else if (item.getItemId() == R.id.delete){
-            new MaterialDialog.Builder(this)
-                    .title("删除")
-                    .content("你确定要解除本条绑定吗?")
-                    .positiveText("确定")
-                    .negativeText("取消")
-                    .onPositive((dialog, which) -> getPresenter().delete())
-                    .show();
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {

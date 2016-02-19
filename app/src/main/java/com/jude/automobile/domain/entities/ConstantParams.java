@@ -1,5 +1,8 @@
 package com.jude.automobile.domain.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -9,7 +12,7 @@ import java.util.List;
 /**
  * Created by zhuchenxi on 16/2/2.
  */
-public class ConstantParams implements Serializable,Cloneable{
+public class ConstantParams implements Serializable,Cloneable, Parcelable {
     List<String> structure;
     List<String> drive;
     List<String> fuel;
@@ -77,4 +80,41 @@ public class ConstantParams implements Serializable,Cloneable{
         params.setPart((List<String>) new ArrayList<>(getPart()).clone());
         return params;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeStringList(this.structure);
+        dest.writeStringList(this.drive);
+        dest.writeStringList(this.fuel);
+        dest.writeStringList(this.fuelFeed);
+        dest.writeStringList(this.engine);
+        dest.writeStringList(this.part);
+    }
+
+    public ConstantParams() {
+    }
+
+    protected ConstantParams(Parcel in) {
+        this.structure = in.createStringArrayList();
+        this.drive = in.createStringArrayList();
+        this.fuel = in.createStringArrayList();
+        this.fuelFeed = in.createStringArrayList();
+        this.engine = in.createStringArrayList();
+        this.part = in.createStringArrayList();
+    }
+
+    public static final Parcelable.Creator<ConstantParams> CREATOR = new Parcelable.Creator<ConstantParams>() {
+        public ConstantParams createFromParcel(Parcel source) {
+            return new ConstantParams(source);
+        }
+
+        public ConstantParams[] newArray(int size) {
+            return new ConstantParams[size];
+        }
+    };
 }

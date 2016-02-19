@@ -25,7 +25,7 @@
                 android:layout_marginTop="32dp"
                 android:textSize="12sp"
                 android:textColor="?colorAccent"
-                android:text="车系:"/>
+                android:text="厂商:"/>
             <LinearLayout
                 android:id="@+id/view_line"
                 android:paddingLeft="32dp"
@@ -35,18 +35,12 @@
                 android:layout_width="match_parent"
                 android:layout_height="56dp">
 
-                <ImageView
-                    android:id="@+id/img_line_avatar"
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/ex_add"/>
                 <TextView
                     android:id="@+id/tv_line_name"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center_vertical"
-                    android:layout_marginLeft="16dp"
-                    android:text="选择车系"/>
+                    android:text="选择厂商"/>
             </LinearLayout>
 
             <android.support.design.widget.TextInputLayout
@@ -59,7 +53,7 @@
                 <android.support.v7.widget.AppCompatEditText
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="输入车型名字"/>
+                    android:hint="输入车系名字"/>
 
             </android.support.design.widget.TextInputLayout>
             <android.support.design.widget.TextInputLayout

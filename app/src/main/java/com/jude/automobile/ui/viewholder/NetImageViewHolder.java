@@ -1,7 +1,5 @@
 package com.jude.automobile.ui.viewholder;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,7 +8,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.jude.automobile.data.ImageModel;
 import com.jude.automobile.domain.entities.ImageInfo;
-import com.jude.automobile.ui.ImageViewActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 import com.jude.utils.JUtils;
 
@@ -26,11 +23,6 @@ public class NetImageViewHolder extends BaseViewHolder<ImageInfo> {
         ImageView imageView = (ImageView)itemView;
         imageView.setLayoutParams(new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
         imageView.setPadding(JUtils.dip2px(16),0,JUtils.dip2px(16),0);
-        imageView.setOnClickListener(v->{
-            Intent i = new Intent(getContext(), ImageViewActivity.class);
-            i.putExtra(ImageViewActivity.KEY_URI, Uri.parse(image.getUrl()));
-            getContext().startActivity(i);
-        });
     }
 
     @Override

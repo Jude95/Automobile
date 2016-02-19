@@ -5,11 +5,13 @@ import com.jude.automobile.domain.body.Exist;
 import com.jude.automobile.domain.body.Info;
 import com.jude.automobile.domain.body.Token;
 import com.jude.automobile.domain.entities.Account;
+import com.jude.automobile.domain.entities.Assemble;
+import com.jude.automobile.domain.entities.Brand;
 import com.jude.automobile.domain.entities.ConstantParams;
 import com.jude.automobile.domain.entities.Line;
-import com.jude.automobile.domain.entities.Model;
 import com.jude.automobile.domain.entities.Part;
 import com.jude.automobile.domain.entities.Type;
+import com.jude.automobile.domain.entities.Vendor;
 
 import java.util.List;
 
@@ -23,13 +25,14 @@ import rx.Observable;
  * Created by Mr.Jude on 2015/11/18.
  */
 public interface ServiceAPI {
-    String SERVER_ADDRESS = "http://123.56.230.6/";
+    String SERVER_ADDRESS = "http://123.56.230.6/2.0/";
 
-    @POST("check_account_exist.php")
+//    ------------------------Account----------------------------------
+    @POST("account/check_account_exist.php")
     @FormUrlEncoded
     Observable<Exist> checkAccountExist(@Field("account") String account);
 
-    @POST("register.php")
+    @POST("account/register.php")
     @FormUrlEncoded
     Observable<Info> register(
             @Field("account") String account,
@@ -37,89 +40,119 @@ public interface ServiceAPI {
             @Field("password") String password,
             @Field("code") String code);
 
-    @POST("login.php")
+    @POST("account/login.php")
     @FormUrlEncoded
     Observable<Account> login(
             @Field("account") String account,
             @Field("password") String password);
 
-    @POST("modify_password.php")
+    @POST("account/modify_password.php")
     @FormUrlEncoded
     Observable<Info> modifyPassword(
             @Field("account") String account,
             @Field("password") String password,
             @Field("code") String code);
 
-    @GET("admin_user_list.php")
+
+    @GET("account/refresh_account.php")
+    Observable<Account> refreshAccount();
+
+
+//    ------------------------Manager----------------------------------
+
+
+    @GET("manager/admin_user_list.php")
     Observable<List<Account>> getUserList();
 
-    @POST("admin_authorization.php")
+    @POST("manager/admin_authorization.php")
     @FormUrlEncoded
     Observable<Info> authorization(
             @Field("userId") int userId);
 
-    @GET("refresh_account.php")
-    Observable<Account> refreshAccount();
+//    ------------------------Common----------------------------------
 
-    @GET("line_list.php")
-    Observable<List<Line>> getLineList();
 
-    @POST("type_list.php")
+    @GET("qiniu.php")
+    Observable<Token> getQiniuToken();
+
+    @GET("params.php")
+    Observable<ConstantParams> refreshParams();
+
+
+//    ------------------------Data----------------------------------
+
+
+    @GET("data/brand/brand_list.php")
+    Observable<List<Brand>> getBrandList();
+
+    @POST("data/line/line_list.php")
+    @FormUrlEncoded
+    Observable<List<Line>> getLineList(
+            @Field("id")int id
+    );
+
+    @POST("data/vendor/vendor_list.php")
+    @FormUrlEncoded
+    Observable<List<Vendor>> getVendorList(
+            @Field("id")int id
+    );
+
+    @POST("data/type/type_list.php")
     @FormUrlEncoded
     Observable<List<Type>> getTypeList(
             @Field("id")int id
     );
 
-    @POST("model_list.php")
+    @POST("data/brand/brand_search.php")
     @FormUrlEncoded
-    Observable<List<Model>> getModelList(
-            @Field("id")int id
+    Observable<List<Brand>> searchBrand(
+            @Field("word")String word
     );
 
-    @POST("search_line.php")
+    @POST("data/line/line_search.php")
     @FormUrlEncoded
     Observable<List<Line>> searchLine(
             @Field("word")String word
     );
 
-    @POST("search_type.php")
+    @POST("data/type/type_search.php")
     @FormUrlEncoded
     Observable<List<Type>> searchType(
             @Field("word")String word
     );
 
-    @POST("search_model.php")
-    @FormUrlEncoded
-    Observable<List<Model>> searchModel(
-            @Field("word")String word
-    );
 
-    @GET("qiniu.php")
-    Observable<Token> getQiniuToken();
-
-    @POST("line_add.php")
+    @POST("data/brand/brand_add.php")
     @FormUrlEncoded
-    Observable<Info> addLine(
+    Observable<Info> addBrand(
             @Field("id")int id,
             @Field("avatar")String avatar,
             @Field("name")String name,
             @Field("word")String word
     );
 
-    @POST("type_add.php")
+    @POST("data/line/line_add.php")
     @FormUrlEncoded
-    Observable<Info> addType(
+    Observable<Info> addLine(
             @Field("id")int id,
-            @Field("line_id")int line_id,
+            @Field("vendor_id")int vendor_id,
             @Field("name")String name,
             @Field("word")String word
     );
 
-    @POST("model_add.php")
+    @POST("data/vendor/vendor_add.php")
     @FormUrlEncoded
-    Observable<Info> addModel(
+    Observable<Info> addVendor(
             @Field("id")int id,
-            @Field("type_id")int line_id,
+            @Field("line_id")int line_id,
+            @Field("name")String name
+    );
+
+    @POST("data/type/type_add.php")
+    @FormUrlEncoded
+    Observable<Info> addType(
+            @Field("id")int id,
+            @Field("line_id")int line_id,
             @Field("name")String name,
             @Field("word")String word,
             @Field("power")String power,
@@ -136,16 +169,13 @@ public interface ServiceAPI {
             @Field("time")String time,
             @Field("displacement_tech")String displacement_tech);
 
-    @GET("params.php")
-    Observable<ConstantParams> refreshParams();
-
-    @POST("model_detail.php")
+    @POST("data/type/type_detail.php")
     @FormUrlEncoded
-    Observable<Model> getModelDetail(
+    Observable<Type> getTypeDetail(
             @Field("id")int id
     );
 
-    @POST("part_add.php")
+    @POST("data/part/part_add.php")
     @FormUrlEncoded
     Observable<Info> addPart(
             @Field("id")int id,
@@ -155,53 +185,60 @@ public interface ServiceAPI {
             @Field("avatar")String avatar,
             @Field("picture")String picture);
 
-    @POST("assemble.php")
+    @POST("data/part/part_assemble.php")
     @FormUrlEncoded
     Observable<Info> assemble(
             @Field("part_id")int part_id,
-            @Field("model_id")int model_id,
+            @Field("type_id")int type_id,
             @Field("note")String note
     );
 
-    @POST("part_list_type.php")
+    @POST("data/part/part_list_type.php")
     @FormUrlEncoded
     Observable<List<Part>> getPartListByType(
-            @Field("type")String type
+            @Field("line")String type,
+            @Field("brand")String brand
     );
 
-    @POST("part_list_model.php")
+    @POST("data/part/part_assemble_list.php")
     @FormUrlEncoded
-    Observable<List<Part>> getPartListByModel(
+    Observable<List<Assemble>> getAssembleListByType(
             @Field("id")int model_id
     );
 
-    @POST("part_detail.php")
+    @POST("data/part/part_detail.php")
     @FormUrlEncoded
     Observable<Part> getPartDetail(
             @Field("id")int id
     );
 
-    @POST("unassemble.php")
+    @POST("data/part/part_unassemble.php")
     @FormUrlEncoded
     Observable<Info> unAssemble(
             @Field("id")int id
     );
 
-    @POST("model_delete.php")
-    @FormUrlEncoded
-    Observable<Info> deleteModel(
-            @Field("id")int id
-    );
-
-    @POST("type_delete.php")
+    @POST("data/type/type_delete.php")
     @FormUrlEncoded
     Observable<Info> deleteType(
             @Field("id")int id
     );
 
-    @POST("line_delete.php")
+    @POST("data/line/line_delete.php")
     @FormUrlEncoded
     Observable<Info> deleteLine(
+            @Field("id")int id
+    );
+
+    @POST("data/vendor/vendor_delete.php")
+    @FormUrlEncoded
+    Observable<Info> deleteVendor(
+            @Field("id")int id
+    );
+
+    @POST("data/brand/brand_delete.php")
+    @FormUrlEncoded
+    Observable<Info> deleteBrand(
             @Field("id")int id
     );
 }

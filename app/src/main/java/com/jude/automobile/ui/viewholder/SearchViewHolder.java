@@ -37,9 +37,9 @@ public class SearchViewHolder extends BaseViewHolder<Search> {
         this.data = data;
         word.setText(data.getWord());
         switch (data.getType()){
+            case Search.TYPE_BRAND:type.setText("品牌搜索");break;
             case Search.TYPE_LINE:type.setText("车系搜索");break;
             case Search.TYPE_TYPE:type.setText("车型搜索");break;
-            case Search.TYPE_Model:type.setText("车款搜索");break;
         }
     }
 }

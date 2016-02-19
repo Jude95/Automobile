@@ -104,7 +104,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
         });
         all.setOnClickListener(v->{
             fabMenu.close(true);
-            startActivity(new Intent(this,LineAllActivity.class));
+            startActivity(new Intent(this,BrandAllActivity.class));
         });
         initHistory();
         AccountModel.getInstance().getAccountSubject().subscribe(account -> {
@@ -188,7 +188,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                 .title("搜索车系")
                 .input("车系名字", "", (dialog, input) -> {
                     getExpansion().showProgressDialog("搜索中");
-                    DataModel.getInstance().searchLine(input.toString())
+                    DataModel.getInstance().searchBrand(input.toString())
                             .finallyDo(() -> getExpansion().dismissProgressDialog())
                             .subscribe(this::addData);
                 })
@@ -202,7 +202,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                 .title("搜索车型")
                 .input("车型名字", "", (dialog, input) -> {
                     getExpansion().showProgressDialog("搜索中");
-                    DataModel.getInstance().searchType(input.toString())
+                    DataModel.getInstance().searchLine(input.toString())
                             .finallyDo(() -> getExpansion().dismissProgressDialog())
                             .subscribe(this::addData);
                 })
@@ -216,7 +216,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
                 .title("搜索车款")
                 .input("车款名字／发动机型号", "", (dialog, input) -> {
                     getExpansion().showProgressDialog("搜索中");
-                    DataModel.getInstance().searchModel(input.toString())
+                    DataModel.getInstance().searchType(input.toString())
                             .finallyDo(() -> getExpansion().dismissProgressDialog())
                             .subscribe(this::addData);
                 })
@@ -238,7 +238,7 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
 //        RadioGroup radioGroup = (RadioGroup) view.findViewById(R.id.search_type);
 //        positiveAction.setOnClickListener(v -> {
 //            getExpansion().showProgressDialog("搜索中");
-//            Observable<ArrayList<Model>> observable = null;
+//            Observable<ArrayList<Type>> observable = null;
 //            switch (radioGroup.getCheckedRadioButtonId()) {
 //                case R.id.search_name:
 //                    observable = DataModel.getInstance().searchModelByName(input.getText().toString());

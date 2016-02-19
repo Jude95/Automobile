@@ -53,13 +53,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.BrandActivity"
+            android:label="平拍详情"/>
         <activity android:name=".ui.LineActivity"
-            android:label="车系详情"/>
-        <activity android:name=".ui.TypeActivity"
             android:label="车型详情"/>
-        <activity android:name=".ui.ModelActivity"
+        <activity android:name=".ui.TypeActivity"
             android:label="车款详情"/>
-        <activity android:name=".ui.LineAllActivity"
+        <activity android:name=".ui.BrandAllActivity"
             android:label="所有车系"/>
         <activity android:name=".ui.LoginActivity"
             android:theme="@style/AppTheme.Blue"
@@ -78,23 +78,27 @@
             android:label="管理后台"/>
         <activity android:name=".ui.UserListActivity"
             android:label="用户列表"/>
-        <activity android:name=".ui.LineAddActivity"
+        <activity android:name=".ui.BrandAddActivity"
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="添加车系"/>
-        <activity android:name=".ui.TypeAddActivity"
+        <activity android:name=".ui.LineAddActivity"
             android:label="添加车型"/>
-        <activity android:name=".ui.ModelAddActivity"
+        <activity android:name=".ui.TypeAddActivity"
             android:label="添加车款"/>
         <activity android:name=".ui.PartAddActivity"
             android:label="添加配件"/>
         <activity android:name=".ui.AssembleActivity"
             android:label="配件绑定"/>
-        <activity android:name=".ui.PartActivity"
+        <activity android:name=".ui.PartSelectActivity"
             android:label="配件列表"/>
         <activity android:name=".ui.PartDetailActivity"
             android:label="配件详情"/>
         <activity android:name=".ui.ImageViewActivity"
             android:label="图片查看"/>
+        <activity android:name=".ui.VendorActivity"
+            android:label="厂商列表"/>
+        <activity android:name=".ui.VendorAddActivity"
+            android:label="添加厂商"/>
     </application>
 
 </manifest>

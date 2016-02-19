@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="56dp">
+
+    <ImageView
+        android:id="@+id/avatar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginLeft="24dp"
+        android:layout_centerVertical="true"/>
+
+    <com.jude.tagview.TAGView
+        android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="24dp"
+        app:tag_color="?colorAccent"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@+id/note"
+        android:layout_marginLeft="16dp"
+        android:layout_centerVertical="true"
+        app:tag_text="发动机"/>
+
+    <ImageView
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:src="@drawable/delete"
+        android:tint="@color/gray600"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
+
+    <TextView
+        android:id="@+id/note"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/avatar"
+        android:layout_centerVertical="true"
+        style="@style/Base.TextAppearance.AppCompat.Subhead"
+        android:layout_marginLeft="16dp"
+        tools:text="动力持久"/>
+
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="80dp"
+        android:background="@color/gray100"/>
+</RelativeLayout>

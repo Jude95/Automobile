@@ -1,5 +1,8 @@
 package com.jude.automobile.domain.entities;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
@@ -8,7 +11,7 @@ import java.util.List;
 /**
  * Created by zhuchenxi on 16/1/19.
  */
-public class Part implements Serializable {
+public class Part implements Serializable, Parcelable {
     int id;
     String type;
     String brand;
@@ -18,16 +21,6 @@ public class Part implements Serializable {
     List<String> picture;
     @SerializedName("picture_full")
     List<ImageInfo> pictureFull;
-
-    //绑定信息
-    @SerializedName("model_id")
-    int modelId;
-    @SerializedName("model_name")
-    String modelName;
-    @SerializedName("assemble_id")
-    int assembleId;
-    @SerializedName("assemble_note")
-    String assembleNote;
 
     public Part() {
     }
@@ -39,7 +32,6 @@ public class Part implements Serializable {
         this.id = id;
         this.picture = picture;
         this.type = type;
-        this.assembleNote = assembleNote;
     }
 
     public String getAvatar() {
@@ -90,38 +82,6 @@ public class Part implements Serializable {
         this.type = type;
     }
 
-    public String getAssembleNote() {
-        return assembleNote;
-    }
-
-    public void setAssembleNote(String assembleNote) {
-        this.assembleNote = assembleNote;
-    }
-
-    public String getModelName() {
-        return modelName;
-    }
-
-    public void setModelName(String modelName) {
-        this.modelName = modelName;
-    }
-
-    public int getModelId() {
-        return modelId;
-    }
-
-    public void setModelId(int modelId) {
-        this.modelId = modelId;
-    }
-
-    public int getAssembleId() {
-        return assembleId;
-    }
-
-    public void setAssembleId(int assembleId) {
-        this.assembleId = assembleId;
-    }
-
     public List<ImageInfo> getPictureFull() {
         return pictureFull;
     }
@@ -130,4 +90,39 @@ public class Part implements Serializable {
         this.pictureFull = pictureFull;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(this.id);
+        dest.writeString(this.type);
+        dest.writeString(this.brand);
+        dest.writeString(this.drawingNumber);
+        dest.writeString(this.avatar);
+        dest.writeStringList(this.picture);
+        dest.writeTypedList(pictureFull);
+    }
+
+    protected Part(Parcel in) {
+        this.id = in.readInt();
+        this.type = in.readString();
+        this.brand = in.readString();
+        this.drawingNumber = in.readString();
+        this.avatar = in.readString();
+        this.picture = in.createStringArrayList();
+        this.pictureFull = in.createTypedArrayList(ImageInfo.CREATOR);
+    }
+
+    public static final Parcelable.Creator<Part> CREATOR = new Parcelable.Creator<Part>() {
+        public Part createFromParcel(Parcel source) {
+            return new Part(source);
+        }
+
+        public Part[] newArray(int size) {
+            return new Part[size];
+        }
+    };
 }

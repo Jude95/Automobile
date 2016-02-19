@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.text.TextUtils;
 
 import com.jude.automobile.data.DataModel;
@@ -98,9 +99,9 @@ public class PartAddPresenter extends BeamDataActivityPresenter<PartAddActivity,
     protected void onCreate(PartAddActivity view, Bundle savedState) {
         super.onCreate(view, savedState);
         provider = new ImageProvider(getView());
-        data = (Part) getView().getIntent().getSerializableExtra("data");
+        data = (Part) getView().getIntent().getParcelableExtra("data");
         if (data == null)data = new Part();
-        data.setType(getView().getIntent().getStringExtra("type"));
+        data.setType(getView().getIntent().getStringExtra("line"));
         publishObject(data);
     }
 
@@ -178,7 +179,9 @@ public class PartAddPresenter extends BeamDataActivityPresenter<PartAddActivity,
                 .compose(new ProgressDialogTransform<>(getView(),"提交中"))
                 .subscribe(info ->{
                     JUtils.Toast("上传成功");
-                    getView().setResult(Activity.RESULT_OK);
+                    Intent i = new Intent();
+                    i.putExtra("data", (Parcelable) data);
+                    getView().setResult(Activity.RESULT_OK,i);
                     getView().finish();
                 });
     }

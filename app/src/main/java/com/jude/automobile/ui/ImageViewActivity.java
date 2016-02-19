@@ -28,14 +28,13 @@ import uk.co.senab.photoview.PhotoView;
  * 展示图片的Activity
 */
 @RequiresPresenter(ImageViewPresenter.class)
-public class ImageViewActivity extends BeamBaseActivity<ImageViewPresenter> implements View.OnClickListener{
+public class ImageViewActivity extends BeamBaseActivity<ImageViewPresenter>{
     public static String KEY_URIS = "uris";
     public static String KEY_URI = "uri";
     public static String KEY_INDEX = "index";
 
     private HackyViewPager mViewPager;
-    private TextView mTv_lock;
-    private ImageView mTv_return;
+    private ImageView mImg_return;
     private TextView mTv_title;
     private ImagePagerAdapter mAdapter;
 
@@ -46,40 +45,29 @@ public class ImageViewActivity extends BeamBaseActivity<ImageViewPresenter> impl
 
         setContentView(R.layout.activity_imageview);
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
-        mTv_lock = (TextView) findViewById(R.id.lock);
-        mTv_return = (ImageView) findViewById(R.id.home);
+        mImg_return = (ImageView) findViewById(R.id.home);
         mTv_title = (TextView) findViewById(R.id.title);
-        mTv_title.setOnClickListener(this);
-        mTv_lock.setOnClickListener(this);
-        mTv_return.setOnClickListener(this);
 
         mViewPager = (HackyViewPager) findViewById(R.id.viewpager);
         mAdapter = new ImagePagerAdapter();
         mViewPager.setAdapter(mAdapter);
+
+        mTv_title.setOnClickListener(v->finish());
+        mImg_return.setOnClickListener(v->finish());
 
         ArrayList<Uri> urls = getIntent().getParcelableArrayListExtra(KEY_URIS);
         if (urls == null)urls = new ArrayList<>();
         Uri uri =  getIntent().getParcelableExtra(KEY_URI);
         if (uri!=null) urls.add(uri);
         int index = getIntent().getIntExtra(KEY_INDEX,0);
-        if (urls.size()<=1){
-            mTv_lock.setVisibility(View.GONE);
-            mViewPager.toggleLock();
-        }
+//        if (urls.size()<=1){
+//            mTv_lock.setVisibility(View.GONE);
+//            mViewPager.toggleLock();
+//        }
 
         mAdapter.setUrls(urls);
         mViewPager.setCurrentItem(index);
         mViewPager.setOnClickListener(v->finish());
-    }
-
-    @Override
-    public void onClick(View v) {
-        if (v.getId() == R.id.title||v.getId() == R.id.home){
-            finish();
-        }else if (v.getId() == R.id.lock){
-            mViewPager.toggleLock();
-            mTv_lock.setText((mViewPager.isLocked()) ? "解锁":"锁定");
-        }
     }
 
     class ImagePagerAdapter extends PagerAdapter {
@@ -104,6 +92,7 @@ public class ImageViewActivity extends BeamBaseActivity<ImageViewPresenter> impl
                     .load(urls.get(position).toString())
                     .into(photoView);
             container.addView(view);
+            photoView.setOnPhotoTapListener((view1, x, y) -> finish());
             return view;
         }
 

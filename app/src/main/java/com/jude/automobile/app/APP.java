@@ -2,6 +2,7 @@ package com.jude.automobile.app;
 
 import android.app.Application;
 
+import com.jude.automobile.R;
 import com.jude.automobile.domain.Dir;
 import com.jude.beam.Beam;
 import com.jude.beam.expansion.BeamBaseActivity;
@@ -31,6 +32,8 @@ public class APP extends Application {
         });
         Beam.setActivityLifeCycleDelegateProvider(ActivityDelegate::new);
         ListConfig.setDefaultListConfig(new ListConfig()
-                .setPaddingNavigationBarAble(true));
+                .setPaddingNavigationBarAble(true)
+                .setRefreshAble(true)
+                .setContainerLayoutRes(R.layout.activity_recyclerview));
     }
 }
