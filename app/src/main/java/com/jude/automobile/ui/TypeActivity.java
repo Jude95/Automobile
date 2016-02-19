@@ -54,7 +54,7 @@ public class TypeActivity extends BeamListActivity<TypePresenter, Assemble> {
     TextView engineCode;
 
     public View createHeadView(ViewGroup parent, Type data) {
-        View view = LayoutInflater.from(this).inflate(R.layout.head_model, parent, false);
+        View view = LayoutInflater.from(this).inflate(R.layout.head_type, parent, false);
         ButterKnife.bind(this,view);
         power.setText(data.getPower());
         displacement.setText(data.getDisplacement());

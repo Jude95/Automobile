@@ -30,7 +30,7 @@ public class BrandViewHolder extends BaseViewHolder<Brand> {
     private Brand data;
 
     public BrandViewHolder(ViewGroup parent) {
-        super(parent, R.layout.item_line);
+        super(parent, R.layout.item_brand);
         ButterKnife.bind(this,itemView);
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(),BrandActivity.class);

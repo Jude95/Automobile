@@ -29,7 +29,7 @@ public class TypeViewHolder extends BaseViewHolder<Type> {
     private Type data;
 
     public TypeViewHolder(ViewGroup parent) {
-        super(parent, R.layout.item_model);
+        super(parent, R.layout.item_type);
         ButterKnife.bind(this,itemView);
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(),TypeActivity.class);

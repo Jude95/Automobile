@@ -117,8 +117,8 @@ public class BrandAddPresenter extends BeamDataActivityPresenter<BrandAddActivit
                 })
                 .flatMap(line -> DataModel.getInstance().addBrand(line.getId(),line.getName(),line.getAvatar(),line.getWord()))
                 .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
-                .compose(new ProgressDialogTransform(getView(),"上传中"))
-                .subscribe(v -> {
+                .compose(new ProgressDialogTransform<>(getView(),"上传中"))
+                .subscribe(o -> {
                     JUtils.Toast("上传成功");
                     getView().setResult(Activity.RESULT_OK);
                     getView().finish();

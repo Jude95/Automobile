@@ -27,7 +27,7 @@ public class LineViewHolder extends BaseViewHolder<Line> {
     private Line data;
 
     public LineViewHolder(ViewGroup parent) {
-        super(parent, R.layout.item_type);
+        super(parent, R.layout.item_line);
         ButterKnife.bind(this,itemView);
         itemView.setOnClickListener(v->{
             Intent i = new Intent(getContext(),LineActivity.class);
@@ -40,6 +40,6 @@ public class LineViewHolder extends BaseViewHolder<Line> {
     public void setData(Line data) {
         this.data = data;
         name.setText(data.getName());
-        line.setText(data.getVendorName()+"车系");
+        line.setText(data.getVendorName());
     }
 }

@@ -20,12 +20,13 @@ public class VendorPresenter extends BeamListActivityPresenter<VendorActivity,Li
     protected void onCreate(VendorActivity view, Bundle savedState) {
         super.onCreate(view, savedState);
         data = getView().getIntent().getParcelableExtra("data");
+        onRefresh();
     }
 
     @Override
     public void onRefresh() {
         DataModel.getInstance().getLineByVendor(data.getId())
                 .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
-                .subscribe(getRefreshSubscriber());
+                .unsafeSubscribe(getRefreshSubscriber());
     }
 }

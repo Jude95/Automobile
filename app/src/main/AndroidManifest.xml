@@ -82,9 +82,9 @@
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="添加车系"/>
         <activity android:name=".ui.LineAddActivity"
-            android:label="添加车型"/>
+            android:label="添加车系"/>
         <activity android:name=".ui.TypeAddActivity"
-            android:label="添加车款"/>
+            android:label="添加车型"/>
         <activity android:name=".ui.PartAddActivity"
             android:label="添加配件"/>
         <activity android:name=".ui.AssembleActivity"

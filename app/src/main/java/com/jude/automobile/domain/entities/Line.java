@@ -12,9 +12,9 @@ import java.io.Serializable;
  */
 public class Line implements Serializable, Parcelable {
     int id;
-    @SerializedName("line_id")
+    @SerializedName("vendor_id")
     int vendorId;
-    @SerializedName("line_name")
+    @SerializedName("vendor_name")
     String vendorName;
     String name;
 

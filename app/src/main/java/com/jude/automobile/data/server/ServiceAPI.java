@@ -144,7 +144,7 @@ public interface ServiceAPI {
     @FormUrlEncoded
     Observable<Info> addVendor(
             @Field("id")int id,
-            @Field("line_id")int line_id,
+            @Field("brand_id")int brand_id,
             @Field("name")String name
     );
 
@@ -196,7 +196,7 @@ public interface ServiceAPI {
     @POST("data/part/part_list_type.php")
     @FormUrlEncoded
     Observable<List<Part>> getPartListByType(
-            @Field("line")String type,
+            @Field("type")String type,
             @Field("brand")String brand
     );
 

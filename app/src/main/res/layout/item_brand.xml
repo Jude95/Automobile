@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:foreground="?android:attr/selectableItemBackground"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:clickable="true"
+    android:background="@color/white"
+    >
+    <LinearLayout
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="24dp"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            tools:text="别克"/>
+
+    </LinearLayout>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:layout_marginLeft="80dp"
+        android:layout_alignParentBottom="true"
+        android:background="@color/gray600"/>
+
+</RelativeLayout>
