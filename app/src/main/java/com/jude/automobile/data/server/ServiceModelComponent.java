@@ -1,5 +1,6 @@
 package com.jude.automobile.data.server;
 
+import com.jude.automobile.app.StethoOkHttpGlideModule;
 import com.jude.automobile.data.AccountModel;
 import com.jude.automobile.data.DataModel;
 import com.jude.automobile.data.ImageModel;
@@ -19,4 +20,5 @@ public interface ServiceModelComponent {
     void inject(DataModel model);
     void inject(ImageModel model);
     void inject(ManagerModel model);
+    void inject(StethoOkHttpGlideModule module);
 }

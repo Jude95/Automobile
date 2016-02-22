@@ -2,6 +2,8 @@ package com.jude.automobile.app;
 
 import android.app.Application;
 
+import com.bumptech.glide.integration.okhttp3.OkHttpGlideModule;
+import com.facebook.stetho.Stetho;
 import com.jude.automobile.R;
 import com.jude.automobile.domain.Dir;
 import com.jude.beam.Beam;
@@ -23,6 +25,8 @@ public class APP extends Application {
         JUtils.initialize(this);
         JUtils.setDebug(true, "Automobile");
         JFileManager.getInstance().init(this, Dir.values());
+        Stetho.initializeWithDefaults(this);
+        OkHttpGlideModule i;
         Beam.init(this);
         Beam.setViewExpansionDelegateProvider(new ViewExpansionDelegateProvider() {
             @Override

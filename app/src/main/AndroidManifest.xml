@@ -33,6 +33,10 @@
             android:value="${UMENG_APPKEY}" />
 
         <meta-data
+            android:name="com.jude.automobile.app.StethoOkHttpGlideModule"
+            android:value="GlideModule" />
+
+        <meta-data
             android:name="MODEL"
             android:value="
             com.jude.automobile.data.SearchHistoryModel,

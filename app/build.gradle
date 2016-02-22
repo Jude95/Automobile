@@ -15,7 +15,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 3
-        versionName "1.1.0"
+        versionName "1.2.0"
         manifestPlaceholders = [
                 UMENG_APPKEY    : props['UMENG_APPKEY'],
                 SMS_MOB_APPKEY : props['SMS_MOB_APPKEY'],
@@ -125,4 +125,7 @@ dependencies {
     apt 'com.google.dagger:dagger-compiler:2.0.2'
     compile 'cn.com.caoyue.util:time:1.2.1'
     compile 'com.commit451:PhotoView:1.2.4'
+    compile 'com.facebook.stetho:stetho:1.3.0'
+    compile 'com.facebook.stetho:stetho-okhttp3:1.3.0'
+    compile 'com.github.bumptech.glide:okhttp3-integration:1.4.0@aar'
 }

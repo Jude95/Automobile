@@ -1,6 +1,8 @@
 package com.jude.automobile.data.server;
 
 
+import com.facebook.stetho.okhttp3.StethoInterceptor;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -35,7 +37,8 @@ public class ServiceAPIModule {
         interceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         OkHttpClient client = new OkHttpClient.Builder()
                 .addInterceptor(interceptor)
-                .addInterceptor(new HeaderInterceptors())
+                .addNetworkInterceptor(new HeaderInterceptors())
+                .addNetworkInterceptor(new StethoInterceptor())
                 .build();
         return client;
     }
