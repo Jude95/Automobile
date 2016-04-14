@@ -14,9 +14,8 @@ import com.jude.automobile.domain.entities.Brand;
 import com.jude.automobile.ui.BrandActivity;
 import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 
-import butterknife.ButterKnife;
 import butterknife.Bind;
-import jp.wasabeef.glide.transformations.CropCircleTransformation;
+import butterknife.ButterKnife;
 
 /**
  * Created by zhuchenxi on 16/1/18.
@@ -43,6 +42,6 @@ public class BrandFullDividerViewHolder extends BaseViewHolder<Brand> {
     public void setData(Brand data) {
         this.data = data;
         name.setText(data.getName());
-        Glide.with(getContext()).load(ImageModel.getSmallImage(data.getAvatar())).bitmapTransform(new CropCircleTransformation(getContext())).into(avatar);
+        Glide.with(getContext()).load(ImageModel.getSmallImage(data.getAvatar())).into(avatar);
     }
 }

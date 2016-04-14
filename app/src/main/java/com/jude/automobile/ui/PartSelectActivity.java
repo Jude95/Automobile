@@ -59,18 +59,16 @@ public class PartSelectActivity extends BeamListActivity<PartSelectPresenter, Pa
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
-
         MenuItem search = menu.add("搜索");
         search.setIcon(R.drawable.search);
         search.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
         search.setOnMenuItemClickListener(item1 -> {
             new MaterialDialog.Builder(this)
                     .title("配件搜索")
-                    .content("输入配件品牌")
+                    .content("输入配件图号")
                     .inputType(InputType.TYPE_CLASS_TEXT)
                     .input("品牌", "", (dialog, input) -> {
-                        getPresenter().brand = input.toString();
+                        getPresenter().drawing_number = input.toString();
                         getListView().setRefreshing(true,true);
                     }).show();
             return true;

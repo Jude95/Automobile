@@ -11,6 +11,7 @@ import com.jude.automobile.domain.entities.ConstantParams;
 import com.jude.automobile.domain.entities.Line;
 import com.jude.automobile.domain.entities.Part;
 import com.jude.automobile.domain.entities.Type;
+import com.jude.automobile.domain.entities.UpdateInfo;
 import com.jude.automobile.domain.entities.Vendor;
 
 import java.util.List;
@@ -56,6 +57,9 @@ public interface ServiceAPI {
 
     @GET("account/refresh_account.php")
     Observable<Account> refreshAccount();
+
+    @GET("update.php")
+    Observable<UpdateInfo> getUpdateInfo();
 
 
 //    ------------------------Manager----------------------------------
@@ -183,6 +187,7 @@ public interface ServiceAPI {
             @Field("brand")String brand,
             @Field("drawing_number")String drawing_number,
             @Field("avatar")String avatar,
+            @Field("note")String note,
             @Field("picture")String picture);
 
     @POST("data/part/part_assemble.php")
@@ -197,7 +202,7 @@ public interface ServiceAPI {
     @FormUrlEncoded
     Observable<List<Part>> getPartListByType(
             @Field("type")String type,
-            @Field("brand")String brand
+            @Field("drawing_number")String drawing_number
     );
 
     @POST("data/part/part_assemble_list.php")

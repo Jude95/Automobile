@@ -42,6 +42,7 @@ public class PartAddPresenter extends BeamDataActivityPresenter<PartAddActivity,
 
         @Override
         public void onImageLoaded(Uri uri) {
+            getView().getExpansion().dismissProgressDialog();
             provider.corpImage(uri, 300, 300, new OnImageSelectListener() {
                 @Override
                 public void onImageSelect() {
@@ -75,14 +76,12 @@ public class PartAddPresenter extends BeamDataActivityPresenter<PartAddActivity,
 
         @Override
         public void onImageSelect() {
-            JUtils.Log("Pictures");
             getView().getExpansion().showProgressDialog("加载中");
         }
 
         @Override
         public void onImageLoaded(Uri uri) {
             getView().getExpansion().dismissProgressDialog();
-            JUtils.Log("Pictures:"+uri.toString()+":"+uri.getPath());
             getView().addPicture(uri);
             if (data.getPicture()==null)data.setPicture(new ArrayList<>());
             data.getPicture().add(uri.toString());
@@ -99,9 +98,11 @@ public class PartAddPresenter extends BeamDataActivityPresenter<PartAddActivity,
     protected void onCreate(PartAddActivity view, Bundle savedState) {
         super.onCreate(view, savedState);
         provider = new ImageProvider(getView());
-        data = (Part) getView().getIntent().getParcelableExtra("data");
-        if (data == null)data = new Part();
-        data.setType(getView().getIntent().getStringExtra("line"));
+        data =  getView().getIntent().getParcelableExtra("data");
+        if (data == null){
+            data = new Part();
+            data.setType(getView().getIntent().getStringExtra("line"));
+        }
         publishObject(data);
     }
 
@@ -159,10 +160,7 @@ public class PartAddPresenter extends BeamDataActivityPresenter<PartAddActivity,
                 .flatMapIterable(Part::getPicture)
                 .doOnCompleted(() -> JUtils.Log("Completed"))
                 .filter(s -> !Uri.parse(s).getScheme().equals("http"))
-                .map(s2 -> {
-                    File file = new File(Uri.parse(s2).getPath());
-                    return file;
-                })
+                .map(s2 -> new File(Uri.parse(s2).getPath()))
                 .toList()
                 .doOnCompleted(() -> JUtils.Log("Completed2"))
                 .flatMap(strings -> ImageModel.getInstance().putImageSync(strings.toArray(new File[strings.size()])))

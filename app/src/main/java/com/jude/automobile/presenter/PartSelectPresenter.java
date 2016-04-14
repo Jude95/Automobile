@@ -18,7 +18,7 @@ import com.jude.utils.JUtils;
 public class PartSelectPresenter extends BeamListActivityPresenter<PartSelectActivity,Part> {
 
     public String type;
-    public String brand;
+    public String drawing_number;
 
     @Override
     protected void onCreate(PartSelectActivity view, Bundle savedState) {
@@ -40,7 +40,7 @@ public class PartSelectPresenter extends BeamListActivityPresenter<PartSelectAct
 
     @Override
     public void onRefresh() {
-        DataModel.getInstance().getPartByType(type,brand)
+        DataModel.getInstance().getPartByType(type,drawing_number)
                 .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.AUTH_TOAST))
                 .unsafeSubscribe(getRefreshSubscriber());
     }

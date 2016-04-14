@@ -50,6 +50,8 @@ public class PartAddActivity extends BeamDataActivity<PartAddPresenter, Part> {
     PieceViewGroup gridPictures;
 
     boolean hasInitPictures = false;
+    @Bind(R.id.note)
+    TextInputLayout note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +70,7 @@ public class PartAddActivity extends BeamDataActivity<PartAddPresenter, Part> {
                         finish();
                     }
                 });
-        avatar.setOnClickListener(v->{
+        avatar.setOnClickListener(v -> {
             new MaterialDialog.Builder(PartAddActivity.this)
                     .title("选择图片来源")
                     .items(new String[]{"拍照", "相册", "网络"})
@@ -99,40 +101,41 @@ public class PartAddActivity extends BeamDataActivity<PartAddPresenter, Part> {
     @Override
     public void setData(Part data) {
         if (data != null) {
-            if (!TextUtils.isEmpty(data.getType())){
+            if (!TextUtils.isEmpty(data.getType())) {
                 tvType.setText(data.getType());
-            }else{
+            } else {
                 tvType.setText((String) tvType.getTag());
             }
             if (!TextUtils.isEmpty(data.getAvatar()))
                 Glide.with(this).load(data.getAvatar()).into(avatar);
             brand.getEditText().setText(data.getBrand());
             drawingNumber.getEditText().setText(data.getDrawingNumber());
-            if (!hasInitPictures)initPicture(data.getPicture());
+            note.getEditText().setText(data.getNote());
+            if (!hasInitPictures) initPicture(data.getPicture());
         }
     }
 
-    public void initPicture(List<String> pictures){
+    public void initPicture(List<String> pictures) {
         hasInitPictures = true;
         for (String s : pictures) {
             addPicture(Uri.parse(s));
         }
     }
 
-    public void setAvatar(Uri uri){
-        Glide.with(this).load(uri).into(avatar);
-        avatar.setOnClickListener(v->{
-            Intent i = new Intent(this,ImageViewActivity.class);
+    public void setAvatar(Uri uri) {
+        Glide.with(this).load(uri).override(300, 300).into(avatar);
+        avatar.setOnClickListener(v -> {
+            Intent i = new Intent(this, ImageViewActivity.class);
             i.putExtra(ImageViewActivity.KEY_URI, uri);
             startActivity(i);
         });
     }
 
-    public void addPicture(Uri uri){
+    public void addPicture(Uri uri) {
         NetImagePieceView pieceView = new NetImagePieceView(this);
         pieceView.setImage(uri);
-        pieceView.setOnClickListener(v->{
-            Intent i = new Intent(this,ImageViewActivity.class);
+        pieceView.setOnClickListener(v -> {
+            Intent i = new Intent(this, ImageViewActivity.class);
             i.putExtra(ImageViewActivity.KEY_URI, uri);
             startActivity(i);
         });
@@ -141,19 +144,20 @@ public class PartAddActivity extends BeamDataActivity<PartAddPresenter, Part> {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.delete_ok,menu);
+        getMenuInflater().inflate(R.menu.delete_ok, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.ok){
+        if (item.getItemId() == R.id.ok) {
             getPresenter().data.setType(tvType.getText().toString());
             getPresenter().data.setBrand(brand.getEditText().getText().toString());
             getPresenter().data.setDrawingNumber(drawingNumber.getEditText().getText().toString());
+            getPresenter().data.setNote(note.getEditText().getText().toString());
             getPresenter().publishEdit();
             return true;
-        }else if (item.getItemId() == R.id.delete){
+        } else if (item.getItemId() == R.id.delete) {
 
         }
         return super.onOptionsItemSelected(item);

@@ -1,7 +1,12 @@
 package com.jude.automobile.data;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Environment;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
+import com.jude.automobile.R;
 import com.jude.automobile.data.server.DaggerServiceModelComponent;
 import com.jude.automobile.data.server.ErrorTransform;
 import com.jude.automobile.data.server.HeaderInterceptors;
@@ -11,6 +16,7 @@ import com.jude.automobile.domain.Dir;
 import com.jude.automobile.domain.body.Exist;
 import com.jude.automobile.domain.body.Info;
 import com.jude.automobile.domain.entities.Account;
+import com.jude.automobile.service.UpdateService;
 import com.jude.beam.model.AbsModel;
 import com.jude.utils.JFileManager;
 import com.jude.utils.JUtils;
@@ -96,7 +102,7 @@ public class AccountModel extends AbsModel{
     }
 
     public Observable<Info> register(String number, String password, String name, String code){
-        return mServiceAPI.register(number, name,password, code).compose(new SchedulerTransform<>());
+        return mServiceAPI.register(number, name, password, code).compose(new SchedulerTransform<>());
     }
 
     public Observable<Object> modifyPassword(String number,String password,String code){
@@ -117,6 +123,69 @@ public class AccountModel extends AbsModel{
 
     public void logout(){
         mAccountSubject.onNext(null);
+    }
+    public void checkUpdate(Context ctx){
+        mServiceAPI.getUpdateInfo()
+                .compose(new SchedulerTransform<>())
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.NONE))
+                .subscribe(updateInfo -> {
+                    if (updateInfo.getVersionCode() > JUtils.getAppVersionCode()) {
+                        showUpdateDialog(
+                                ctx,
+                                updateInfo.getVersionName(),
+                                updateInfo.getInfo(),
+                                updateInfo.getAddress());
+                    }
+                });
+    }
+
+    public void forceUpdate(Context ctx){
+        mServiceAPI.getUpdateInfo()
+                .compose(new SchedulerTransform<>())
+                .compose(new ErrorTransform<>(ErrorTransform.ServerErrorHandler.NONE))
+                .subscribe(updateInfo -> {
+                    if (updateInfo.getVersionCode() > JUtils.getAppVersionCode()) {
+                        showUpdateDialog(
+                                ctx,
+                                updateInfo.getVersionName(),
+                                updateInfo.getInfo(),
+                                updateInfo.getAddress());
+                    }else {
+                        JUtils.Toast("没有更新哟");
+                    }
+                });
+    }
+
+    private void showUpdateDialog(Context ctx,String versionName,String content,String url){
+        new MaterialDialog.Builder(ctx)
+                .title("新版本 "+versionName)
+                .content(content)
+                .positiveText("立即升级")
+                .negativeText("取消")
+                .onPositive(new MaterialDialog.SingleButtonCallback() {
+                    @Override
+                    public void onClick(MaterialDialog materialDialog, DialogAction dialogAction) {
+                        JUtils.Log("Get Start");
+                        Intent updateIntent = new Intent(ctx, UpdateService.class);
+                        updateIntent.putExtra("title", "空钩正在更新");
+                        updateIntent.putExtra("url", url);
+                        updateIntent.putExtra("path", findDownLoadDirectory());
+                        updateIntent.putExtra("name", ctx.getString(R.string.app_name) + "v" + versionName + ".apk");
+                        ctx.startService(updateIntent);
+                    }
+                })
+                .show();
+
+    }
+
+    private String findDownLoadDirectory(){
+        if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)){
+            JUtils.Log("找到SD卡");
+            return Environment.getExternalStorageDirectory() + "/" + "download/";
+        }else{
+            JUtils.Log("没有SD卡");
+            return Environment.getRootDirectory() + "/" + "download/";
+        }
     }
 
 }

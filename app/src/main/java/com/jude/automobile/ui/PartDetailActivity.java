@@ -43,6 +43,8 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
     TextView tvBrand;
     @Bind(R.id.drawing_number)
     TextView drawingNumber;
+    @Bind(R.id.note)
+    TextView note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,7 +56,7 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
                 uris.add(Uri.parse(getPresenter().getAdapter().getItem(i1).getUrl()));
             }
             i.putParcelableArrayListExtra(ImageViewActivity.KEY_URIS, uris);
-            i.putExtra(ImageViewActivity.KEY_INDEX,position);
+            i.putExtra(ImageViewActivity.KEY_INDEX, position);
             startActivity(i);
         });
     }
@@ -63,14 +65,15 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
         View view = LayoutInflater.from(this).inflate(R.layout.head_part, parent, false);
         ButterKnife.bind(this, view);
         Glide.with(this).load(ImageModel.getSmallImage(part.getAvatar())).into(imageAvatar);
-        imageAvatar.setOnClickListener(v->{
-            Intent i = new Intent(this,ImageViewActivity.class);
+        imageAvatar.setOnClickListener(v -> {
+            Intent i = new Intent(this, ImageViewActivity.class);
             i.putExtra(ImageViewActivity.KEY_URI, Uri.parse(part.getAvatar()));
             startActivity(i);
         });
         tvType.setText(part.getType());
         tvBrand.setText(part.getBrand());
         drawingNumber.setText(part.getDrawingNumber());
+        note.setText(part.getNote());
         return view;
     }
 
@@ -97,6 +100,7 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
         item.setOnMenuItemClickListener(item1 -> {
             Intent i = new Intent(this, PartAddActivity.class);
             i.putExtra("data", (Parcelable) getPresenter().data);
+
             startActivity(i);
             return true;
         });

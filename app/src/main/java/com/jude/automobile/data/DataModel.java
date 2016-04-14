@@ -156,7 +156,7 @@ public class DataModel extends AbsModel {
             }
             image = image.substring(0,image.length()-1);
         }
-        return mServiceAPI.addPart(part.getId(),part.getType(),part.getBrand(),part.getDrawingNumber(),part.getAvatar(),image).compose(new SchedulerTransform<>());
+        return mServiceAPI.addPart(part.getId(),part.getType(),part.getBrand(),part.getDrawingNumber(),part.getAvatar(),part.getNote(),image).compose(new SchedulerTransform<>());
     }
 
 
@@ -169,8 +169,8 @@ public class DataModel extends AbsModel {
         return mServiceAPI.unAssemble(assembleId).compose(new SchedulerTransform<>());
     }
 
-    public Observable<List<Part>> getPartByType(String type,String brand){
-        return mServiceAPI.getPartListByType(type,brand).compose(new SchedulerTransform<>());
+    public Observable<List<Part>> getPartByType(String type,String drawing_number){
+        return mServiceAPI.getPartListByType(type,drawing_number).compose(new SchedulerTransform<>());
     }
 
     public Observable<List<Assemble>> getAssembleByType(int model){

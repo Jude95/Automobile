@@ -38,7 +38,7 @@ public class NetImagePieceView extends PieceView {
     }
 
     public void setImage(Uri uri){
-        Glide.with(getContext()).load(uri).into(imageView);
+        Glide.with(getContext()).load(uri).override(300, 300).into(imageView);
     }
 
     public void setImage(Bitmap bitmap){

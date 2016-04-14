@@ -18,6 +18,7 @@ public class Part implements Serializable, Parcelable {
     @SerializedName("drawing_number")
     String drawingNumber;
     String avatar;
+    String note;
     List<String> picture;
     @SerializedName("picture_full")
     List<ImageInfo> pictureFull;
@@ -32,6 +33,14 @@ public class Part implements Serializable, Parcelable {
         this.id = id;
         this.picture = picture;
         this.type = type;
+    }
+
+    public String getNote() {
+        return note;
+    }
+
+    public void setNote(String note) {
+        this.note = note;
     }
 
     public String getAvatar() {
@@ -90,6 +99,7 @@ public class Part implements Serializable, Parcelable {
         this.pictureFull = pictureFull;
     }
 
+
     @Override
     public int describeContents() {
         return 0;
@@ -102,6 +112,7 @@ public class Part implements Serializable, Parcelable {
         dest.writeString(this.brand);
         dest.writeString(this.drawingNumber);
         dest.writeString(this.avatar);
+        dest.writeString(this.note);
         dest.writeStringList(this.picture);
         dest.writeTypedList(pictureFull);
     }
@@ -112,6 +123,7 @@ public class Part implements Serializable, Parcelable {
         this.brand = in.readString();
         this.drawingNumber = in.readString();
         this.avatar = in.readString();
+        this.note = in.readString();
         this.picture = in.createStringArrayList();
         this.pictureFull = in.createTypedArrayList(ImageInfo.CREATOR);
     }

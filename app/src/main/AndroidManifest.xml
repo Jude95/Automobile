@@ -58,13 +58,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".ui.BrandActivity"
-            android:label="平拍详情"/>
+            android:label="品牌详情"/>
         <activity android:name=".ui.LineActivity"
             android:label="车型详情"/>
         <activity android:name=".ui.TypeActivity"
             android:label="车款详情"/>
         <activity android:name=".ui.BrandAllActivity"
-            android:label="所有车系"/>
+            android:label="所有品牌"/>
         <activity android:name=".ui.LoginActivity"
             android:theme="@style/AppTheme.Blue"
             android:label="登陆"/>
@@ -86,10 +86,13 @@
             android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="添加车系"/>
         <activity android:name=".ui.LineAddActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="添加车系"/>
         <activity android:name=".ui.TypeAddActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="添加车型"/>
         <activity android:name=".ui.PartAddActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="添加配件"/>
         <activity android:name=".ui.AssembleActivity"
             android:label="配件绑定"/>
@@ -102,7 +105,9 @@
         <activity android:name=".ui.VendorActivity"
             android:label="厂商列表"/>
         <activity android:name=".ui.VendorAddActivity"
+            android:windowSoftInputMode="stateHidden|adjustResize"
             android:label="添加厂商"/>
+        <service android:name=".service.UpdateService"/>
     </application>
 
 </manifest>
