@@ -31,6 +31,9 @@ import com.jude.easyrecyclerview.adapter.RecyclerArrayAdapter;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.jude.utils.JUtils;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+
 import java.util.List;
 
 import butterknife.Bind;
@@ -65,13 +68,15 @@ public class MainActivity extends BeamBaseActivity<MainPresenter>
 
     private MainAdapter adapter;
 
+    @Subscribe
+    public void onEvent(String event) {/* Do something */};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SwipeBackHelper.getCurrentPage(this).setSwipeBackEnable(false);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
+        EventBus.getDefault().register(this);
         if (!AccountModel.getInstance().isActivity()){
             startActivity(new Intent(this, TimeActivity.class));
         }

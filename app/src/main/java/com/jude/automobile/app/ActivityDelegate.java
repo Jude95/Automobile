@@ -3,6 +3,8 @@ package com.jude.automobile.app;
 import android.app.Activity;
 import android.os.Bundle;
 
+import com.android.debug.hv.ViewServer;
+import com.jude.automobile.BuildConfig;
 import com.jude.beam.bijection.ActivityLifeCycleDelegate;
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.jude.utils.JActivityManager;
@@ -22,12 +24,14 @@ public class ActivityDelegate extends ActivityLifeCycleDelegate {
         super.onCreate(savedInstanceState);
         SwipeBackHelper.onCreate(getActivity());
         JActivityManager.getInstance().pushActivity(getActivity());
+        if (BuildConfig.DEBUG)ViewServer.get(getActivity()).addWindow(getActivity());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         MobclickAgent.onResume(getActivity());
+        if (BuildConfig.DEBUG)ViewServer.get(getActivity()).setFocusedWindow(getActivity());
 
     }
 
@@ -42,6 +46,8 @@ public class ActivityDelegate extends ActivityLifeCycleDelegate {
         super.onDestroy();
         SwipeBackHelper.onDestroy(getActivity());
         JActivityManager.getInstance().popActivity(getActivity());
+        if (BuildConfig.DEBUG)ViewServer.get(getActivity()).removeWindow(getActivity());
+
     }
 
     @Override
