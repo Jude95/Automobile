@@ -43,7 +43,7 @@ public class PartSelectActivity extends BeamListActivity<PartSelectPresenter, Pa
     }
 
     @Override
-    protected ListConfig getConfig() {
+    public ListConfig getConfig() {
         return super.getConfig().setRefreshAble(true);
     }
 
@@ -53,7 +53,7 @@ public class PartSelectActivity extends BeamListActivity<PartSelectPresenter, Pa
     }
 
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new PartSelectViewHolder(parent);
     }
 

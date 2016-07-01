@@ -28,12 +28,12 @@ import java.util.List;
 public class AssembleActivity extends BeamListActivity<AssemblePresenter,Assemble> {
 
     @Override
-    protected ListConfig getConfig() {
+    public ListConfig getConfig() {
         return super.getConfig().setRefreshAble(true);
     }
 
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new AssembleEditViewHolder(parent);
     }
 

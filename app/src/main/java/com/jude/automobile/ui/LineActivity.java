@@ -29,7 +29,7 @@ public class LineActivity extends BeamListActivity<LinePresenter,Type> {
     }
 
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new TypeViewHolder(parent);
     }
 

@@ -18,7 +18,7 @@ import com.jude.easyrecyclerview.adapter.BaseViewHolder;
 public class UserListActivity extends BeamListActivity<UserListPresenter,Account> {
 
     @Override
-    protected ListConfig getConfig() {
+    public ListConfig getConfig() {
         return super.getConfig().setRefreshAble(true);
     }
 
@@ -28,7 +28,7 @@ public class UserListActivity extends BeamListActivity<UserListPresenter,Account
     }
 
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new UserViewHolder(parent);
     }
 }

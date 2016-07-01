@@ -29,7 +29,7 @@ public class BrandActivity extends BeamListActivity<BrandPresenter,Vendor> {
     }
 
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new VendorViewHolder(parent);
     }
 

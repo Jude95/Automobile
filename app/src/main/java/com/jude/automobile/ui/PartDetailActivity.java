@@ -83,12 +83,12 @@ public class PartDetailActivity extends BeamListActivity<PartDetailPresenter, Im
     }
 
     @Override
-    protected ListConfig getConfig() {
+    public ListConfig getConfig() {
         return super.getConfig().setRefreshAble(true);
     }
 
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new NetImageViewHolder(parent);
     }
 

@@ -47,7 +47,7 @@ public class BrandAllActivity extends BeamListActivity<BrandAllPresenter, Object
     }
 
     @Override
-    protected ListConfig getConfig() {
+    public ListConfig getConfig() {
         return super.getConfig().setRefreshAble(true);
     }
 
@@ -120,7 +120,7 @@ public class BrandAllActivity extends BeamListActivity<BrandAllPresenter, Object
     }
 
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case 0:
                 return new CharViewHolder(parent);

@@ -8,7 +8,7 @@ props.load(new FileInputStream(file("../config/key.properties")))
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "24.0.0 rc2"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         applicationId "com.jude.automobile"
@@ -53,7 +53,7 @@ android {
         }
         debug {
             signingConfig signingConfigs.release
-            minifyEnabled true
+            minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             ndk {
                 abiFilters "armeabi", "armeabi-v7a","x86"
@@ -105,9 +105,9 @@ dependencies {
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.0-beta3'
     compile 'com.squareup.okhttp3:logging-interceptor:3.0.1'
     compile 'com.qiniu:qiniu-android-sdk:7.0.7'
-    compile 'com.jude:beam:2.9.0-alpha8'
-    compile 'com.jude:swipebackhelper:3.0.2'
-    compile 'com.jude:utils:1.1.0'
+    compile 'com.jude:beam:3.0.1'
+    compile 'com.jude:swipebackhelper:3.1.2'
+    compile 'com.jude:utils:1.2.0-alpha2'
     compile 'com.jude:smssdk_mob:1.1.0'
     compile 'com.jude:fitsystemwindowlayout:1.0.8'
     compile 'com.jude:tagview:2.1.3'

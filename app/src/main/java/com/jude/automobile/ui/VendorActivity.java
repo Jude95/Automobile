@@ -29,7 +29,7 @@ public class VendorActivity extends BeamListActivity<VendorPresenter,Line> {
     }
 
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new LineViewHolder(parent);
     }
 

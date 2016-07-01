@@ -82,7 +82,7 @@ public class ErrorTransform<T> implements Observable.Transformer<T, T> {
         }
 
         private void authFailure(){
-            Activity activity = JActivityManager.getInstance().currentActivity();
+            Activity activity = JActivityManager.currentActivity();
             if (activity!=null&&
                     !(activity instanceof LauncherActivity)&&
                     !(activity instanceof LoginActivity)){

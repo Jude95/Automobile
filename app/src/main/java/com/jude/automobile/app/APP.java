@@ -10,6 +10,7 @@ import com.jude.beam.expansion.BeamBaseActivity;
 import com.jude.beam.expansion.list.ListConfig;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegate;
 import com.jude.beam.expansion.overlay.ViewExpansionDelegateProvider;
+import com.jude.utils.JActivityManager;
 import com.jude.utils.JFileManager;
 import com.jude.utils.JUtils;
 
@@ -32,7 +33,7 @@ public class APP extends Application {
                 return new NewViewExpansion(activity);
             }
         });
-
+        registerActivityLifecycleCallbacks(JActivityManager.getActivityLifecycleCallbacks());
         Beam.setActivityLifeCycleDelegateProvider(ActivityDelegate::new);
         ListConfig.setDefaultListConfig(new ListConfig()
                 .setPaddingNavigationBarAble(true)

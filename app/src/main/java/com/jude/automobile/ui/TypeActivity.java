@@ -71,7 +71,7 @@ public class TypeActivity extends BeamListActivity<TypePresenter, Assemble> {
 
 
     @Override
-    protected ListConfig getConfig() {
+    public ListConfig getConfig() {
         return super.getConfig().setRefreshAble(true);
     }
 
@@ -88,7 +88,7 @@ public class TypeActivity extends BeamListActivity<TypePresenter, Assemble> {
     }
 
     @Override
-    protected BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
+    public BaseViewHolder getViewHolder(ViewGroup parent, int viewType) {
         return new AssembleViewHolder(parent);
     }
 
